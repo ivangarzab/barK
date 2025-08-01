@@ -1,4 +1,4 @@
-# trunK
+# barK
 
 ## Core Architecture
 
@@ -32,7 +32,7 @@
 
 **Release builds**: Build-time flag to disable logging entirely
 
-**Global log level**: Configurable via `Logger.logLevel`
+**Global log level**: Configurable via `BarK.minLogLevel`
 
 ## Features
 
@@ -47,11 +47,18 @@
 ## Usage
 
 ``` kt
+BarK.init(
+  minLogLevel = Level.DEBUG,
+  logRelease = false,
+  logTest = false,
+  colorTest = false
+)
+
 // Automatic tag detection
-Logger.debug("message")  // Tag: "ComplyApiService"
+BarK.d("message")  // Tag: "ComplyApiService"
 
 // Manual tag override
-Logger.debug("message", tag = "CustomTag")
+BarK.d("message", tag = "CustomTag")
 
 // Test vs Production
 // Tests: println() with colors

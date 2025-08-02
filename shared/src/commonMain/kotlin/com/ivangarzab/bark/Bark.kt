@@ -82,6 +82,15 @@ object Bark {
     }
 
     /**
+     * Delete the global tag prefix.
+     *
+     * This will re-enable tag auto-detect.
+     */
+    fun untag() {
+        globalTag = null
+    }
+
+    /**
      * Internal logging method that handles level filtering and handler delegation.
      */
     private fun log(level: Level, message: String, throwable: Throwable?) {

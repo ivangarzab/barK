@@ -15,64 +15,66 @@ object Bark {
     private var isMuzzled: Boolean = false
 
     /**
-     * Log a message at VERBOSE level
+     * Log a message at VERBOSE level.
      */
     fun v(message: String, throwable: Throwable? = null) {
         log(Level.VERBOSE, message, throwable)
     }
 
     /**
-     * Log a message at DEBUG level
+     * Log a message at DEBUG level.
      */
     fun d(message: String, throwable: Throwable? = null) {
         log(Level.DEBUG, message, throwable)
     }
 
     /**
-     * Log a message at INFO level
+     * Log a message at INFO level.
      */
     fun i(message: String, throwable: Throwable? = null) {
         log(Level.INFO, message, throwable)
     }
 
     /**
-     * Log a message at WARNING level
+     * Log a message at WARNING level.
      */
     fun w(message: String, throwable: Throwable? = null) {
         log(Level.WARNING, message, throwable)
     }
 
     /**
-     * Log a message at ERROR level
+     * Log a message at ERROR level.
      */
     fun e(message: String, throwable: Throwable? = null) {
         log(Level.ERROR, message, throwable)
     }
 
     /**
-     * Train Bark with a new handler
-     * Handlers determine where and how logs are output
+     * Train Bark with a new handler.
+     *
+     * Handlers determine where and how logs are output.
      */
     fun train(handler: Trainer) {
         trainers.add(handler)
     }
 
     /**
-     * Muzzle Bark - disable all logging
+     * Muzzle Bark - disable all logging.
      */
     fun muzzle() {
         isMuzzled = true
     }
 
     /**
-     * Unmuzzle Bark - re-enable logging
+     * Unmuzzle Bark - re-enable logging.
      */
     fun unmuzzle() {
         isMuzzled = false
     }
 
     /**
-     * Tag Bark with a global tag prefix
+     * Tag Bark with a global tag prefix.
+     *
      * This will override tag auto-detection.
      */
     fun tag(tag: String) {
@@ -80,7 +82,7 @@ object Bark {
     }
 
     /**
-     * Internal logging method that handles level filtering and handler delegation
+     * Internal logging method that handles level filtering and handler delegation.
      */
     private fun log(level: Level, message: String, throwable: Throwable?) {
         if (isMuzzled) return
@@ -93,11 +95,10 @@ object Bark {
     }
 
     /**
-     * Generate the tag for this log entry
-     * TODO: Implement auto-detection from stack trace
+     * Generate the tag for a particular log entry.
      */
     private fun generateTag(): String {
-        return globalTag ?: "Bark"
+        return globalTag ?: getCallerTag()
     }
 
     /**

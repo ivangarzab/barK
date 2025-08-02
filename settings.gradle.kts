@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "barK"
 include(":shared")
+include(":sample-android")

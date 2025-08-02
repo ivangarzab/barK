@@ -9,4 +9,4 @@ package com.ivangarzab.bark
  *
  * @return The simple class name of the caller, or a fallback if detection fails
  */
-actual fun getCallerTag(): String = "BarK"
+internal actual fun getCallerTag(): String = "BarK" //TODO: Implement

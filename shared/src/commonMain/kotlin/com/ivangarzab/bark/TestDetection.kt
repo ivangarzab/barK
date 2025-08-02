@@ -15,4 +15,4 @@ package com.ivangarzab.bark
  *
  * @return true if running tests, false otherwise
  */
-expect fun isRunningTests(): Boolean
+internal expect fun isRunningTests(): Boolean

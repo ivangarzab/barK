@@ -17,7 +17,7 @@ package com.ivangarzab.bark
  *
  * @return The simple class name of the caller, limited to Android's 23-char TAG limit
  */
-actual fun getCallerTag(): String {
+internal actual fun getCallerTag(): String {
     return try {
         val stackTrace = Thread.currentThread().stackTrace
 

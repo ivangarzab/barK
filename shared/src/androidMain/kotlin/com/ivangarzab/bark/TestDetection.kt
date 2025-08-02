@@ -9,7 +9,7 @@ package com.ivangarzab.bark
  *
  * @return true if running tests, false otherwise
  */
-actual fun isRunningTests(): Boolean {
+internal actual fun isRunningTests(): Boolean {
     return isTestRunnerPresent()
 }
 

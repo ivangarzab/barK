@@ -16,4 +16,4 @@ package com.ivangarzab.bark
  *
  * @return The simple class name of the caller, or a fallback if detection fails
  */
-expect fun getCallerTag(): String
+internal expect fun getCallerTag(): String

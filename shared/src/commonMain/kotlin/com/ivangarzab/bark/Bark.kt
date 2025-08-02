@@ -50,12 +50,17 @@ object Bark {
     }
 
     /**
-     * Train Bark with a new handler.
+     * Train Bark with a new [Trainer], which determine where and how logs are output..
      *
-     * Handlers determine where and how logs are output.
+     * Does not accept duplicate trainer families (types).
      */
-    fun train(handler: Trainer) {
-        trainers.add(handler)
+    fun train(trainer: Trainer) {
+        val family = getTrainerFamily(trainer)
+        if (family != null) {
+            // Remove existing trainers from the same family
+            trainers.removeAll { getTrainerFamily(it) == family }
+        }
+        trainers.add(trainer)
     }
 
     /**

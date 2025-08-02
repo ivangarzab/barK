@@ -11,13 +11,9 @@ package com.ivangarzab.bark
  * Automatically detects the calling class name for use as a log tag on Android
  *
  * This implementation inspects the current thread's stack trace to find the
- * first class that is not part of the barK logging framework itself.
+ * first class that is not part of barK framework or common system classes.
  *
- * The detection works by:
- * 1. Getting the current stack trace
- * 2. Skipping barK framework classes (Bark, trainers, etc.)
- * 3. Finding the first "real" caller class
- * 4. Extracting and formatting the simple class name
+ * Inspired by Timber's approach but adapted for barK.
  *
  * @return The simple class name of the caller, limited to Android's 23-char TAG limit
  */
@@ -25,24 +21,39 @@ actual fun getCallerTag(): String {
     return try {
         val stackTrace = Thread.currentThread().stackTrace
 
-        // Find the first stack element that's not part of barK framework
+        // Find the first stack element that's not part of framework classes
         val callerElement = stackTrace.firstOrNull { element ->
             val className = element.className
 
-            // Skip barK framework classes
-            !className.contains("bark", ignoreCase = true) &&
-                    !className.contains("Bark") &&
+            // Skip barK framework classes (but not test classes!)
+            !className.endsWith("Bark") &&
                     !className.contains("Trainer") &&
+                    !className.endsWith("TagDetection") &&  // Skip the actual TagDetection file
+                    !className.endsWith("TagDetectionKt") &&  // Skip the compiled Kotlin file
+                    !className.endsWith("TestDetection") &&  // Skip the actual TestDetection file
+                    !className.endsWith("TestDetectionKt") &&  // Skip the compiled Kotlin file
 
                     // Skip JVM/Android system classes
                     !className.startsWith("java.") &&
                     !className.startsWith("android.") &&
                     !className.startsWith("kotlin.") &&
                     !className.startsWith("dalvik.") &&
+                    !className.startsWith("jdk.") &&
 
-                    // Skip common framework classes
-                    !className.contains("Thread") &&
-                    !className.contains("Method") &&
+                    // Skip testing infrastructure (but not test classes themselves!)
+                    !className.startsWith("org.junit") &&
+                    !className.contains("junit.runners") &&
+                    !className.contains("gradle") &&
+                    !className.contains("Reflective") &&
+                    !className.contains("Framework") &&
+                    !className.contains("Runner") &&
+                    !className.contains("Callable") &&
+                    !className.contains("Method.invoke") &&
+
+                    // Skip proxy classes
+                    !className.contains("Proxy") &&
+                    !className.contains("$\$") &&
+                    !className.contains("Lambda") &&
 
                     // Make sure it's a real class name
                     className.isNotBlank()
@@ -81,7 +92,7 @@ private fun extractSimpleClassName(fullClassName: String): String {
     // Remove inner class markers (everything after $)
     val withoutInnerClass = withoutPackage.substringBefore('$')
 
-    return withoutInnerClass.ifBlank { "App" }
+    return withoutInnerClass.ifBlank { "Unknown" }
 }
 
 /**

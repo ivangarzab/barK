@@ -1,4 +1,6 @@
-package com.ivangarzab.bark
+package com.ivangarzab.bark.detectors
+
+import com.ivangarzab.bark.Trainer
 
 /**
  * iOS platform specific trainer family detection.

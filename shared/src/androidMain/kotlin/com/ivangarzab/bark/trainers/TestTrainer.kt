@@ -2,7 +2,7 @@ package com.ivangarzab.bark.trainers
 
 import com.ivangarzab.bark.Level
 import com.ivangarzab.bark.Trainer
-import com.ivangarzab.bark.isRunningTests
+import com.ivangarzab.bark.detectors.isRunningTests
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

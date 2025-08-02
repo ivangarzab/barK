@@ -1,4 +1,4 @@
-package com.ivangarzab.bark
+package com.ivangarzab.bark.detectors
 
 /**
  * Test detection utilities for barK.

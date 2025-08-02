@@ -3,7 +3,7 @@ package com.ivangarzab.bark.trainers
 import android.util.Log
 import com.ivangarzab.bark.Level
 import com.ivangarzab.bark.Trainer
-import com.ivangarzab.bark.isRunningTests
+import com.ivangarzab.bark.detectors.isRunningTests
 
 /**
  * AndroidLogTrainer handles logging to Android's Logcat system.

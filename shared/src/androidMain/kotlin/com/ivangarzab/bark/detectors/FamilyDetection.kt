@@ -1,5 +1,6 @@
-package com.ivangarzab.bark
+package com.ivangarzab.bark.detectors
 
+import com.ivangarzab.bark.Trainer
 import com.ivangarzab.bark.trainers.AndroidLogTrainer
 import com.ivangarzab.bark.trainers.TestTrainer
 

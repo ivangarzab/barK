@@ -1,4 +1,4 @@
-package com.ivangarzab.bark
+package com.ivangarzab.bark.detectors
 
 /**
  * Detects if the code is currently running in a test environment on Android.

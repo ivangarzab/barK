@@ -1,4 +1,4 @@
-package com.ivangarzab.bark
+package com.ivangarzab.bark.detectors
 
 /**
  * Android implementation of tag detection for barK

@@ -1,5 +1,8 @@
 package com.ivangarzab.bark
 
+import com.ivangarzab.bark.detectors.getCallerTag
+import com.ivangarzab.bark.detectors.getTrainerFamily
+
 /**
  * The purpose of this class is to serve as the main API object of this library,
  * which provides themed logging methods and configuration.

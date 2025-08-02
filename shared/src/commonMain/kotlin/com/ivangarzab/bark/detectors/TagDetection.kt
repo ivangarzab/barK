@@ -1,4 +1,11 @@
-package com.ivangarzab.bark
+package com.ivangarzab.bark.detectors
+
+/**
+ * Tag detection utilities for barK.
+ *
+ * Provides platform-specific detection of the calling class/method name
+ * for automatic tag generation, similar to Timber's behavior.
+ */
 
 /**
  * Automatically detects the calling class name for use as a log tag.
@@ -9,4 +16,4 @@ package com.ivangarzab.bark
  *
  * @return The simple class name of the caller, or a fallback if detection fails
  */
-internal actual fun getCallerTag(): String = "BarK" //TODO: Implement
+internal expect fun getCallerTag(): String

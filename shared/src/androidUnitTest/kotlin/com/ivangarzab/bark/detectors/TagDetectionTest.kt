@@ -1,4 +1,4 @@
-package com.ivangarzab.bark
+package com.ivangarzab.bark.detectors
 
 import org.junit.Test
 import org.junit.Assert.*

@@ -1,9 +1,9 @@
-# barK 🐕
-
-*A simple, extensible logging library for Kotlin Multiplatform with automatic tag detection and themed API*
-
 [![Kotlin](https://img.shields.io/badge/kotlin-multiplatform-blue.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+[wordmark](/assets/wordmark.png)
+
+***barK**: A simple, extensible logging library for Kotlin Multiplatform with automatic tag detection and themed API*
 
 ---
 

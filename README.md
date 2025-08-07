@@ -3,7 +3,7 @@
 
 ![wordmark](/assets/wordmark.png)
 
-***barK**: A simple, extensible logging library for Kotlin Multiplatform with automatic tag detection and themed API*
+***barK**: A simple, extensible logging library for Kotlin Multiplatform with automatic tag detection and support for test runs*
 
 ---
 
@@ -14,8 +14,7 @@ barK solves common logging pain points with a **memorable, themed API** and **po
 - 🏷️ **Automatic tag detection** - No more manual TAG constants
 - 🧪 **Smart test detection** - Different output for tests vs. production
 - 🎯 **Trainer system** - Flexible, extensible output destinations
-- 🐕 **Themed API** - `train()`, `muzzle()`, `tag()` - easy to remember
-- 🔄 **Kotlin Multiplatform** - Works across Android, iOS, JVM, and more
+- 🔄 **Kotlin Multiplatform** - Works across Android + iOS
 
 **Born from real SDK development needs** - when you need different logging behavior for Android runs vs. test runs, barK has you covered.
 
@@ -26,9 +25,9 @@ barK solves common logging pain points with a **memorable, themed API** and **po
 ### 1. Add Dependency
 
 ```kotlin
-// build.gradle.kts (Module: app)
+// build.gradle.kts
 dependencies {
-    implementation("com.ivangarzab:bark:1.0.0")
+    implementation("com.ivangarzab.bark:bark:<version>")
 }
 ```
 
@@ -121,29 +120,6 @@ Bark.train(CrashReportingTrainer())       // Crash service
 // Custom volume control per trainer
 Bark.train(AndroidLogTrainer(volume = Level.DEBUG))    // All levels
 Bark.train(FileTrainer(volume = Level.ERROR))          // Errors only
-```
-
-### 🐕 Memorable Themed API
-
-```kotlin
-// Train different behaviors
-Bark.train(AndroidLogTrainer())
-Bark.train(ColoredTestTrainer())
-
-// Control output
-Bark.muzzle()    // Disable all logging
-Bark.unmuzzle()  // Re-enable logging
-
-// Tag management  
-Bark.tag("MySDK")           // Set global tag
-Bark.untag()                // Back to auto-detection
-
-// Standard log levels
-Bark.v("Verbose message")
-Bark.d("Debug message") 
-Bark.i("Info message")
-Bark.w("Warning message")
-Bark.e("Error message", exception)
 ```
 
 ---
@@ -313,9 +289,7 @@ expect fun getCallerTag(): String
 
 // Platform implementations
 // ✅ Android (available now)
-// 🚧 iOS (coming soon)  
-// 🚧 JVM (coming soon)
-// 🚧 JS (planned)
+// 🚧 iOS (coming soon)
 ```
 
 ---
@@ -330,7 +304,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.ivangarzab:bark:1.0.0")
+    implementation("com.ivangarzab:bark:<version>")
 }
 ```
 
@@ -342,7 +316,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.ivangarzab:bark:1.0.0'
+    implementation 'com.ivangarzab:bark:<version>'
 }
 ```
 
@@ -365,7 +339,6 @@ dependencies {
 | Auto-tag detection | ✅ | ✅ |
 | Test environment detection | ✅ | ❌ |
 | Kotlin Multiplatform | ✅ | ❌ |
-| Themed API | ✅ | ❌ |
 | Multiple trainers | ✅ | ✅ |
 | Runtime muzzling | ✅ | ❌ |
 
@@ -398,7 +371,7 @@ cd barK
 ## License
 
 ```
-Copyright 2024 Ivan Garza
+Copyright 2025 Ivan Garza
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -417,12 +390,11 @@ limitations under the License.
 
 ## Changelog
 
-### v1.0.0 (2024-XX-XX)
+### v1.0.0 (2025-XX-XX)
 - 🎉 Initial release
 - ✅ Android support with auto-tag detection
 - ✅ Smart test environment detection
 - ✅ Trainer system with AndroidLog, Test, and ColoredTest trainers
-- ✅ Themed API (train, muzzle, tag, untag)
 - ✅ Sample app with realistic usage examples
 
 ---

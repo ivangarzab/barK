@@ -1,4 +1,4 @@
-package com.ivangarzab.bark.sample.android
+package com.ivangarzab.bark.sample.android.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ivangarzab.bark.Bark
 import com.ivangarzab.bark.Level
+import com.ivangarzab.bark.sample.android.ui.other.UserRepository
+import com.ivangarzab.bark.sample.android.ui.other.UserService
+import com.ivangarzab.bark.sample.android.ui.theme.BarKTheme
 import com.ivangarzab.bark.trainers.AndroidLogTrainer
 import com.ivangarzab.bark.trainers.ColoredTestTrainer
 import com.ivangarzab.bark.trainers.TestTrainer
@@ -36,7 +39,7 @@ class DebugActivity : ComponentActivity() {
         Bark.i("Debug activity opened")
 
         setContent {
-            BarkSampleTheme {
+            BarKTheme {
                 DebugScreen(
                     onBack = { finish() }
                 )

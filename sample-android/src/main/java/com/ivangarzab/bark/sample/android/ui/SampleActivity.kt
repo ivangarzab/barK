@@ -1,4 +1,4 @@
-package com.ivangarzab.bark.sample.android
+package com.ivangarzab.bark.sample.android.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +20,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.ivangarzab.bark.Bark
 import com.ivangarzab.bark.Level
+import com.ivangarzab.bark.sample.android.BuildConfig
+import com.ivangarzab.bark.sample.android.ui.other.NotificationService
+import com.ivangarzab.bark.sample.android.ui.other.User
+import com.ivangarzab.bark.sample.android.ui.other.UserRepository
+import com.ivangarzab.bark.sample.android.ui.theme.BarKTheme
 import com.ivangarzab.bark.trainers.AndroidLogTrainer
 import com.ivangarzab.bark.trainers.ColoredTestTrainer
 import kotlinx.coroutines.delay
@@ -51,7 +56,7 @@ class SampleActivity : ComponentActivity() {
         Bark.d("MainActivity created")
 
         setContent {
-            BarkSampleTheme {
+            BarKTheme {
                 MainScreen(
                     userRepository = userRepository,
                     notificationService = notificationService
@@ -359,144 +364,5 @@ fun UserItem(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun BarkSampleTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = lightColorScheme(),
-        content = content
-    )
-}
-
-// Sample data classes and services that demonstrate natural barK usage
-data class User(
-    val id: String,
-    val name: String,
-    val isActive: Boolean = true
-)
-
-/**
- * Sample service class to demonstrate auto-tag detection
- */
-class UserService {
-    fun performAction() {
-        // Should show tag "UserService"
-        Bark.i("UserService performing action")
-        Bark.d("Action completed successfully")
-    }
-}
-
-class UserRepository {
-    private var users = mutableListOf<User>()
-
-    suspend fun loadUsers(): List<User> {
-        Bark.d("Loading users from repository")
-
-        // Simulate network delay
-        delay(1000)
-
-        // Simulate potential failure
-        if (Math.random() < 0.1) {
-            throw Exception("Network timeout")
-        }
-
-        users = mutableListOf(
-            User("1", "Alice Johnson", true),
-            User("2", "Bob Smith", false),
-            User("3", "Carol Davis", true)
-        )
-
-        Bark.i("Loaded ${users.size} users")
-        return users.toList()
-    }
-
-    fun getUsers(): List<User> {
-        Bark.v("Getting cached users")
-        return users.toList()
-    }
-
-    suspend fun createUser(name: String): User {
-        Bark.i("Creating new user: $name")
-
-        // Simulate creation delay
-        delay(500)
-
-        // Simulate validation
-        if (name.isBlank()) {
-            Bark.e("Cannot create user with empty name")
-            throw IllegalArgumentException("Name cannot be empty")
-        }
-
-        val user = User(
-            id = System.currentTimeMillis().toString(),
-            name = name,
-            isActive = true
-        )
-
-        users.add(user)
-        Bark.d("User created with ID: ${user.id}")
-
-        return user
-    }
-
-    suspend fun toggleUserActive(userId: String): User {
-        Bark.d("Toggling active status for user: $userId")
-
-        val userIndex = users.indexOfFirst { it.id == userId }
-        if (userIndex == -1) {
-            Bark.e("User not found: $userId")
-            throw IllegalArgumentException("User not found")
-        }
-
-        val user = users[userIndex]
-        val updatedUser = user.copy(isActive = !user.isActive)
-        users[userIndex] = updatedUser
-
-        Bark.i("User ${updatedUser.name} is now ${if (updatedUser.isActive) "active" else "inactive"}")
-
-        return updatedUser
-    }
-
-    suspend fun deleteUser(userId: String) {
-        Bark.w("Deleting user: $userId")
-
-        val removed = users.removeIf { it.id == userId }
-        if (!removed) {
-            Bark.e("Failed to delete user: $userId not found")
-            throw IllegalArgumentException("User not found")
-        }
-
-        Bark.d("User deleted successfully")
-    }
-
-    suspend fun clearUsers() {
-        Bark.w("Clearing all users")
-        val count = users.size
-        users.clear()
-        Bark.i("Cleared $count users")
-    }
-}
-
-class NotificationService {
-    fun showSuccess(message: String) {
-        Bark.i("Success notification: $message")
-        // In real app, would show toast/snackbar
-    }
-
-    fun showError(message: String) {
-        Bark.e("Error notification: $message")
-        // In real app, would show error dialog
-    }
-
-    fun showWarning(message: String) {
-        Bark.w("Warning notification: $message")
-        // In real app, would show warning toast
-    }
-
-    fun showInfo(message: String) {
-        Bark.d("Info notification: $message")
-        // In real app, would show info toast
     }
 }

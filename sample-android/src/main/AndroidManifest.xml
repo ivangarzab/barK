@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BarK">
         <activity
-            android:name=".SampleActivity"
+            android:name=".ui.SampleActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.BarK">
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DebugActivity"
+            android:name=".ui.DebugActivity"
             android:exported="false" />
     </application>
 

@@ -12,15 +12,11 @@ class UserRepository {
         // Simulate network delay
         delay(1000)
 
-        // Simulate potential failure
-        if (Math.random() < 0.1) {
-            throw Exception("Network timeout")
-        }
-
         users = mutableListOf(
-            User("1", "Alice Johnson", true),
-            User("2", "Bob Smith", false),
-            User("3", "Carol Davis", true)
+            User("1", "Scooby-Doo", true),
+            User("2", "Snoopy", false),
+            User("3", "Air Bud", false),
+            User("4", "Pluto", true)
         )
 
         Bark.i("Loaded ${users.size} users")

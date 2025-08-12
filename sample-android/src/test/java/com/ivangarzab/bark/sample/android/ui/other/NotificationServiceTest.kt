@@ -92,7 +92,7 @@ class NotificationServiceTest {
     fun `demonstrate notification timing and volume control`() {
         Bark.i("=== Testing Volume Control and Timing ===")
 
-        // Test with high volume (only errors)
+        // Test with high volume level (only errors)
         Bark.releaseAllTrainers()
         Bark.train(ColoredTestTrainer(volume = Level.ERROR, showTimestamp = true))
 

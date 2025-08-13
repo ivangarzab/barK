@@ -22,8 +22,8 @@ import com.ivangarzab.bark.sample.android.ui.other.UserRepository
 import com.ivangarzab.bark.sample.android.ui.other.UserService
 import com.ivangarzab.bark.sample.android.ui.theme.BarKTheme
 import com.ivangarzab.bark.trainers.AndroidLogTrainer
-import com.ivangarzab.bark.trainers.ColoredTestTrainer
-import com.ivangarzab.bark.trainers.TestTrainer
+import com.ivangarzab.bark.trainers.ColoredUnitTestTrainer
+import com.ivangarzab.bark.trainers.UnitTestTrainer
 
 /**
  * Debug activity for testing barK features
@@ -234,7 +234,7 @@ private fun TrainerSection(onStatusUpdate: () -> Unit) {
                 Button(
                     onClick = {
                         Bark.releaseAllTrainers()
-                        Bark.train(TestTrainer(volume = Level.DEBUG))
+                        Bark.train(UnitTestTrainer(volume = Level.DEBUG))
                         Bark.i("Switched to TestTrainer - check IDE console!")
                         onStatusUpdate()
                     },
@@ -246,7 +246,7 @@ private fun TrainerSection(onStatusUpdate: () -> Unit) {
                 Button(
                     onClick = {
                         Bark.releaseAllTrainers()
-                        Bark.train(ColoredTestTrainer(volume = Level.DEBUG))
+                        Bark.train(ColoredUnitTestTrainer(volume = Level.DEBUG))
                         Bark.i("Switched to ColoredTestTrainer - check IDE console!")
                         onStatusUpdate()
                     },

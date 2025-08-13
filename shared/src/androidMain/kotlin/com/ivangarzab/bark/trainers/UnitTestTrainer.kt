@@ -21,7 +21,7 @@ import java.util.Locale
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */
-open class TestTrainer(
+open class UnitTestTrainer(
     override val volume: Level = Level.VERBOSE,
     private val showTimestamp: Boolean = true
 ) : Trainer {

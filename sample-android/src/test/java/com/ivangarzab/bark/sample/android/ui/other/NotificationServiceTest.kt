@@ -2,8 +2,8 @@ package com.ivangarzab.bark.sample.android.ui.other
 
 import com.ivangarzab.bark.Bark
 import com.ivangarzab.bark.Level
-import com.ivangarzab.bark.trainers.ColoredTestTrainer
-import com.ivangarzab.bark.trainers.TestTrainer
+import com.ivangarzab.bark.trainers.ColoredUnitTestTrainer
+import com.ivangarzab.bark.trainers.UnitTestTrainer
 import org.junit.Before
 import org.junit.Test
 
@@ -23,7 +23,7 @@ class NotificationServiceTest {
     fun setup() {
         Bark.releaseAllTrainers()
         // Start with plain trainer for contrast
-        Bark.train(TestTrainer(volume = Level.VERBOSE, showTimestamp = false))
+        Bark.train(UnitTestTrainer(volume = Level.VERBOSE, showTimestamp = false))
 
         Bark.i("=== Setting up NotificationServiceTest ===")
 
@@ -50,7 +50,7 @@ class NotificationServiceTest {
 
         // Switch to colored trainer
         Bark.releaseAllTrainers()
-        Bark.train(ColoredTestTrainer(volume = Level.VERBOSE, showTimestamp = false))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE, showTimestamp = false))
 
         Bark.i("Testing all notification types (Colored Output)")
 
@@ -65,7 +65,7 @@ class NotificationServiceTest {
     @Test
     fun `test notification service in realistic scenarios`() {
         Bark.releaseAllTrainers()
-        Bark.train(ColoredTestTrainer(volume = Level.DEBUG))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.DEBUG))
 
         Bark.i("=== Realistic Notification Scenarios ===")
 
@@ -94,7 +94,7 @@ class NotificationServiceTest {
 
         // Test with high volume level (only errors)
         Bark.releaseAllTrainers()
-        Bark.train(ColoredTestTrainer(volume = Level.ERROR, showTimestamp = true))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.ERROR, showTimestamp = true))
 
         Bark.d("This debug message should NOT appear (volume = ERROR)")
         notificationService.showInfo("This info should NOT appear")
@@ -105,7 +105,7 @@ class NotificationServiceTest {
 
         // Test with medium volume (INFO and above)
         Bark.releaseAllTrainers()
-        Bark.train(ColoredTestTrainer(volume = Level.INFO, showTimestamp = true))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.INFO, showTimestamp = true))
 
         Bark.d("This debug message should NOT appear (volume = INFO)")
         notificationService.showInfo("This info SHOULD appear")
@@ -129,7 +129,7 @@ class NotificationServiceTest {
 
         // Plain trainer first
         Bark.releaseAllTrainers()
-        Bark.train(TestTrainer(volume = Level.VERBOSE, showTimestamp = true))
+        Bark.train(UnitTestTrainer(volume = Level.VERBOSE, showTimestamp = true))
 
         Bark.i("--- Plain TestTrainer Output ---")
         messages.forEach { message ->
@@ -138,7 +138,7 @@ class NotificationServiceTest {
 
         // Colored trainer second
         Bark.releaseAllTrainers()
-        Bark.train(ColoredTestTrainer(volume = Level.VERBOSE, showTimestamp = true))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE, showTimestamp = true))
 
         Bark.i("--- ColoredTestTrainer Output ---")
         messages.forEach { message ->
@@ -151,7 +151,7 @@ class NotificationServiceTest {
     @Test
     fun `test notification patterns and frequency`() {
         Bark.releaseAllTrainers()
-        Bark.train(ColoredTestTrainer(volume = Level.VERBOSE))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE))
 
         Bark.i("=== Testing Notification Patterns ===")
 

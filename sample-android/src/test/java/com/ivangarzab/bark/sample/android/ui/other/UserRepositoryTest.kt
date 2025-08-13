@@ -2,7 +2,7 @@ package com.ivangarzab.bark.sample.android.ui.other
 
 import com.ivangarzab.bark.Bark
 import com.ivangarzab.bark.Level
-import com.ivangarzab.bark.trainers.ColoredTestTrainer
+import com.ivangarzab.bark.trainers.ColoredUnitTestTrainer
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -23,7 +23,7 @@ class UserRepositoryTest {
     @Before
     fun setup() {
         Bark.releaseAllTrainers()
-        Bark.train(ColoredTestTrainer(volume = Level.VERBOSE, showTimestamp = true))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE, showTimestamp = true))
 
         Bark.i("=== Setting up UserRepositoryTest ===")
 

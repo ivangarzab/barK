@@ -16,10 +16,10 @@ import com.ivangarzab.bark.Level
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */
-class ColoredTestTrainer(
+class ColoredUnitTestTrainer(
     volume: Level = Level.VERBOSE,
     showTimestamp: Boolean = true
-) : TestTrainer(volume, showTimestamp) {
+) : UnitTestTrainer(volume, showTimestamp) {
 
     /**
      * Override to add color formatting to the level label.

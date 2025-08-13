@@ -26,8 +26,7 @@ import com.ivangarzab.bark.sample.android.ui.other.User
 import com.ivangarzab.bark.sample.android.ui.other.UserRepository
 import com.ivangarzab.bark.sample.android.ui.theme.BarKTheme
 import com.ivangarzab.bark.trainers.AndroidLogTrainer
-import com.ivangarzab.bark.trainers.ColoredTestTrainer
-import kotlinx.coroutines.delay
+import com.ivangarzab.bark.trainers.ColoredUnitTestTrainer
 import kotlinx.coroutines.launch
 
 /**
@@ -100,7 +99,7 @@ class SampleActivity : ComponentActivity() {
 
         // Add test trainer for development
         if (BuildConfig.DEBUG) {
-            Bark.train(ColoredTestTrainer(volume = Level.INFO))
+            Bark.train(ColoredUnitTestTrainer(volume = Level.INFO))
         }
 
         Bark.i("Logging initialized")

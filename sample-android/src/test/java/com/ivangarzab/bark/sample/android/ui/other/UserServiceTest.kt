@@ -2,8 +2,8 @@ package com.ivangarzab.bark.sample.android.ui.other
 
 import com.ivangarzab.bark.Bark
 import com.ivangarzab.bark.Level
-import com.ivangarzab.bark.trainers.ColoredTestTrainer
-import com.ivangarzab.bark.trainers.TestTrainer
+import com.ivangarzab.bark.trainers.ColoredUnitTestTrainer
+import com.ivangarzab.bark.trainers.UnitTestTrainer
 import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
@@ -27,7 +27,7 @@ class UserServiceTest {
         Bark.releaseAllTrainers()
 
         // Configure barK for testing - this will show in console output!
-        Bark.train(ColoredTestTrainer(volume = Level.DEBUG))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.DEBUG))
 
         Bark.i("=== Setting up UserServiceTest ===")
 
@@ -86,7 +86,7 @@ class UserServiceTest {
 
         // Use colored trainer
         Bark.releaseAllTrainers()
-        Bark.train(ColoredTestTrainer(volume = Level.VERBOSE))
+        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE))
 
         Bark.v("Verbose message (should be gray)")
         Bark.d("Debug message (should be blue)")
@@ -100,7 +100,7 @@ class UserServiceTest {
 
         // Switch to plain trainer
         Bark.releaseAllTrainers()
-        Bark.train(TestTrainer(volume = Level.VERBOSE))
+        Bark.train(UnitTestTrainer(volume = Level.VERBOSE))
 
         Bark.v("Verbose message (plain text)")
         Bark.d("Debug message (plain text)")

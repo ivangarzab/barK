@@ -1,7 +1,6 @@
 package com.ivangarzab.bark
 
 import com.ivangarzab.bark.detectors.getCallerTag
-import com.ivangarzab.bark.detectors.getTrainerFamily
 
 /**
  * The purpose of this class is to serve as the main API object of this library,
@@ -58,12 +57,16 @@ object Bark {
      * Does not accept duplicate trainer families (types).
      */
     fun train(trainer: Trainer) {
-        val family = getTrainerFamily(trainer)
-        if (family != null) {
-            // Remove existing trainers from the same family
-            trainers.removeAll { getTrainerFamily(it) == family }
-        }
+        // Remove existing trainers from the same pack
+        trainers.removeAll { it.pack == trainer.pack }
         trainers.add(trainer)
+    }
+
+    /**
+     *
+     */
+    fun untrain(trainer: Trainer) {
+        trainers.remove(trainer)
     }
 
     /**

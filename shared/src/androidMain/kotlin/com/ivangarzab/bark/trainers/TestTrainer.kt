@@ -1,6 +1,7 @@
 package com.ivangarzab.bark.trainers
 
 import com.ivangarzab.bark.Level
+import com.ivangarzab.bark.Pack
 import com.ivangarzab.bark.Trainer
 import com.ivangarzab.bark.detectors.isRunningTests
 import java.text.SimpleDateFormat
@@ -21,9 +22,11 @@ import java.util.Locale
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */
 open class TestTrainer(
-    private val volume: Level = Level.VERBOSE,
+    override val volume: Level = Level.VERBOSE,
     private val showTimestamp: Boolean = true
 ) : Trainer {
+
+    final override val pack = Pack.CONSOLE
 
     /**
      * Handle a log message by outputting it to plain console during tests.
@@ -84,6 +87,13 @@ open class TestTrainer(
      */
     protected open fun formatException(throwable: Throwable): String {
         return "Exception: ${throwable.message}"
+    }
+
+    /**
+     * Format the message body - can be overridden by subclasses for coloring.
+     */
+    protected open fun formatMessage(message: String): String {
+        return message
     }
 
     /**

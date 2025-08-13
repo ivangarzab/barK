@@ -14,6 +14,17 @@ package com.ivangarzab.bark
 interface Trainer {
 
     /**
+     * The volume [Level] of the logs that will be outputted by this [Trainer].
+     */
+    val volume: Level
+
+    /**
+     * The [Pack] that this [Trainer] belongs to, which will be used to find
+     * duplicative trainers and avoid duplicative log messages.
+     */
+    val pack: Pack
+
+    /**
      * Handle a log message
      *
      * @param level The severity level of the log message

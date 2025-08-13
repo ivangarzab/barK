@@ -2,6 +2,7 @@ package com.ivangarzab.bark.trainers
 
 import android.util.Log
 import com.ivangarzab.bark.Level
+import com.ivangarzab.bark.Pack
 import com.ivangarzab.bark.Trainer
 import com.ivangarzab.bark.detectors.isRunningTests
 
@@ -16,9 +17,11 @@ import com.ivangarzab.bark.detectors.isRunningTests
  *
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
  */
-class AndroidLogTrainer(
-    private val volume: Level = Level.VERBOSE
+open class AndroidLogTrainer(
+    override val volume: Level = Level.VERBOSE
 ) : Trainer {
+
+    final override val pack = Pack.SYSTEM
 
     /**
      * Handle a log message by outputting it to Android Logcat.
@@ -30,7 +33,7 @@ class AndroidLogTrainer(
      */
     override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
         // Don't log to Android Logcat when running tests
-        if (isRunningTests()) return
+        if (skipTests()) return
         // Filter based on volume setting
         if (level.ordinal < volume.ordinal) return
 
@@ -42,5 +45,12 @@ class AndroidLogTrainer(
             Level.ERROR -> Log.e(tag, message, throwable)
             Level.CRITICAL -> Log.wtf(tag, message, throwable)
         }
+    }
+
+    /**
+     * Denote whether we should log while running tests or not - can be overridden by subclasses.
+     */
+    protected open fun skipTests(): Boolean {
+        return isRunningTests()
     }
 }

@@ -15,7 +15,10 @@ import kotlin.test.*
 class BarkTest {
 
     // Test trainer that captures log calls for verification
-    private class TestTrainer : Trainer {
+    open class BaseTestTrainer(
+        override val volume: Level,
+        override val pack: Pack
+    ) : Trainer {
         val logCalls = mutableListOf<LogCall>()
 
         override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
@@ -27,6 +30,21 @@ class BarkTest {
         fun getCallCount() = logCalls.size
     }
 
+    private class ConsoleTestTrainer(
+        volume: Level = Level.VERBOSE,
+        pack: Pack = Pack.CONSOLE
+    ) : BaseTestTrainer(volume, pack)
+
+    private class SystemTestTrainer(
+        volume: Level = Level.VERBOSE,
+        pack: Pack = Pack.SYSTEM
+    ) : BaseTestTrainer(volume, pack)
+
+    private class FileTestTrainer(
+    volume: Level = Level.VERBOSE,
+    pack: Pack = Pack.FILE
+    ) : BaseTestTrainer(volume, pack)
+
     // Data class to capture log call details
     data class LogCall(
         val level: Level,
@@ -35,7 +53,7 @@ class BarkTest {
         val throwable: Throwable?
     )
 
-    private lateinit var testTrainer: TestTrainer
+    private lateinit var testTrainer: BaseTestTrainer
 
     @BeforeTest
     fun setup() {
@@ -47,7 +65,7 @@ class BarkTest {
         Bark.tag("TestTag") // Set a predictable tag for testing
 
         // Setup test trainer
-        testTrainer = TestTrainer()
+        testTrainer = SystemTestTrainer()
         Bark.train(testTrainer)
     }
 
@@ -123,8 +141,8 @@ class BarkTest {
 
     @Test
     fun `should be able to train multiple trainers`() {
-        val trainer1 = TestTrainer()
-        val trainer2 = TestTrainer()
+        val trainer1 = SystemTestTrainer()
+        val trainer2 = ConsoleTestTrainer()
 
         Bark.releaseAllTrainers()
         Bark.train(trainer1)
@@ -142,8 +160,8 @@ class BarkTest {
     @Test
     fun `releaseAllTrainers should clear all trainers`() {
         Bark.releaseAllTrainers()
-        Bark.train(TestTrainer())
-        Bark.train(TestTrainer())
+        Bark.train(SystemTestTrainer())
+        Bark.train(ConsoleTestTrainer())
 
         assertTrue(Bark.getStatus().contains("Trainers: 2"))
 
@@ -225,7 +243,7 @@ class BarkTest {
         // Clear global tag by creating a new instance (or implement a clearTag method)
         Bark.releaseAllTrainers()
         Bark.untag()
-        val trainer = TestTrainer()
+        val trainer = SystemTestTrainer()
         Bark.train(trainer)
 
         val status = Bark.getStatus()
@@ -237,17 +255,17 @@ class BarkTest {
         Bark.releaseAllTrainers()
         assertTrue(Bark.getStatus().contains("Trainers: 0"))
 
-        Bark.train(TestTrainer())
+        Bark.train(SystemTestTrainer())
         assertTrue(Bark.getStatus().contains("Trainers: 1"))
 
-        Bark.train(TestTrainer())
+        Bark.train(ConsoleTestTrainer())
         assertTrue(Bark.getStatus().contains("Trainers: 2"))
     }
 
     @Test
     fun `getStatus should list trainer types`() {
         Bark.releaseAllTrainers()
-        Bark.train(TestTrainer())
+        Bark.train(SystemTestTrainer())
 
         val status = Bark.getStatus()
         assertTrue(status.contains("TestTrainer"))

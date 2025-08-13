@@ -19,14 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.ivangarzab.bark.Bark
-import com.ivangarzab.bark.Level
-import com.ivangarzab.bark.sample.android.BuildConfig
-import com.ivangarzab.bark.sample.android.ui.other.NotificationService
-import com.ivangarzab.bark.sample.android.ui.other.User
-import com.ivangarzab.bark.sample.android.ui.other.UserRepository
+import com.ivangarzab.bark.sample.android.data.NotificationService
+import com.ivangarzab.bark.sample.android.data.User
+import com.ivangarzab.bark.sample.android.data.UserRepository
 import com.ivangarzab.bark.sample.android.ui.theme.BarKTheme
-import com.ivangarzab.bark.trainers.AndroidLogTrainer
-import com.ivangarzab.bark.trainers.ColoredUnitTestTrainer
 import kotlinx.coroutines.launch
 
 /**

@@ -1,4 +1,4 @@
-package com.ivangarzab.bark.sample.android.ui.other
+package com.ivangarzab.bark.sample.android.data
 
 data class User(
     val id: String,

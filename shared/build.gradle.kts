@@ -34,6 +34,13 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+        getByName("androidUnitTest") {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.mockk.android)
+                implementation(libs.robolectric)
+            }
+        }
     }
 }
 

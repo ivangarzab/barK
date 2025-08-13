@@ -50,7 +50,7 @@ open class AndroidLogTrainer(
     /**
      * Denote whether we should log while running tests or not - can be overridden by subclasses.
      */
-    protected open fun skipTests(): Boolean {
+    open fun skipTests(): Boolean {
         return isRunningTests()
     }
 }

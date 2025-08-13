@@ -34,7 +34,7 @@ run_step() {
 run_step "./tools/release/release-step1.sh" "Step 1: Branch Setup"
 run_step "./tools/release/release-step2.sh" "Step 2: Version Update"
 run_step "./tools/release/release-step3.sh" "Step 3: Branch Merging"
-run_step "./tools/release/release-step4.sh" "Step 4: Push to Origin"
+#run_step "./tools/release/release-step4.sh" "Step 4: Push to Origin"
 
 echo ""
 echo "🎉 Release process completed successfully!"

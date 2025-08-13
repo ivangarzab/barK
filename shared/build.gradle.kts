@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    `maven-publish`
 }
 
 kotlin {
@@ -53,5 +54,19 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("production") {
+            groupId = "com.github.ivangarzab"
+            artifactId = "bark"
+            version = "0.0.1"
+
+            afterEvaluate {
+                from(components["kotlin"])
+            }
+        }
     }
 }

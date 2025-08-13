@@ -22,7 +22,7 @@ fi
 
 git add .
 echo "Changes to commit:"
-git diff --cached
+git --no-pager diff --cached
 git commit -m "Update library's version for release v$VERSION_NAME"
 
 echo "✅ Version updated and committed for release v$VERSION_NAME"

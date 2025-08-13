@@ -33,14 +33,14 @@ git push -u origin "$BRANCH_NAME"
 
 # Merge release branch into 'main'
 git checkout main
-git merge --no-ff "$BRANCH_NAME"
+git merge --no-ff -m "Merge $BRANCH_NAME into main" "$BRANCH_NAME"
 
 # Tag the release
 git tag -a "$VERSION_NAME" -m "Released v$VERSION_NAME on $DATE_TODAY"
 
 # Merge release branch into 'develop'
 git checkout develop
-git merge --no-ff "$BRANCH_NAME"
+git merge --no-ff -m "Merge $BRANCH_NAME into develop" "$BRANCH_NAME"
 
 echo "✅ Release process completed and ready to be pushed"
 

@@ -21,7 +21,7 @@ echo "4️⃣ Pushing everything to origin..."
 
 # Finish updating 'develop' and push to 'origin'
 git checkout develop
-git merge --no-ff main
+git merge --no-ff -m "Merge main into develop after release v$VERSION_NAME" main
 git push origin develop
 
 # Checkout 'main' and push to 'origin'

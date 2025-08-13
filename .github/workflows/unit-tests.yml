@@ -1,3 +1,4 @@
+# .github/workflows/unit-tests.yml
 name: Unit Tests
 
 on:
@@ -5,7 +6,14 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
-  workflow_dispatch:
+  workflow_dispatch: # Allow manual trigger
+
+# Required permissions for test result publishing
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+  actions: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -78,11 +86,11 @@ jobs:
           reporter: java-junit
           fail-on-error: true
 
-  # Optional: iOS tests if you have them set up
+  # iOS tests
   ios-tests:
     name: Run iOS Unit Tests
     runs-on: macos-latest
-    if: false # Enable when iOS tests are ready
+    if: false # TODO: Enable when iOS tests are ready
 
     steps:
       - name: Checkout Code

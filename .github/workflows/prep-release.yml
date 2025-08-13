@@ -1,3 +1,5 @@
+# The purpose of this GitHub Action workflow is twofold: Create a GitHub Release and trigger a JitPack build.
+
 name: Prepare Release
 
 on:
@@ -62,7 +64,7 @@ jobs:
             ### Usage
             ```kotlin
             dependencies {
-                implementation("com.github.ivangarzab:bark:${{ env.VERSION }}")
+                implementation("com.ivangarzab:bark:${{ env.VERSION }}")
             }
             ```
             

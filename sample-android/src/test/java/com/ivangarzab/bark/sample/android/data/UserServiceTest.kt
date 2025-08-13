@@ -82,7 +82,7 @@ class UserServiceTest {
 
     @Test
     fun `show plain vs colored output comparison`() {
-        Bark.i("=== Testing with ColoredTestTrainer ===")
+        Bark.i("====== Testing with ColoredUnitTestTrainer ======")
 
         // Use colored trainer
         Bark.releaseAllTrainers()
@@ -96,7 +96,7 @@ class UserServiceTest {
 
         userService.performAction()
 
-        Bark.i("--- Switching to plain TestTrainer ---")
+        Bark.i("====== Switching to plain UnitTestTrainer ======")
 
         // Switch to plain trainer
         Bark.releaseAllTrainers()

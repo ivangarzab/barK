@@ -10,6 +10,14 @@ fi
 
 VERSION_NAME="$1"
 
+# Ensure all scripts are executable
+echo "🔧 Setting script permissions..."
+chmod +x tools/release/release-step1.sh
+chmod +x tools/release/release-step2.sh
+chmod +x tools/release/release-step3.sh
+chmod +x tools/release/release-step4.sh
+chmod +x tools/update-lib-version.sh
+
 echo "🚀 Starting automated release process for v$VERSION_NAME"
 echo "=================================================="
 
@@ -22,7 +30,8 @@ run_step() {
   echo "Running $step_name..."
 
   if ! "$step_script" "$VERSION_NAME"; then
-    echo "❌ Error: $step_name failed!"
+    echo "______________________________"
+    echo "❌  Error: $step_name failed!"
     echo "Release process aborted."
     exit 1
   fi

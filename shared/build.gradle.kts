@@ -64,9 +64,7 @@ publishing {
             artifactId = "bark"
             version = "0.0.1"
 
-            afterEvaluate {
-                from(components["kotlin"])
-            }
+            from(components["kotlin"])
         }
     }
 }

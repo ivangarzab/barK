@@ -47,12 +47,9 @@ class SampleActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize barK - typical SDK setup
-        initializeLogging()
-
         // App startup logging
         Bark.i("App launched")
-        Bark.d("MainActivity created")
+        Bark.d("SampleActivity created")
 
         setContent {
             BarKTheme {
@@ -66,12 +63,12 @@ class SampleActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        Bark.d("MainActivity started")
+        Bark.d("SampleActivity started")
     }
 
     override fun onResume() {
         super.onResume()
-        Bark.v("MainActivity resumed")
+        Bark.v("SampleActivity resumed")
 
         // Load initial data
         lifecycleScope.launch {
@@ -85,24 +82,12 @@ class SampleActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        Bark.v("MainActivity paused")
+        Bark.v("SampleActivity paused")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Bark.d("MainActivity destroyed")
-    }
-
-    private fun initializeLogging() {
-        // Typical SDK logging setup
-        Bark.train(AndroidLogTrainer(volume = Level.DEBUG))
-
-        // Add test trainer for development
-        if (BuildConfig.DEBUG) {
-            Bark.train(ColoredUnitTestTrainer(volume = Level.INFO))
-        }
-
-        Bark.i("Logging initialized")
+        Bark.d("SampleActivity destroyed")
     }
 }
 

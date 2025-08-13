@@ -1,5 +1,5 @@
-[![](https://jitpack.io/v/ivangarzab/bark.svg)](https://jitpack.io/#ivangarzab/bark)
 [![Build Check](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
+[![](https://jitpack.io/v/ivangarzab/bark.svg)](https://jitpack.io/#ivangarzab/bark)
 [![Kotlin](https://img.shields.io/badge/kotlin-multiplatform-blue.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![Kotlin](https://img.shields.io/badge/kotlin-android-green.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -7,8 +7,6 @@
 ![wordmark](/assets/wordmark.png)
 
 ***barK**: A simple, extensible logging library for Kotlin Multiplatform with automatic tag detection and support for test runs*
-
----
 
 ## Why barK?
 
@@ -19,7 +17,7 @@ barK solves common logging pain points with a **memorable, themed API** and **po
 - 🎯 **Trainer system** - Flexible, extensible output destinations
 - 🔄 **Kotlin Multiplatform** - Works across Android + iOS
 
-**Born from real SDK development needs** - when you need different logging behavior for Android runs vs. test runs, barK has you covered.
+_**Born from real SDK development needs**_ - when you need different logging behavior for Android runs vs. test runs, **barK** has you covered.
 
 ---
 
@@ -30,7 +28,7 @@ barK solves common logging pain points with a **memorable, themed API** and **po
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.ivangarzab.bark:bark:<version>")
+    implementation("com.ivangarzab:bark:<version>")
 }
 ```
 
@@ -42,7 +40,9 @@ class MyApplication : Application() {
         super.onCreate()
         
         // Train barK with Android logging
-        Bark.train(AndroidLogTrainer())
+        if (BuildConfig.DEBUG) {
+            Bark.train(AndroidLogTrainer())
+        }
         
         // Optionally add test trainer (auto-activates during tests)
         Bark.train(ColoredTestTrainer())
@@ -116,45 +116,15 @@ Easy to extend and customize:
 Bark.train(AndroidLogTrainer())
 
 // Multiple outputs
-Bark.train(AndroidLogTrainer())           // Logcat
+Bark.train(AndroidLogTrainer())           // Regular Logcat
+Bark.train(UnitTestTrainer())             // Colored console output using print()
 Bark.train(FileTrainer("app.log"))        // File logging  
-Bark.train(CrashReportingTrainer())       // Crash service
+Bark.train(CrashReportingTrainer())       // Custom trainers
 
 // Custom volume control per trainer
 Bark.train(AndroidLogTrainer(volume = Level.DEBUG))    // All levels
-Bark.train(FileTrainer(volume = Level.ERROR))          // Errors only
+Bark.train(UnitTestTrainer(volume = Level.ERROR))      // Errors only
 ```
-
----
-
-## Built-in Trainers
-
-### AndroidLogTrainer
-```kotlin
-Bark.train(AndroidLogTrainer(volume = Level.DEBUG))
-```
-- ✅ Uses Android's `Log` class
-- ✅ Appears in Logcat
-- ✅ Disabled during tests
-- ✅ Configurable minimum level
-
-### TestTrainer
-```kotlin
-Bark.train(TestTrainer(volume = Level.INFO))
-```
-- ✅ Plain console output
-- ✅ Only active during tests
-- ✅ CI/CD friendly (no ANSI colors)
-- ✅ Configurable timestamps
-
-### ColoredTestTrainer
-```kotlin
-Bark.train(ColoredTestTrainer(volume = Level.DEBUG))
-```
-- ✅ Colored console output
-- ✅ Only active during tests
-- ✅ Different colors per log level
-- ✅ Enhanced readability
 
 ---
 
@@ -243,8 +213,9 @@ class MySDK {
             Bark.train(AndroidLogTrainer(volume = Level.DEBUG))
             Bark.train(ColoredTestTrainer(volume = Level.DEBUG))
         } else {
-            // Production: only errors, and only to crash reporting
+            // Production: only errors, and only to crash reporting with a global tag
             Bark.train(CrashReportingTrainer())
+            Bark.tag("MySDK")
         }
         
         Bark.i("SDK initialized")
@@ -278,6 +249,7 @@ The sample demonstrates:
 - 🔧 **Debug console** for testing all features
 - 🏷️ **Auto-tag detection** across multiple classes
 - 🎯 **Trainer switching** and configuration
+- 🧪 **Unit Test suite** to showcase console print features
 
 ---
 
@@ -286,10 +258,6 @@ The sample demonstrates:
 barK is built for Kotlin Multiplatform from the ground up:
 
 ```kotlin
-// Common code
-expect fun isRunningTests(): Boolean
-expect fun getCallerTag(): String
-
 // Platform implementations
 // ✅ Android (available now)
 // 🚧 iOS (coming soon)
@@ -302,8 +270,9 @@ expect fun getCallerTag(): String
 ### Gradle (Kotlin DSL)
 
 ```kotlin
+// dependencyResolutionManagement
 repositories {
-    mavenCentral()
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
@@ -315,21 +284,13 @@ dependencies {
 
 ```groovy
 repositories {
-    mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     implementation 'com.ivangarzab:bark:<version>'
 }
 ```
-
----
-
-## Requirements
-
-- **Android**: API 21+ (Android 5.0)
-- **Kotlin**: 1.9.0+
-- **Gradle**: 7.0+
 
 ---
 
@@ -361,16 +322,6 @@ dependencies {
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-### Development Setup
-
-```bash
-git clone https://github.com/ivangarzab/barK.git
-cd barK
-./gradlew test
-```
-
----
-
 ## License
 
 ```
@@ -389,19 +340,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
----
+**Made with 🖤 for the Kotlin community**
 
-## Changelog
-
-### v1.0.0 (2025-XX-XX)
-- 🎉 Initial release
-- ✅ Android support with auto-tag detection
-- ✅ Smart test environment detection
-- ✅ Trainer system with AndroidLog, Test, and ColoredTest trainers
-- ✅ Sample app with realistic usage examples
-
----
-
-**Made with ❤️ for the Kotlin community**
-
-*barK: Because every log deserves a good home* 🐕🏠
+***barK**: Because every log deserves a good home* 🐕🏠

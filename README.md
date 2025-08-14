@@ -136,17 +136,32 @@ Bark.train(UnitTestTrainer(volume = Level.ERROR))      // Errors only
 Create your own output destinations:
 
 ```kotlin
-class SlackTrainer(private val webhookUrl: String) : Trainer {
+// Custom error capturing trainer for warnings, crashing and other all errors
+class CustomErrorTrainer(
+    override val volume: Level = Level.WARNING,
+) : Trainer {
+    override val pack: Pack = Pack.CUSTOM
+
     override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
-        if (level.ordinal >= Level.ERROR.ordinal) {
-            // Send errors to Slack
-            sendToSlack("[$tag] $message")
+        if (level.ordinal >= volume.ordinal) {
+            // Handle error
         }
     }
 }
 
-// Use it
-Bark.train(SlackTrainer("https://hooks.slack.com/..."))
+// Custom trainer to send Slack messages
+class SlackTrainer(
+    override val volume: Level = Level.INFO,
+    private val webhookUrl: String
+) : Trainer {
+    override val pack: Pack = Pack.CUSTOM
+
+    override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
+        if (level.ordinal >= volume.ordinal) {
+            // Send to Slack
+        }
+    }
+}
 ```
 
 ### Volume Control
@@ -156,7 +171,7 @@ Different trainers can have different volume thresholds:
 ```kotlin
 Bark.train(AndroidLogTrainer(volume = Level.DEBUG))     // Everything to Logcat
 Bark.train(FileTrainer(volume = Level.WARNING))         // Warnings+ to file  
-Bark.train(CrashReportingTrainer())                      // Errors only (internal logic)
+Bark.train(CrashReportingTrainer())                     // Errors only (internal logic)
 ```
 
 ### Global vs Auto-Detection Tags
@@ -197,7 +212,7 @@ println(Bark.getStatus())
 //   Tag: auto-detect  
 //   Trainers: 2
 //     [0] AndroidLogTrainer
-//     [1] ColoredTestTrainer
+//     [1] ColoredUnitTestTrainer
 ```
 
 ---
@@ -233,6 +248,16 @@ class MySDK {
         }
     }
 }
+```
+
+SDK integrators can easily muzzle the barK instance, or retrain it with their own trainers:
+
+```kotlin
+// Muzzle SDK from integrating client side
+Bark.muzzle()
+
+// Or retrain for client's needs
+Bark.train(AndroidLogTrainer(volume = System.Logger.Level.WARNING))
 ```
 
 ---

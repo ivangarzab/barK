@@ -15,7 +15,8 @@ import com.ivangarzab.bark.detectors.isRunningTests
  * The trainer automatically detects test environments and disables itself
  * during tests to avoid interfering with test console output.
  *
- * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
+ * @since 0.0.1
+ * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
  */
 open class AndroidLogTrainer(
     override val volume: Level = Level.VERBOSE
@@ -49,6 +50,8 @@ open class AndroidLogTrainer(
 
     /**
      * Denote whether we should log while running tests or not - can be overridden by subclasses.
+     *
+     * @since 0.0.1
      */
     open fun skipTests(): Boolean {
         return isRunningTests()

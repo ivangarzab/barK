@@ -48,6 +48,9 @@ jobs:
       - name: Run Android Unit Tests
         run: ./gradlew sample-android:testDebugUnitTest --continue
 
+      - name: Generate Test Coverage Report
+        run: ./gradlew shared:jacocoTestReport
+
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always() # Upload even if tests fail
@@ -65,6 +68,16 @@ jobs:
           name: test-reports
           path: |
             **/build/reports/tests/**
+          retention-days: 30
+
+      - name: Upload Coverage Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-reports
+          path: |
+            shared/build/reports/jacoco/jacocoTestReport/html/
+            shared/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
           retention-days: 30
 
       - name: Publish Test Results
@@ -134,6 +147,13 @@ jobs:
           name: test-results
           path: test-results
 
+      - name: Download Coverage Reports
+        uses: actions/download-artifact@v4
+        if: always()
+        with:
+          name: coverage-reports
+          path: coverage-reports
+
       - name: Test Summary
         run: |
           echo "## 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
@@ -148,6 +168,32 @@ jobs:
           else
             echo "- **Status:** No test results found ❌" >> $GITHUB_STEP_SUMMARY
           fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Test Coverage Report" >> $GITHUB_STEP_SUMMARY
+          
+          # Extract coverage percentage from XML report if it exists
+          if [ -f "coverage-reports/jacocoTestReport.xml" ]; then
+            COVERAGE=$(grep -o 'type="LINE".*covered="[0-9]*".*missed="[0-9]*"' coverage-reports/jacocoTestReport.xml | head -1 | sed 's/.*covered="\([0-9]*\)".*missed="\([0-9]*\)".*/\1 \2/')
+            if [ ! -z "$COVERAGE" ]; then
+              COVERED=$(echo $COVERAGE | cut -d' ' -f1)
+              MISSED=$(echo $COVERAGE | cut -d' ' -f2)
+              TOTAL=$((COVERED + MISSED))
+              if [ $TOTAL -gt 0 ]; then
+                PERCENTAGE=$((COVERED * 100 / TOTAL))
+                echo "- **Line Coverage:** ${PERCENTAGE}% (${COVERED}/${TOTAL} lines)" >> $GITHUB_STEP_SUMMARY
+              else
+                echo "- **Line Coverage:** No coverage data available" >> $GITHUB_STEP_SUMMARY
+              fi
+            else
+              echo "- **Line Coverage:** Could not parse coverage data" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "- **Line Coverage:** Report not found" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "- **HTML Report:** Available in coverage-reports artifact" >> $GITHUB_STEP_SUMMARY
+          echo "- **Baseline Established:** Use this percentage to set future thresholds" >> $GITHUB_STEP_SUMMARY
           
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📋 **Test artifacts uploaded for 30 days**" >> $GITHUB_STEP_SUMMARY

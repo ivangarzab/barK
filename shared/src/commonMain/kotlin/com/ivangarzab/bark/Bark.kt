@@ -7,6 +7,8 @@ import com.ivangarzab.bark.detectors.getCallerTag
  * which provides themed logging methods and configuration.
  *
  * Uses a handler-based architecture for flexible output destinations.
+ *
+ * @since 0.0.1
  */
 object Bark {
 
@@ -18,6 +20,8 @@ object Bark {
 
     /**
      * Log a message at VERBOSE level.
+     *
+     * @since 0.0.1
      */
     fun v(message: String, throwable: Throwable? = null) {
         log(Level.VERBOSE, message, throwable)
@@ -25,6 +29,8 @@ object Bark {
 
     /**
      * Log a message at DEBUG level.
+     *
+     * @since 0.0.1
      */
     fun d(message: String, throwable: Throwable? = null) {
         log(Level.DEBUG, message, throwable)
@@ -32,6 +38,8 @@ object Bark {
 
     /**
      * Log a message at INFO level.
+     *
+     * @since 0.0.1
      */
     fun i(message: String, throwable: Throwable? = null) {
         log(Level.INFO, message, throwable)
@@ -39,6 +47,8 @@ object Bark {
 
     /**
      * Log a message at WARNING level.
+     *
+     * @since 0.0.1
      */
     fun w(message: String, throwable: Throwable? = null) {
         log(Level.WARNING, message, throwable)
@@ -46,6 +56,8 @@ object Bark {
 
     /**
      * Log a message at ERROR level.
+     *
+     * @since 0.0.1
      */
     fun e(message: String, throwable: Throwable? = null) {
         log(Level.ERROR, message, throwable)
@@ -54,7 +66,9 @@ object Bark {
     /**
      * Train Bark with a new [Trainer], which determine where and how logs are output..
      *
-     * Does not accept duplicate trainer families (types).
+     * Does not accept duplicate trainer by [Pack].
+     *
+     * @since 0.0.1
      */
     fun train(trainer: Trainer) {
         // Remove existing trainers from the same pack
@@ -63,7 +77,9 @@ object Bark {
     }
 
     /**
+     * Remove a [Trainer] from the [trainers] list, and sop the system from using it.
      *
+     * @since 0.0.1
      */
     fun untrain(trainer: Trainer) {
         trainers.remove(trainer)
@@ -71,6 +87,8 @@ object Bark {
 
     /**
      * Muzzle Bark - disable all logging.
+     *
+     * @since 0.0.1
      */
     fun muzzle() {
         isMuzzled = true
@@ -78,6 +96,8 @@ object Bark {
 
     /**
      * Unmuzzle Bark - re-enable logging.
+     *
+     * @since 0.0.1
      */
     fun unmuzzle() {
         isMuzzled = false
@@ -87,6 +107,8 @@ object Bark {
      * Tag Bark with a global tag prefix.
      *
      * This will override tag auto-detection.
+     *
+     * @since 0.0.1
      */
     fun tag(tag: String) {
         globalTag = tag
@@ -96,6 +118,8 @@ object Bark {
      * Delete the global tag prefix.
      *
      * This will re-enable tag auto-detect.
+     *
+     * @since 0.0.1
      */
     fun untag() {
         globalTag = null
@@ -123,6 +147,8 @@ object Bark {
 
     /**
      * Clear all trainers.
+     *
+     * @since 0.0.1
      */
     fun releaseAllTrainers() {
         trainers.clear()
@@ -130,6 +156,8 @@ object Bark {
 
     /**
      * Get current configuration status info.
+     *
+     * @since 0.0.1
      */
     fun getStatus(): String {
         return buildString {

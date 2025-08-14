@@ -42,7 +42,7 @@ android {
 
 dependencies {
     // Example usage
-    implementation("com.ivangarzab:bark:0.0.3")
+    implementation("com.ivangarzab:bark:0.0.5")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

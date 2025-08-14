@@ -30,7 +30,7 @@ jobs:
       - name: Welcome message
         run: echo "Preparing a new release for version ${{ env.VERSION }}"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: echo "💡 The ${{ github.repository }} repository has been cloned"
 
       - run: echo "Setting up JDK"

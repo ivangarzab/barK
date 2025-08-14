@@ -106,7 +106,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📦 **Package Information**" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** \`${{ env.VERSION }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **JitPack:** [com.ivangarzab:bark:${{ env.VERSION }}](https://jitpack.io/#com.ivangarzab/bark/${{ env.VERSION }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **JitPack:** [com.ivangarzab:bark:${{ env.VERSION }}](https://jitpack.io/#com.ivangarzab/bark/)" >> $GITHUB_STEP_SUMMARY
           echo "- **GitHub Release:** [v${{ env.VERSION }}](https://github.com/ivangarzab/barK/releases/tag/${{ env.VERSION }})" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🚀 **Ready to Use**" >> $GITHUB_STEP_SUMMARY

@@ -18,6 +18,7 @@ import java.util.Locale
  * This class is designed to be extensible - ColoredTestTrainer inherits
  * from this class and adds color formatting.
  *
+ * @since 0.0.1
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */

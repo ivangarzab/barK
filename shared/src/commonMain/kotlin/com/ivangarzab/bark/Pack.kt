@@ -4,6 +4,8 @@ package com.ivangarzab.bark
  * The purpose of this enum class is to serve as the categorization distinction between
  * different [Trainer] implementations, as to control how many of each kind can be
  * used by the [Bark] system.
+ *
+ * @since 0.0.1
  */
 enum class Pack {
 

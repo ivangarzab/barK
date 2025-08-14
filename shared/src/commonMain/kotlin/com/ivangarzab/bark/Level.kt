@@ -3,6 +3,8 @@ package com.ivangarzab.bark
 /**
  * The purpose of this class is to define the different levels of logging that can be used
  * with the library.
+ *
+ * @since 0.0.1
  */
 enum class Level(val label: String) {
     VERBOSE("[VERBOSE]"),

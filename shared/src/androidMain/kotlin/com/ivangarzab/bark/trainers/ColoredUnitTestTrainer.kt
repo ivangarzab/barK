@@ -13,7 +13,8 @@ import com.ivangarzab.bark.Level
  * - Colored exception highlighting
  * - All the same smart features (test detection, timestamps, etc.)
  *
- * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
+ * @since 0.0.1
+ * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */
 class ColoredUnitTestTrainer(

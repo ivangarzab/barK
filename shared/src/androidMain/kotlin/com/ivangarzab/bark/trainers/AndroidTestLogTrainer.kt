@@ -5,6 +5,9 @@ import com.ivangarzab.bark.Level
 /**
  * The purpose of this [AndroidLogTrainer] is to allow for the logs to be printed during
  * instrumented test runs, as well as regular Android application builds.
+ *
+ * @since 0.0.1
+ * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
  */
 class AndroidTestLogTrainer(
     override val volume: Level = Level.VERBOSE

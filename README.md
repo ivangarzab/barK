@@ -1,5 +1,5 @@
 [![Build Check](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
-[![](https://jitpack.io/v/ivangarzab/bark.svg)](https://jitpack.io/#ivangarzab/bark)
+[![](https://jitpack.io/v/com.ivangarzab/bark.svg)](https://jitpack.io/#com.ivangarzab/bark)
 [![Kotlin](https://img.shields.io/badge/kotlin-multiplatform-blue.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![Kotlin](https://img.shields.io/badge/kotlin-android-green.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/Heapy/awesome-kotlin)

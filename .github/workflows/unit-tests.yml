@@ -142,13 +142,13 @@ jobs:
 
     steps:
       - name: Download Test Results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: test-results
           path: test-results
 
       - name: Download Coverage Reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         if: always()
         with:
           name: coverage-reports

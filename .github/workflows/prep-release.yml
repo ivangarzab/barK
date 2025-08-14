@@ -88,7 +88,7 @@ jobs:
         run: |
           echo "Requesting JitPack to build barK v${{ env.VERSION }}"
           # timeout in 60 seconds to avoid waiting too long for KMP build
-          curl -s -m 60 https://jitpack.io/com/github/ivangarzab/bark/${{ env.VERSION }}/ || true
+          curl -s -m 60 https://jitpack.io/com/ivangarzab/bark/${{ env.VERSION }}/ || true
           echo "JitPack build request sent!"
 
   # Release summary job
@@ -106,7 +106,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📦 **Package Information**" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** \`${{ env.VERSION }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **JitPack:** [com.ivangarzab:bark:${{ env.VERSION }}](https://jitpack.io/#ivangarzab/bark/${{ env.VERSION }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **JitPack:** [com.ivangarzab:bark:${{ env.VERSION }}](https://jitpack.io/#com.ivangarzab/bark/${{ env.VERSION }})" >> $GITHUB_STEP_SUMMARY
           echo "- **GitHub Release:** [v${{ env.VERSION }}](https://github.com/ivangarzab/barK/releases/tag/${{ env.VERSION }})" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🚀 **Ready to Use**" >> $GITHUB_STEP_SUMMARY

@@ -9,13 +9,19 @@ package com.ivangarzab.bark
  */
 enum class Pack {
 
-    /** Denotes that logs will print to the native console (println() / print()).*/
+    /**
+     * Denotes that logs will print to the native console (println() / print()).
+     */
     CONSOLE,
 
-    /** Denotes that logs will print to the native logger (Log.d() / os_log()).*/
+    /**
+     * Denotes that logs will print to the native logger (Log.d() / os_log()).
+     */
     SYSTEM,
 
-    /** Denotes that logs will print to a file.*/
+    /**
+     * Denotes that logs will print to a file.
+     */
     FILE,
 
     /**

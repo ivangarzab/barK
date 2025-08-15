@@ -71,8 +71,10 @@ object Bark {
      * @since 0.0.1
      */
     fun train(trainer: Trainer) {
-        // Remove existing trainers from the same pack
-        trainers.removeAll { it.pack == trainer.pack }
+        if (trainer.pack != Pack.CUSTOM) {
+            // Remove existing trainers from the same pack, except for CUSTOM trainers
+            trainers.removeAll { it.pack == trainer.pack }
+        }
         trainers.add(trainer)
     }
 

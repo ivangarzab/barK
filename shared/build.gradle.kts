@@ -72,7 +72,7 @@ publishing {
         register<MavenPublication>("production") {
             groupId = "com.github.ivangarzab"
             artifactId = "bark"
-            version = "0.0.8"
+            version = "0.0.9"
 
             from(components["kotlin"])
         }

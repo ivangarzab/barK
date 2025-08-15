@@ -59,7 +59,7 @@ android {
     namespace = "com.ivangarzab.bark"
     compileSdk = 35
     defaultConfig {
-        minSdk = 28
+        minSdk = 24
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

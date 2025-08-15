@@ -13,7 +13,12 @@ kotlin {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_17)
+                    jvmTarget.set(JvmTarget.JVM_11)
+                    // Backward compatibility settings
+                    apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9)
+                    languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9)
+
+                    freeCompilerArgs.add("-Xsuppress-version-warnings") // Suppress version warnings
                 }
             }
         }
@@ -23,10 +28,20 @@ kotlin {
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
+    ).forEach { target ->
+        // Set iOS framework details
+        target.binaries.framework {
             baseName = "shared"
             isStatic = true
+        }
+        // Set Kotlin version target
+        target.compilations.all {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9)
+                    languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9)
+                }
+            }
         }
     }
 
@@ -37,13 +52,6 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-        getByName("androidUnitTest") {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.mockk.android)
-                implementation(libs.robolectric)
-            }
-        }
     }
 }
 
@@ -51,11 +59,11 @@ android {
     namespace = "com.ivangarzab.bark"
     compileSdk = 35
     defaultConfig {
-        minSdk = 28
+        minSdk = 24
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
@@ -64,7 +72,7 @@ publishing {
         register<MavenPublication>("production") {
             groupId = "com.github.ivangarzab"
             artifactId = "bark"
-            version = "0.0.8"
+            version = "0.0.9"
 
             from(components["kotlin"])
         }

@@ -103,7 +103,6 @@ jobs:
   ios-tests:
     name: Run iOS Unit Tests
     runs-on: macos-latest
-    if: false # TODO: Enable when iOS tests are ready
 
     steps:
       - name: Checkout Code

@@ -9,7 +9,7 @@ package com.ivangarzab.bark.detectors
  *
  * @return true if running tests, false otherwise
  */
-internal actual fun isRunningTests(): Boolean {
+internal fun isRunningTests(): Boolean {
     return isTestRunnerPresent()
 }
 

@@ -129,11 +129,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40C256B12E4FB615004B643C /* Build configuration list for PBXNativeTarget "barK-sample" */;
 			buildPhases = (
+				40C256D42E5021A8004B643C /* ShellScript */,
 				40C2568B2E4FB613004B643C /* Sources */,
 				40C2568C2E4FB613004B643C /* Frameworks */,
 				40C2568D2E4FB613004B643C /* Resources */,
 				40C256D32E4FE9A7004B643C /* Embed Frameworks */,
-				40C256D42E5021A8004B643C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -280,7 +280,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd \"$SRCROOT/../..\"\necho \"🐕 Starting barK framework build...\"\nexport JAVA_HOME=/Applications/Android\\ Studio.app/Contents/jbr/Contents/Home\n./gradlew :shared:linkDebugFrameworkIosSimulatorArm64\necho \"✅ Framework built\"\n";
+			shellScript = "#!/bin/bash\n\n# Navigate to the project root (two levels up from sample-ios/barK-sample)\ncd \"$SRCROOT/../..\"\n\necho \"🐕 Starting barK framework build...\"\n\nif [ -d \"/Applications/Android Studio.app/Contents/jbr/Contents/Home\" ]; then\n    export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\"\nfi\n\n./gradlew :shared:embedAndSignAppleFrameworkForXcode\n\necho \"✅ Framework build completed successfully\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -445,7 +445,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../../shared/build/bin/iosSimulatorArm64/debugFramework";
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -484,7 +485,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../../shared/build/bin/iosSimulatorArm64/debugFramework";
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

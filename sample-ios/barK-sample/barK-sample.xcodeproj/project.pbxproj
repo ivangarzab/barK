@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		40C256C52E4FCE86004B643C /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C256C42E4FCE86004B643C /* shared.framework */; };
-		40C256C62E4FCE86004B643C /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 40C256C42E4FCE86004B643C /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		40C256D12E4FE9A7004B643C /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C256CE2E4FE52A004B643C /* shared.framework */; };
+		40C256D22E4FE9A7004B643C /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 40C256CE2E4FE52A004B643C /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +29,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		40C256C32E4FCA52004B643C /* Embed Frameworks */ = {
+		40C256D32E4FE9A7004B643C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				40C256C62E4FCE86004B643C /* shared.framework in Embed Frameworks */,
+				40C256D22E4FE9A7004B643C /* shared.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -46,9 +46,7 @@
 		40C2568F2E4FB613004B643C /* barK-sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "barK-sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C2569D2E4FB615004B643C /* barK-sampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "barK-sampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C256A72E4FB615004B643C /* barK-sampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "barK-sampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		40C256BC2E4FC7FA004B643C /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../../shared/build/fat-framework/debug/shared.framework"; sourceTree = "<group>"; };
-		40C256C02E4FCA52004B643C /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = ../../shared/build/bin/iosArm64/debugFramework/shared.framework; sourceTree = "<group>"; };
-		40C256C42E4FCE86004B643C /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = ../../shared/build/bin/iosSimulatorArm64/debugFramework/shared.framework; sourceTree = "<group>"; };
+		40C256CE2E4FE52A004B643C /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = ../../shared/build/bin/iosSimulatorArm64/debugFramework/shared.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -74,7 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40C256C52E4FCE86004B643C /* shared.framework in Frameworks */,
+				40C256D12E4FE9A7004B643C /* shared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,9 +117,7 @@
 		40C256BB2E4FC7F9004B643C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				40C256C42E4FCE86004B643C /* shared.framework */,
-				40C256C02E4FCA52004B643C /* shared.framework */,
-				40C256BC2E4FC7FA004B643C /* shared.framework */,
+				40C256CE2E4FE52A004B643C /* shared.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -136,8 +132,8 @@
 				40C2568B2E4FB613004B643C /* Sources */,
 				40C2568C2E4FB613004B643C /* Frameworks */,
 				40C2568D2E4FB613004B643C /* Resources */,
-				40C256BA2E4FC31C004B643C /* ShellScript */,
-				40C256C32E4FCA52004B643C /* Embed Frameworks */,
+				40C256D32E4FE9A7004B643C /* Embed Frameworks */,
+				40C256D42E5021A8004B643C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -268,7 +264,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		40C256BA2E4FC31C004B643C /* ShellScript */ = {
+		40C256D42E5021A8004B643C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -284,7 +280,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\"\ncd \"$SRCROOT/../..\"\n./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 :shared:linkDebugFrameworkIosArm64\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd \"$SRCROOT/../..\"\necho \"🐕 Starting barK framework build...\"\nexport JAVA_HOME=/Applications/Android\\ Studio.app/Contents/jbr/Contents/Home\n./gradlew :shared:linkDebugFrameworkIosSimulatorArm64\necho \"✅ Framework built\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -449,6 +445,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../../shared/build/bin/iosSimulatorArm64/debugFramework";
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -469,10 +466,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Debug;
@@ -486,6 +484,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../../shared/build/bin/iosSimulatorArm64/debugFramework";
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -506,10 +505,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Release;

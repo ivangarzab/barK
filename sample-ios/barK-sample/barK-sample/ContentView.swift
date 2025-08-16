@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-//import shared
+import shared
 
 struct ContentView: View {
     var body: some View {
@@ -17,6 +17,10 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .onAppear {
+            Bark.shared.train(trainer: NSLogTrainer(volume: Level.verbose))
+            Bark.shared.i(message: "barK works on iOS!", throwable: nil)
+        }
     }
 }
 

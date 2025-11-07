@@ -20,6 +20,10 @@ barK solves common logging pain points with a **memorable, themed API** and **po
 
 _**Born from real SDK development needs**_ - when you need different logging behavior for Android runs vs. test runs, **barK** has you covered.
 
+### As Seen On
+
+**Medium:** *[barK: A Lightweight Logging Library for Android](https://levelup.gitconnected.com/bark-a-lightweight-logging-library-for-android-14583711bc04)*
+
 ---
 
 ## Quick Start

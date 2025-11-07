@@ -68,14 +68,9 @@ android {
 }
 
 publishing {
-    publications {
-        register<MavenPublication>("production") {
-            groupId = "com.github.ivangarzab"
-            artifactId = "bark"
-            version = "0.0.9"
-
-            from(components["kotlin"])
-        }
+    publications.withType<MavenPublication> {
+        groupId = "com.github.ivangarzab"
+        version = "0.0.10"
     }
 }
 

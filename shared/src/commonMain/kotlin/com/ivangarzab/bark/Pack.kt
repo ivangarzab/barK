@@ -18,6 +18,10 @@ enum class Pack {
     /** Denotes that logs will print to a file.*/
     FILE,
 
-    /** Denotes that logs will print to a custom destination.*/
+    /**
+     * Denotes that logs will print to a custom destination.
+     *
+     * This is the only [Pack] type that allows more than one [Trainer] to be used by the [Bark] system.
+     */
     CUSTOM
 }

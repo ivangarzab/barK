@@ -24,4 +24,4 @@ else
   sed -i "s/version = \".*\"/version = \"$VERSION_NAME\"/" "$BUILD_FILE"
 fi
 
-echo "✅ Version updated in $BUILD_FILE"
+echo "Version updated in $BUILD_FILE"

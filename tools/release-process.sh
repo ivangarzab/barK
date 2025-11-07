@@ -27,7 +27,7 @@ run_step() {
   local step_name="$2"
 
   echo ""
-  echo "Running $step_name..."
+  echo "Running $step_name... ⏳"
 
   if ! "$step_script" "$VERSION_NAME"; then
     echo "______________________________"
@@ -36,7 +36,7 @@ run_step() {
     exit 1
   fi
 
-  echo "✅ $step_name completed successfully"
+  echo "☑️ $step_name completed successfully"
 }
 
 # Execute all steps

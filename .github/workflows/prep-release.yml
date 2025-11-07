@@ -59,7 +59,8 @@ jobs:
           body: |
             ## barK v${{ env.VERSION }}
             
-            A simple, extensible logging library for Kotlin Multiplatform with automatic tag detection and support for test runs.
+            ### Hosting
+            JitPack: [com.ivangarzab:bark:${{ env.VERSION }}](https://jitpack.io/#com.ivangarzab/bark/)
             
             ### Usage
             ```kotlin

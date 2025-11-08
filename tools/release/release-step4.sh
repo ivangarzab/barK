@@ -19,9 +19,8 @@ fi
 
 echo "4️⃣ Pushing everything to origin..."
 
-# Finish updating 'develop' and push to 'origin'
+# Checkout 'develop' and push to 'origin'
 git checkout develop
-git merge --no-ff -m "Merge main into develop after release v$VERSION_NAME" main
 git push origin develop
 
 # Checkout 'main' and push to 'origin'
@@ -29,6 +28,7 @@ git checkout main
 git push origin main
 
 # Push new tag as well
+echo "🏷️ Pushing tag $VERSION_NAME..."
 git push origin "$VERSION_NAME"
 
 echo "✅ All changes and tags pushed to origin successfully"

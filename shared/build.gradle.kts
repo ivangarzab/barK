@@ -9,6 +9,9 @@ plugins {
     jacoco
 }
 
+/** Get a Gradle property if available, or use an environment variable instead.*/
+fun getPropertyOrEnv(name: String): String? = (findProperty(name) as String?) ?: System.getenv(name)
+
 kotlin {
     androidTarget {
         publishLibraryVariants("release")
@@ -74,10 +77,10 @@ android {
 }
 
 /////////////////////// publishing ///////////////////////
-val gpgPassphrase = findProperty("GPG_PASSPHRASE") as String?
-val gpgSecretKey = findProperty("GPG_PRIVATE_KEY") as String?
-val mavenUsername = findProperty("MAVEN_USERNAME") as String?
-val mavenPassword = findProperty("MAVEN_PASSWORD") as String?
+val gpgPassphrase = getPropertyOrEnv("GPG_PASSPHRASE")
+val gpgSecretKey = getPropertyOrEnv("GPG_PRIVATE_KEY")
+val mavenUsername = getPropertyOrEnv("MAVEN_USERNAME")
+val mavenPassword = getPropertyOrEnv("MAVEN_PASSWORD")
 
 publishing {
     publications {

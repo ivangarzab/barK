@@ -238,7 +238,7 @@ Releases are automated and handled by maintainers:
 
 1. **Version bumping** - Automated via release scripts
 2. **GitHub releases** - Auto-created when tags are pushed
-3. **JitPack publishing** - Triggered automatically
+3. **Maven Central publishing** - Triggered automatically
 4. **Documentation updates** - Updated with each release
 
 Contributors don't need to worry about releases - just focus on great code!

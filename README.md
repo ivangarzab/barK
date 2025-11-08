@@ -1,5 +1,5 @@
 [![Build Check](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
-[![](https://jitpack.io/v/com.ivangarzab/bark.svg)](https://jitpack.io/#com.ivangarzab/bark)
+[![Maven Central](https://img.shields.io/maven-central/v/com.ivangarzab/bark.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.ivangarzab/bark)
 [![Kotlin](https://img.shields.io/badge/kotlin-multiplatform-blue.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![Kotlin](https://img.shields.io/badge/kotlin-android-green.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/Heapy/awesome-kotlin)
@@ -289,8 +289,9 @@ barK is built for Kotlin Multiplatform from the ground up:
 
 ```kotlin
 // Platform implementations
-// ✅ Android (available now)
-// 🚧 iOS (coming soon)
+// ✅ Android (*available now*)
+// ✅ Kotlin Multiplatform (*brand new!*)
+// 🚧 iOS (*coming soon...*)
 ```
 
 ---
@@ -302,7 +303,7 @@ barK is built for Kotlin Multiplatform from the ground up:
 ```kotlin
 // dependencyResolutionManagement
 repositories {
-    maven { url = uri("https://jitpack.io") }
+    mavenCentral()
 }
 
 dependencies {
@@ -314,7 +315,7 @@ dependencies {
 
 ```groovy
 repositories {
-    maven { url 'https://jitpack.io' }
+    mavenCentral()
 }
 
 dependencies {
@@ -369,6 +370,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+---
 
 **Made with 🖤 for the Kotlin community**
 

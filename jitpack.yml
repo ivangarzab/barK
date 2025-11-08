@@ -1,4 +1,0 @@
-jdk:
-  - openjdk17
-install:
-  - ./gradlew :shared:publishToMavenLocal -PskipAndroidSigning

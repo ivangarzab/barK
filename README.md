@@ -9,6 +9,13 @@
 
 ***barK**: A simple, extensible logging library for Kotlin Multiplatform with automatic tag detection and support for test runs*
 
+```diff
+- NOTICE: barK has officially moved into Maven Central!
+
++ Starting with v0.1.0, barK has migrated out of Jitpack, and is now hosted in Maven Central.
++ If you're using a version of barK v0.0.x, feel free to drop the Jitpack repository if you're not using it elsewhere.
+```
+
 ## Why barK?
 
 barK solves common logging pain points with a **memorable, themed API** and **powerful automation**:

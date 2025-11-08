@@ -1,15 +1,21 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Base64
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     `maven-publish`
+    signing
     jacoco
 }
 
 kotlin {
     androidTarget {
         publishLibraryVariants("release")
+        mavenPublication {
+            // Set the artifact ID for Android publication
+            artifactId = "bark-android"
+        }
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
@@ -67,13 +73,68 @@ android {
     }
 }
 
+/////////////////////// publishing ///////////////////////
+val gpgPassphrase = findProperty("GPG_PASSPHRASE") as String?
+val gpgSecretKey = findProperty("GPG_PRIVATE_KEY") as String?
+val mavenUsername = findProperty("MAVEN_USERNAME") as String?
+val mavenPassword = findProperty("MAVEN_PASSWORD") as String?
+
 publishing {
-    publications.withType<MavenPublication> {
-        groupId = "com.github.ivangarzab"
-        version = "0.0.10"
+    publications {
+        publications.withType<MavenPublication> {
+            artifactId = artifactId.replace("shared", "bark")
+            groupId = "com.ivangarzab"
+            version = "0.0.11"
+
+            pom {
+                name = "barK"
+                description = "A simple, lightweight logging library for Kotlin Multiplatform projects."
+                url = "https://github.com/ivangarzab/bark"
+                inceptionYear = "2025"
+                licenses {
+                    license {
+                        name = "Apache-2.0"
+                        url = "https://spdx.org/licenses/Apache-2.0.html"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "ivangarzab"
+                        name = "Iván Garza Bermea"
+                        email = "ivangb6@gmail.com"
+                    }
+                }
+                scm {
+                    url = "https://github.com/ivangarzab/barK"
+                    connection = "scm:git:git://github.com/ivangarzab/barK.git"
+                    developerConnection = "scm:git:ssh://github.com/ivangarzab/barK.git"
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "ossrh-staging-api"
+            url = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
+            credentials {
+                username = mavenUsername
+                password = mavenPassword
+            }
+        }
     }
 }
 
+signing {
+    if (gpgSecretKey != null && gpgPassphrase != null) {
+        // Decode base64-encoded key
+        val decodedKey = String(Base64.getDecoder().decode(gpgSecretKey))
+        useInMemoryPgpKeys(decodedKey, gpgPassphrase)
+        sign(publishing.publications)
+    }
+}
+
+ /////////////////////// jacoco testing ///////////////////////
 jacoco {
     toolVersion = "0.8.11"
 }

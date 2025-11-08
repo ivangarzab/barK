@@ -289,9 +289,9 @@ barK is built for Kotlin Multiplatform from the ground up:
 
 ```kotlin
 // Platform implementations
-// ✅ Android (*available now*)
-// ✅ Kotlin Multiplatform (*brand new!*)
-// 🚧 iOS (*coming soon...*)
+// ✅ Kotlin Multiplatform (brand new!)
+// ✅ Android (available now)
+// 🚧 iOS (coming soon...)
 ```
 
 ---
@@ -327,16 +327,6 @@ dependencies {
 
 ## Comparison
 
-### vs. Timber
-
-| Feature | barK | Timber |
-|---------|------|--------|
-| Auto-tag detection | ✅ | ✅ |
-| Test environment detection | ✅ | ❌ |
-| Kotlin Multiplatform | ✅ | ❌ |
-| Multiple trainers | ✅ | ✅ |
-| Runtime muzzling | ✅ | ❌ |
-
 ### vs. Android Log
 
 | Feature | barK | Android Log |
@@ -346,6 +336,16 @@ dependencies {
 | Multiple outputs | ✅ | ❌ |
 | Runtime control | ✅ | ❌ |
 | String formatting | ✅ | ❌ |
+
+### vs. Timber
+
+| Feature | barK | Timber |
+|---------|------|--------|
+| Auto-tag detection | ✅ | ✅ |
+| Test environment detection | ✅ | ❌ |
+| Kotlin Multiplatform | ✅ | ❌ |
+| Multiple trainers | ✅ | ✅ |
+| Runtime muzzling | ✅ | ❌ |
 
 ---
 

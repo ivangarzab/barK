@@ -47,5 +47,5 @@ run_step "./tools/release/release-step4.sh" "Step 4: Push to Origin"
 
 echo ""
 echo "🎉 Release process completed successfully!"
-echo "📦 barK v$VERSION_NAME is now live on JitPack!"
-echo "🔗 Check: https://jitpack.io/#com.ivangarzab/bark"
+echo "📦 barK v$VERSION_NAME will now be deployed to the Maven Central by the GitHub Actions."
+echo "🔗 Check: https://github.com/ivangarzab/bark/actions"

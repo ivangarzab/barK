@@ -1,31 +1,72 @@
 package com.ivangarzab.bark.detectors
 
-import kotlin.test.DefaultAsserter.assertNotNull
-import kotlin.test.DefaultAsserter.assertTrue
-import kotlin.test.Test
+import com.ivangarzab.bark.BarkConfig
+import kotlin.test.*
 
 /**
  * The purpose of this test class is to test the iOS version of the [getCallerTag] function.
  */
 class TagDetectionTest {
 
+    @BeforeTest
+    fun setup() {
+        // Enable auto-detection for tests
+        BarkConfig.autoTagDisabled = false
+    }
+
+    @AfterTest
+    fun teardown() {
+        // Reset to default
+        BarkConfig.autoTagDisabled = true
+    }
+
     @Test
-    fun `test tag detection across platforms`() {
-        // This will work on both Android and iOS
+    fun `test tag detection with auto-detection enabled`() {
+        // Enable auto-detection
+        BarkConfig.autoTagDisabled = false
+
         val tag = getCallerTag()
 
         println("Platform tag detection result: '$tag'")
 
-        // Basic validation that works on both platforms
-        assertNotNull("Tag should not be null", tag)
-        assertTrue("Tag should not be empty", tag.isNotBlank())
-        assertTrue("Tag should be reasonable length", tag.length in 1..50)
+        // Basic validation
+        assertNotNull(tag, "Tag should not be null")
+        assertTrue(tag.isNotBlank(), "Tag should not be empty when auto-detection is enabled")
+        assertTrue(tag.length in 1..50, "Tag should be reasonable length")
 
-        // Platform-specific expectations
-        when {
-            tag.contains("Test") -> println("✅ Detected test class successfully")
-            tag == "Bark" -> println("⚠️ Using fallback - may need platform-specific tuning")
-            else -> println("✅ Detected class: $tag")
-        }
+        // Should detect test class name
+        assertTrue(
+            tag.contains("TagDetectionTest") || tag.contains("Test"),
+            "Should detect test class name, got: '$tag'"
+        )
+        println("✅ Detected test class successfully: '$tag'")
+    }
+
+    @Test
+    fun `test tag detection with auto-detection disabled`() {
+        // Disable auto-detection
+        BarkConfig.autoTagDisabled = true
+
+        val tag = getCallerTag()
+
+        println("Tag with auto-detection disabled: '$tag'")
+
+        // Should return empty string when disabled
+        assertEquals("", tag, "Should return empty string when auto-detection is disabled")
+        println("✅ Correctly returns empty string when disabled")
+    }
+
+    @Test
+    fun `test tag detection toggle behavior`() {
+        // Test that we can toggle on and off
+        BarkConfig.autoTagDisabled = true
+        val disabledTag = getCallerTag()
+        assertEquals("", disabledTag, "Should be empty when disabled")
+
+        BarkConfig.autoTagDisabled = false
+        val enabledTag = getCallerTag()
+        assertTrue(enabledTag.isNotBlank(), "Should detect tag when enabled")
+
+        println("✅ Toggle behavior works correctly")
     }
 }

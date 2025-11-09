@@ -142,6 +142,8 @@ object Bark {
 
     /**
      * Generate the tag for a particular log entry.
+     *
+     * @since 0.0.1
      */
     private fun generateTag(): String {
         return globalTag ?: getCallerTag()

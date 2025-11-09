@@ -18,8 +18,8 @@ struct ContentView: View {
         }
         .padding()
         .onAppear {
-            Bark.shared.train(trainer: NSLogTrainer(volume: Level.verbose))
-            Bark.shared.i(message: "barK works on iOS!", throwable: nil)
+            Bark.train(trainer: NSLogTrainer(volume: Level.verbose))
+            Bark.i("barK works on iOS!", throwable: nil)
         }
     }
 }

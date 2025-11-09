@@ -52,11 +52,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

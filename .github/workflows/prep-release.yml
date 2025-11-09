@@ -112,7 +112,7 @@ jobs:
         run: ./gradlew publishAllPublicationsToOssrh-staging-apiRepository
 
       - name: Finalize All Staged Repositories via Script
-        run: ./publish_finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab
+        run: ./publish-finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab
 
   release-summary:
     name: Release Summary

@@ -298,7 +298,7 @@ barK is built for Kotlin Multiplatform from the ground up:
 // Platform implementations
 // ✅ Kotlin Multiplatform (brand new!)
 // ✅ Android (available now)
-// 🚧 iOS (coming soon...)
+// 🏗️ iOS (working on it...)
 ```
 
 ---

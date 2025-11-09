@@ -149,7 +149,7 @@ kover {
 
         verify {
             rule {
-                minBound(0) // Start with 0% - no enforcement yet
+                minBound(90)
             }
         }
     }

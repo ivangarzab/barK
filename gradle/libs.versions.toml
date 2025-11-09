@@ -1,7 +1,7 @@
 [versions]
 # ===== LIBRARY VERSIONS =====
 kotlin = "2.1.21"
-kover = "0.8.3"
+kover = "0.9.3"
 
 # ===== SAMPLE APP VERSIONS =====
 agp = "8.10.1"

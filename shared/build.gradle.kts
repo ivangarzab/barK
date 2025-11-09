@@ -4,9 +4,9 @@ import java.util.Base64
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kover)
     `maven-publish`
     signing
-    jacoco
 }
 
 /** Get a Gradle property if available, or use an environment variable instead.*/
@@ -137,60 +137,19 @@ signing {
     }
 }
 
- /////////////////////// jacoco testing ///////////////////////
-jacoco {
-    toolVersion = "0.8.11"
-}
-
-tasks.register("jacocoTestReport", JacocoReport::class) {
-    group = "reporting"
-    description = "Generate Jacoco coverage reports for barK"
-
-    dependsOn("testDebugUnitTest")
-
+/////////////////////// kover coverage ///////////////////////
+kover {
     reports {
-        xml.required.set(true)
-        html.required.set(true)
-        csv.required.set(false)
-    }
+        filters {
+            excludes {
+                // Exclude Android generated files
+                classes("*.BuildConfig", "*.R", "*.R$*")
+            }
+        }
 
-    val fileFilter = listOf(
-        "**/R.class",
-        "**/R$*.class",
-        "**/BuildConfig.*",
-        "**/Manifest*.*",
-        "**/detectors/**", // Optional: exclude platform detection utilities if you want
-    )
-
-    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
-        exclude(fileFilter)
-    }
-
-    val mainSrc = listOf(
-        "${project.projectDir}/src/commonMain/kotlin",
-        "${project.projectDir}/src/androidMain/kotlin"
-    )
-
-    sourceDirectories.setFrom(files(mainSrc))
-    classDirectories.setFrom(files(debugTree))
-    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
-        include("jacoco/testDebugUnitTest.exec")
-    })
-
-    finalizedBy("jacocoTestCoverageVerification")
-}
-
-tasks.register("jacocoTestCoverageVerification", JacocoCoverageVerification::class) {
-    dependsOn("jacocoTestReport")
-
-    violationRules {
-        rule {
-            enabled = true
-
-            limit {
-                counter = "LINE"
-                value = "COVEREDRATIO"
-                minimum = "0.0".toBigDecimal() // Start with 0% - no enforcement
+        verify {
+            rule {
+                minBound(0) // Start with 0% - no enforcement yet
             }
         }
     }

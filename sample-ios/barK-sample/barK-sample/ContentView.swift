@@ -19,6 +19,7 @@ struct ContentView: View {
         .padding()
         .onAppear {
             Bark.train(trainer: NSLogTrainer(volume: Level.verbose))
+            Bark.tag("iOS")
             Bark.i("barK works on iOS!", throwable: nil)
         }
     }

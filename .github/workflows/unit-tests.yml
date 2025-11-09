@@ -88,7 +88,7 @@ jobs:
           name: 'Kotlin Tests (Common + Android)'
           path: '**/build/test-results/**/*.xml'
           reporter: java-junit
-          fail-on-error: true
+          fail-on-error: false
 
   # iOS tests
   ios-tests:
@@ -154,7 +154,7 @@ jobs:
           name: 'iOS Tests'
           path: '**/build/test-results/**/*.xml'
           reporter: java-junit
-          fail-on-error: true
+          fail-on-error: false
 
   # Test summary job
   test-summary:

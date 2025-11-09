@@ -1,5 +1,5 @@
 [![Build Check](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
-[![](https://jitpack.io/v/com.ivangarzab/bark.svg)](https://jitpack.io/#com.ivangarzab/bark)
+[![Maven Central](https://img.shields.io/maven-central/v/com.ivangarzab/bark.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.ivangarzab/bark)
 [![Kotlin](https://img.shields.io/badge/kotlin-multiplatform-blue.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![Kotlin](https://img.shields.io/badge/kotlin-android-green.svg)](https://kotlinlang.org/docs/multiplatform.html)
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/Heapy/awesome-kotlin)
@@ -8,6 +8,13 @@
 ![wordmark](/assets/wordmark.png)
 
 ***barK**: A simple, extensible logging library for Kotlin Multiplatform with automatic tag detection and support for test runs*
+
+```diff
+- NOTICE: barK has officially moved into Maven Central!
+
++ Starting with v0.1.0, barK has migrated out of Jitpack, and is now hosted in Maven Central.
++ If you're using a version of barK v0.0.x, feel free to drop the Jitpack repository if you're not using it elsewhere.
+```
 
 ## Why barK?
 
@@ -19,6 +26,10 @@ barK solves common logging pain points with a **memorable, themed API** and **po
 - 🔄 **Kotlin Multiplatform** - Works across Android + iOS
 
 _**Born from real SDK development needs**_ - when you need different logging behavior for Android runs vs. test runs, **barK** has you covered.
+
+### As Seen On
+
+**Medium:** *[barK: A Lightweight Logging Library for Android](https://levelup.gitconnected.com/bark-a-lightweight-logging-library-for-android-14583711bc04)*
 
 ---
 
@@ -285,8 +296,9 @@ barK is built for Kotlin Multiplatform from the ground up:
 
 ```kotlin
 // Platform implementations
+// ✅ Kotlin Multiplatform (brand new!)
 // ✅ Android (available now)
-// 🚧 iOS (coming soon)
+// 🚧 iOS (coming soon...)
 ```
 
 ---
@@ -298,7 +310,7 @@ barK is built for Kotlin Multiplatform from the ground up:
 ```kotlin
 // dependencyResolutionManagement
 repositories {
-    maven { url = uri("https://jitpack.io") }
+    mavenCentral()
 }
 
 dependencies {
@@ -310,7 +322,7 @@ dependencies {
 
 ```groovy
 repositories {
-    maven { url 'https://jitpack.io' }
+    mavenCentral()
 }
 
 dependencies {
@@ -322,16 +334,6 @@ dependencies {
 
 ## Comparison
 
-### vs. Timber
-
-| Feature | barK | Timber |
-|---------|------|--------|
-| Auto-tag detection | ✅ | ✅ |
-| Test environment detection | ✅ | ❌ |
-| Kotlin Multiplatform | ✅ | ❌ |
-| Multiple trainers | ✅ | ✅ |
-| Runtime muzzling | ✅ | ❌ |
-
 ### vs. Android Log
 
 | Feature | barK | Android Log |
@@ -341,6 +343,16 @@ dependencies {
 | Multiple outputs | ✅ | ❌ |
 | Runtime control | ✅ | ❌ |
 | String formatting | ✅ | ❌ |
+
+### vs. Timber
+
+| Feature | barK | Timber |
+|---------|------|--------|
+| Auto-tag detection | ✅ | ✅ |
+| Test environment detection | ✅ | ❌ |
+| Kotlin Multiplatform | ✅ | ❌ |
+| Multiple trainers | ✅ | ✅ |
+| Runtime muzzling | ✅ | ❌ |
 
 ---
 
@@ -365,6 +377,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+---
 
 **Made with 🖤 for the Kotlin community**
 

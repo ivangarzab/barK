@@ -26,7 +26,7 @@ if ! git diff-index --quiet HEAD --; then
   exit 1
 fi
 
-echo "3️⃣ Publishing & merging release branch..."
+echo "3️⃣ Merging and tagging  release $VERSION_NAME..."
 
 # Publish release branch into 'origin'
 git push -u origin "$BRANCH_NAME"
@@ -38,9 +38,9 @@ git merge --no-ff -m "Merge $BRANCH_NAME into main" "$BRANCH_NAME"
 # Tag the release
 git tag -a "$VERSION_NAME" -m "Released v$VERSION_NAME on $DATE_TODAY"
 
-# Merge release branch into 'develop'
+# Merge 'main' branch into 'develop'
 git checkout develop
-git merge --no-ff -m "Merge $BRANCH_NAME into develop" "$BRANCH_NAME"
+git merge --no-ff -m "Merge main into develop after release $VERSION_NAME" main
 
 echo "✅ Release process completed and ready to be pushed"
 

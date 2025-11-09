@@ -51,13 +51,20 @@ private fun getCallerFromCallStack(): String? {
 
             // Parse the symbol to extract class name
             val className = parseSymbolForClassName(symbol)
+            println("Symbol [$i]: $symbol")
+            println("  -> Parsed: '$className'")
             if (className != null && shouldIncludeClass(className)) {
-                return extractSimpleClassName(className)
+                val result = extractSimpleClassName(className)
+                println("  -> ✅ USING TAG: '$result'")
+                return result
+            } else if (className != null) {
+                println("  -> ❌ Filtered out")
             }
         }
 
         null
     } catch (e: Exception) {
+//        println("Error in getCallerFromCallStack: ${e.message}")
         null
     }
 }
@@ -101,10 +108,22 @@ private fun getCallerFromBacktrace(): String? {
  * "1   MyApp    0x0000000100001234 MyApp.MyClass.myMethod() -> () + 123"
  * "2   MyApp    0x0000000100001234 $s5MyApp7MyClassC8myMethodyyF + 123"
  * "3   shared   0x0000000100001234 kfun:com.ivangarzab.bark.detectors.TagDetectionTest#getCallerTag(){}kotlin.String + 123"
+ * "4   barK-sample.debug.dylib  0x... $s11barK_sample11ContentViewV4bodyQrvgyycfU0_ + 252"
  */
 private fun parseSymbolForClassName(symbol: String): String? {
     return try {
-        // Method 1: Look for Kotlin symbols with full package path
+        // Method 1: Parse mangled Swift names manually
+        // Format: $s<module_len><module_name><class_len><class_name><type>...
+        // Example: $s11barK_sample11ContentViewV4bodyQrvgyycfU0_
+        //          $s 11 barK_sample 11 ContentView V ...
+        if (symbol.contains("${'$'}s")) {
+            val result = parseSwiftMangledName(symbol)
+            if (result != null) {
+                return result
+            }
+        }
+
+        // Method 2: Look for Kotlin symbols with full package path
         // Example: "kfun:com.ivangarzab.bark.detectors.TagDetectionTest#method"
         val kotlinPattern = Regex("""kfun:.*\.([A-Z][A-Za-z0-9]*)[#.]""")
         val kotlinMatch = kotlinPattern.find(symbol)
@@ -112,7 +131,7 @@ private fun parseSymbolForClassName(symbol: String): String? {
             return kotlinMatch.groupValues[1]
         }
 
-        // Method 2: Look for package.ClassName.method pattern
+        // Method 3: Look for package.ClassName.method pattern
         // Example: "com.example.MyClass.method"
         val packagePattern = Regex("""([a-z][a-z0-9_]*\.)+([A-Z][A-Za-z0-9]*)\.[a-z]""")
         val packageMatch = packagePattern.find(symbol)
@@ -120,18 +139,11 @@ private fun parseSymbolForClassName(symbol: String): String? {
             return packageMatch.groupValues[2] // Get the ClassName part
         }
 
-        // Method 3: Look for Swift-style patterns like "MyApp.MyClass.method"
+        // Method 4: Look for Swift-style patterns like "MyApp.MyClass.method"
         val swiftPattern = Regex("""([A-Z][A-Za-z0-9]*)\.([A-Z][A-Za-z0-9]*)\.[a-z]""")
         val swiftMatch = swiftPattern.find(symbol)
         if (swiftMatch != null) {
             return swiftMatch.groupValues[2] // Get the class name (second part)
-        }
-
-        // Method 4: Look for mangled Swift names (starts with $s)
-        val mangledPattern = Regex("""${'$'}s\d+([A-Za-z][A-Za-z0-9]*)\d*[A-Za-z]""")
-        val mangledMatch = mangledPattern.find(symbol)
-        if (mangledMatch != null) {
-            return mangledMatch.groupValues[1]
         }
 
         // Method 5: Look for Objective-C style patterns
@@ -143,6 +155,50 @@ private fun parseSymbolForClassName(symbol: String): String? {
         null
     } catch (e: Exception) {
         null
+    }
+}
+
+/**
+ * Parse Swift mangled name to extract class name
+ * Format: $s<len1><segment1><len2><segment2>...
+ * We want to find segments that start with uppercase (likely class/struct names)
+ */
+private fun parseSwiftMangledName(symbol: String): String? {
+    try {
+        val startIndex = symbol.indexOf("${'$'}s")
+        if (startIndex == -1) return null
+
+        var index = startIndex + 2 // Skip "$s"
+        val symbolPart = symbol.substring(index)
+
+        // Try to parse multiple length-prefixed segments
+        var currentIndex = 0
+        while (currentIndex < symbolPart.length) {
+            // Read the length
+            val lengthMatch = Regex("""^(\d+)""").find(symbolPart.substring(currentIndex))
+            if (lengthMatch == null) break
+
+            val length = lengthMatch.value.toIntOrNull() ?: break
+            currentIndex += lengthMatch.value.length
+
+            // Extract the segment
+            if (currentIndex + length > symbolPart.length) break
+            val segment = symbolPart.substring(currentIndex, currentIndex + length)
+            currentIndex += length
+
+            // Check if this looks like a class name (starts with uppercase)
+            if (segment.isNotEmpty() && segment[0].isUpperCase()) {
+                // Check if next char is V (struct) or C (class) type marker
+                if (currentIndex < symbolPart.length &&
+                    (symbolPart[currentIndex] == 'V' || symbolPart[currentIndex] == 'C')) {
+                    return segment
+                }
+            }
+        }
+
+        return null
+    } catch (e: Exception) {
+        return null
     }
 }
 

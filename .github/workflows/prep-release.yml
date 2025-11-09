@@ -115,7 +115,7 @@ jobs:
         run: chmod +x tools/publish-finalizer.sh
 
       - name: Finalize All Staged Repositories via Script
-        run: ./publish-finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab
+        run: ./tools/publish-finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab
 
   release-summary:
     name: Release Summary

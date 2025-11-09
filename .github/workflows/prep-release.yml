@@ -104,17 +104,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Install jq
+        run: brew install jq
+
       - name: Publish to Sonatype Staging
         if: ${{ !inputs.dry_run }}
         run: ./gradlew publishAllPublicationsToOssrh-staging-apiRepository
 
-      # IMPORTANT: This step has to be called in the same IP as the previous step!
-      - name: Deploy from Staging to Maven Central
-        run: |
-          echo "Requesting push from Staging Repository to Maven Central"
-          curl -i -X POST -u "${{ env.MAVEN_USERNAME }}:${{ env.MAVEN_PASSWORD }}" "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/com.ivangarzab"
-          echo "All artifacts have been pushed to the Maven Central Portal!"
-        # NOTE: We're calling the 'defaultRepository' in this curl command, which may not be the best practice long-term, or when dealing with more than one library
+      - name: Grant execute permission for the finalizer script
+        run: chmod +x tools/publish-finalizer.sh
+
+      - name: Finalize All Staged Repositories via Script
+        run: ./publish-finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab
 
   release-summary:
     name: Release Summary

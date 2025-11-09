@@ -20,8 +20,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  unit-tests:
-    name: Run Unit Tests
+  kotlin-tests:
+    name: Run Kotlin Tests (Common + Android)
     runs-on: ubuntu-latest
 
     steps:
@@ -48,62 +48,52 @@ jobs:
       - name: Run Android Unit Tests
         run: ./gradlew sample-android:testDebugUnitTest --continue
 
-      - name: Generate Test Coverage Report
-        run: ./gradlew shared:jacocoTestReport
+      - name: Generate Kover Coverage Report
+        run: ./gradlew shared:koverXmlReport shared:koverHtmlReport
 
-      - name: Upload Test Results
+      - name: Upload Kotlin Test Results
         uses: actions/upload-artifact@v4
         if: always() # Upload even if tests fail
         with:
-          name: test-results
+          name: kotlin-test-results
           path: |
             **/build/test-results/**/*.xml
             **/build/reports/tests/**
           retention-days: 30
 
-      - name: Upload Test Reports
+      - name: Upload Kotlin Coverage Reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-reports
+          name: kotlin-coverage
           path: |
-            **/build/reports/tests/**
+            shared/build/reports/kover/html/
+            shared/build/reports/kover/report.xml
           retention-days: 30
 
-      - name: Upload Coverage Reports
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: coverage-reports
-          path: |
-            shared/build/reports/jacoco/jacocoTestReport/html/
-            shared/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
-          retention-days: 30
-
-      - name: Publish Test Results
+      - name: Publish Kotlin Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           files: |
             **/build/test-results/**/*.xml
-          check_name: "Unit Test Results"
-          comment_title: "Unit Test Results"
+          check_name: "Kotlin Test Results"
+          comment_title: "Kotlin Test Results"
           fail_on: "test failures"
 
-      - name: Comment PR with Test Results
+      - name: Comment PR with Kotlin Test Results
         uses: dorny/test-reporter@v2
         if: always() && github.event_name == 'pull_request'
         with:
-          name: 'Unit Tests'
+          name: 'Kotlin Tests (Common + Android)'
           path: '**/build/test-results/**/*.xml'
           reporter: java-junit
-          fail-on-error: true
+          fail-on-error: false
 
   # iOS tests
   ios-tests:
-    name: Run iOS Unit Tests
+    name: Run iOS Tests
     runs-on: macos-latest
-    if: false # TODO: Enable when iOS tests are ready
 
     steps:
       - name: Checkout Code
@@ -122,7 +112,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run iOS Unit Tests
-        run: ./gradlew shared:iosSimulatorArm64Test
+        run: ./gradlew shared:iosSimulatorArm64Test --continue
 
       - name: Upload iOS Test Results
         uses: actions/upload-artifact@v4
@@ -130,71 +120,105 @@ jobs:
         with:
           name: ios-test-results
           path: |
-            **/build/test-results/**/*.xml
+            **/build/test-results/iosSimulatorArm64Test/**/*.xml
+            **/build/reports/tests/iosSimulatorArm64Test/**
           retention-days: 30
+
+      - name: Comment PR with iOS Test Results
+        uses: dorny/test-reporter@v2
+        if: always() && github.event_name == 'pull_request'
+        with:
+          name: 'iOS Tests'
+          path: '**/build/test-results/iosSimulatorArm64Test/**/*.xml'
+          reporter: java-junit
+          fail-on-error: false
 
   # Test summary job
   test-summary:
-    name: Test Summary
+    name: Unified Test Summary
     runs-on: ubuntu-latest
-    needs: [unit-tests]
+    needs: [kotlin-tests, ios-tests]
     if: always()
 
     steps:
-      - name: Download Test Results
+      - name: Download Kotlin Test Results
         uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
-          name: test-results
-          path: test-results
+          name: kotlin-test-results
+          path: kotlin-test-results
 
-      - name: Download Coverage Reports
+      - name: Download iOS Test Results
         uses: actions/download-artifact@v4
-        if: always()
+        continue-on-error: true
         with:
-          name: coverage-reports
-          path: coverage-reports
+          name: ios-test-results
+          path: ios-test-results
 
-      - name: Test Summary
+      - name: Download Kotlin Coverage
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: kotlin-coverage
+          path: kotlin-coverage
+
+      - name: Generate Unified Test Summary
         run: |
-          echo "## 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
-          
-          # Count test files
-          TEST_FILES=$(find test-results -name "*.xml" | wc -l)
-          echo "- **Test result files found:** $TEST_FILES" >> $GITHUB_STEP_SUMMARY
-          
-          # Basic test counting (could be enhanced)
-          if [ $TEST_FILES -gt 0 ]; then
-            echo "- **Status:** Tests executed successfully ✅" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "- **Status:** No test results found ❌" >> $GITHUB_STEP_SUMMARY
-          fi
-          
+          echo "## 🧪 Multi-Platform Test Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## 📊 Test Coverage Report" >> $GITHUB_STEP_SUMMARY
-          
-          # Extract coverage percentage from XML report if it exists
-          if [ -f "coverage-reports/jacocoTestReport.xml" ]; then
-            COVERAGE=$(grep -o 'type="LINE".*covered="[0-9]*".*missed="[0-9]*"' coverage-reports/jacocoTestReport.xml | head -1 | sed 's/.*covered="\([0-9]*\)".*missed="\([0-9]*\)".*/\1 \2/')
-            if [ ! -z "$COVERAGE" ]; then
-              COVERED=$(echo $COVERAGE | cut -d' ' -f1)
-              MISSED=$(echo $COVERAGE | cut -d' ' -f2)
-              TOTAL=$((COVERED + MISSED))
-              if [ $TOTAL -gt 0 ]; then
-                PERCENTAGE=$((COVERED * 100 / TOTAL))
-                echo "- **Line Coverage:** ${PERCENTAGE}% (${COVERED}/${TOTAL} lines)" >> $GITHUB_STEP_SUMMARY
-              else
-                echo "- **Line Coverage:** No coverage data available" >> $GITHUB_STEP_SUMMARY
-              fi
+
+          # Count Kotlin tests
+          KOTLIN_TEST_FILES=$(find kotlin-test-results -name "*.xml" 2>/dev/null | wc -l || echo "0")
+          echo "### Kotlin Tests (Common + Android)" >> $GITHUB_STEP_SUMMARY
+          if [ "$KOTLIN_TEST_FILES" -gt 0 ]; then
+            echo "✅ **Status:** Tests executed" >> $GITHUB_STEP_SUMMARY
+            echo "📄 **Test files:** $KOTLIN_TEST_FILES" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Status:** No test results found" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Count iOS tests
+          IOS_TEST_FILES=$(find ios-test-results -name "*.xml" 2>/dev/null | wc -l || echo "0")
+          echo "### iOS Tests" >> $GITHUB_STEP_SUMMARY
+          if [ "$IOS_TEST_FILES" -gt 0 ]; then
+            echo "✅ **Status:** Tests executed" >> $GITHUB_STEP_SUMMARY
+            echo "📄 **Test files:** $IOS_TEST_FILES" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Status:** No test results found" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Total
+          TOTAL_TEST_FILES=$((KOTLIN_TEST_FILES + IOS_TEST_FILES))
+          echo "### 📊 Total" >> $GITHUB_STEP_SUMMARY
+          echo "**Combined test files:** $TOTAL_TEST_FILES" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Coverage Summary
+          echo "## 📈 Code Coverage (Kotlin)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Parse Kotlin coverage
+          if [ -f "kotlin-coverage/report.xml" ]; then
+            K_COVERAGE=$(grep -o '<counter type="LINE"[^>]*covered="[0-9]*"[^>]*missed="[0-9]*"' kotlin-coverage/report.xml | head -1 | sed 's/.*covered="\([0-9]*\)".*missed="\([0-9]*\)".*/\1 \2/')
+            if [ ! -z "$K_COVERAGE" ]; then
+              K_COVERED=$(echo $K_COVERAGE | cut -d' ' -f1)
+              K_MISSED=$(echo $K_COVERAGE | cut -d' ' -f2)
+              K_TOTAL=$((K_COVERED + K_MISSED))
+              K_PERCENTAGE=$((K_TOTAL > 0 ? K_COVERED * 100 / K_TOTAL : 0))
+              echo "**Coverage:** ${K_PERCENTAGE}% (${K_COVERED}/${K_TOTAL} lines)" >> $GITHUB_STEP_SUMMARY
             else
-              echo "- **Line Coverage:** Could not parse coverage data" >> $GITHUB_STEP_SUMMARY
+              echo "**Coverage:** Could not parse coverage data" >> $GITHUB_STEP_SUMMARY
             fi
           else
-            echo "- **Line Coverage:** Report not found" >> $GITHUB_STEP_SUMMARY
+            echo "**Coverage:** Report not found" >> $GITHUB_STEP_SUMMARY
           fi
-          
-          echo "- **HTML Report:** Available in coverage-reports artifact" >> $GITHUB_STEP_SUMMARY
-          echo "- **Baseline Established:** Use this percentage to set future thresholds" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📋 **Test artifacts uploaded for 30 days**" >> $GITHUB_STEP_SUMMARY
-          echo "🔍 **Check the 'Publish Test Results' action for detailed results**" >> $GITHUB_STEP_SUMMARY
+          echo "_Note: iOS coverage will be added via Codecov in a future update_" >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "📋 All artifacts retained for 30 days" >> $GITHUB_STEP_SUMMARY
+          echo "🔍 Check individual test result actions for detailed breakdowns" >> $GITHUB_STEP_SUMMARY

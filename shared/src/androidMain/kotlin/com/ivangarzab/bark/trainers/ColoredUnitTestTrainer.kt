@@ -17,7 +17,7 @@ import com.ivangarzab.bark.Level
  * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */
-class ColoredUnitTestTrainer(
+open class ColoredUnitTestTrainer(
     volume: Level = Level.VERBOSE,
     showTimestamp: Boolean = true
 ) : UnitTestTrainer(volume, showTimestamp) {

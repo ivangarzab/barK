@@ -114,45 +114,22 @@ jobs:
       - name: Run iOS Unit Tests
         run: ./gradlew shared:iosSimulatorArm64Test --continue
 
-      - name: Generate iOS Kover Coverage Report
-        run: ./gradlew shared:koverXmlReport shared:koverHtmlReport
-
       - name: Upload iOS Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ios-test-results
           path: |
-            **/build/test-results/**/*.xml
-            **/build/reports/tests/**
+            **/build/test-results/iosSimulatorArm64Test/**/*.xml
+            **/build/reports/tests/iosSimulatorArm64Test/**
           retention-days: 30
-
-      - name: Upload iOS Coverage Reports
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ios-coverage
-          path: |
-            shared/build/reports/kover/html/
-            shared/build/reports/kover/report.xml
-          retention-days: 30
-
-      - name: Publish iOS Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          files: |
-            **/build/test-results/**/*.xml
-          check_name: "iOS Test Results"
-          comment_title: "iOS Test Results"
-          fail_on: "test failures"
 
       - name: Comment PR with iOS Test Results
         uses: dorny/test-reporter@v2
         if: always() && github.event_name == 'pull_request'
         with:
           name: 'iOS Tests'
-          path: '**/build/test-results/**/*.xml'
+          path: '**/build/test-results/iosSimulatorArm64Test/**/*.xml'
           reporter: java-junit
           fail-on-error: false
 
@@ -184,13 +161,6 @@ jobs:
         with:
           name: kotlin-coverage
           path: kotlin-coverage
-
-      - name: Download iOS Coverage
-        uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: ios-coverage
-          path: ios-coverage
 
       - name: Generate Unified Test Summary
         run: |
@@ -226,7 +196,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           # Coverage Summary
-          echo "## 📈 Code Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "## 📈 Code Coverage (Kotlin)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           # Parse Kotlin coverage
@@ -237,30 +207,16 @@ jobs:
               K_MISSED=$(echo $K_COVERAGE | cut -d' ' -f2)
               K_TOTAL=$((K_COVERED + K_MISSED))
               K_PERCENTAGE=$((K_TOTAL > 0 ? K_COVERED * 100 / K_TOTAL : 0))
-              echo "**Kotlin Coverage:** ${K_PERCENTAGE}% (${K_COVERED}/${K_TOTAL} lines)" >> $GITHUB_STEP_SUMMARY
+              echo "**Coverage:** ${K_PERCENTAGE}% (${K_COVERED}/${K_TOTAL} lines)" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "**Coverage:** Could not parse coverage data" >> $GITHUB_STEP_SUMMARY
             fi
+          else
+            echo "**Coverage:** Report not found" >> $GITHUB_STEP_SUMMARY
           fi
 
-          # Parse iOS coverage
-          if [ -f "ios-coverage/report.xml" ]; then
-            I_COVERAGE=$(grep -o '<counter type="LINE"[^>]*covered="[0-9]*"[^>]*missed="[0-9]*"' ios-coverage/report.xml | head -1 | sed 's/.*covered="\([0-9]*\)".*missed="\([0-9]*\)".*/\1 \2/')
-            if [ ! -z "$I_COVERAGE" ]; then
-              I_COVERED=$(echo $I_COVERAGE | cut -d' ' -f1)
-              I_MISSED=$(echo $I_COVERAGE | cut -d' ' -f2)
-              I_TOTAL=$((I_COVERED + I_MISSED))
-              I_PERCENTAGE=$((I_TOTAL > 0 ? I_COVERED * 100 / I_TOTAL : 0))
-              echo "**iOS Coverage:** ${I_PERCENTAGE}% (${I_COVERED}/${I_TOTAL} lines)" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-
-          # Combined coverage
-          if [ ! -z "$K_TOTAL" ] && [ ! -z "$I_TOTAL" ]; then
-            COMBINED_COVERED=$((K_COVERED + I_COVERED))
-            COMBINED_TOTAL=$((K_TOTAL + I_TOTAL))
-            COMBINED_PERCENTAGE=$((COMBINED_TOTAL > 0 ? COMBINED_COVERED * 100 / COMBINED_TOTAL : 0))
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**📊 Combined Coverage:** ${COMBINED_PERCENTAGE}% (${COMBINED_COVERED}/${COMBINED_TOTAL} lines)" >> $GITHUB_STEP_SUMMARY
-          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "_Note: iOS coverage will be added via Codecov in a future update_" >> $GITHUB_STEP_SUMMARY
 
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "---" >> $GITHUB_STEP_SUMMARY

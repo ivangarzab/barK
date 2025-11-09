@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run Debug Tests" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="Run All Unit Tests" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -11,6 +11,7 @@
       <option name="taskNames">
         <list>
           <option value="testDebugUnitTest" />
+          <option value=":shared:iosSimulatorArm64Test" />
         </list>
       </option>
       <option name="vmOptions" />

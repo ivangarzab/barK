@@ -81,4 +81,16 @@ extension Bark {
     static func getStatus() -> String {
         return Bark.shared.getStatus()
     }
+    
+    /// Enable/Disable the tag auto-denction feature.
+    ///
+    /// Enabling this option may take a toll on performance.
+    static var autoTagDisabled: Bool {
+        get {
+            return BarkConfig.shared.autoTagDisabled
+        }
+        set {
+            BarkConfig.shared.autoTagDisabled = newValue
+        }
+    }
 }

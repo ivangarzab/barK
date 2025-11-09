@@ -19,8 +19,13 @@ struct ContentView: View {
         .padding()
         .onAppear {
             Bark.train(trainer: NSLogTrainer(volume: Level.verbose))
-            Bark.tag("iOS")
             Bark.i("barK works on iOS!", throwable: nil)
+            
+            Bark.autoTagDisabled = false
+            Bark.d("Auto Tag detection has been enabled")
+            
+            Bark.tag("iOS")
+            Bark.w("Now we're using a global tag")
         }
     }
 }

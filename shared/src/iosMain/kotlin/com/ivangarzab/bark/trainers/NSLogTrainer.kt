@@ -12,8 +12,8 @@ import platform.Foundation.*
  * Console.app, Xcode console, and system logs. The system automatically
  * adds timestamp, app name, process ID, and thread information.
  *
- * @since 0.0.10
- * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
+ * @since 0.2.0
+ * @param volume Minimum log level to output
  */
 class NSLogTrainer(
     override val volume: Level = Level.VERBOSE
@@ -34,7 +34,7 @@ class NSLogTrainer(
         if (level.ordinal < volume.ordinal) return
 
         val formattedMessage = buildString {
-            append("${level.label} $tag: $message")
+            append("${level.label} ${if (tag.isNotEmpty()) "$tag: " else ""}$message")
 
             throwable?.let {
                 append(" | Exception: ${it.message}")

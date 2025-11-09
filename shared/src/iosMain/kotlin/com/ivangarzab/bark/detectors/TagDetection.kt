@@ -1,5 +1,6 @@
 package com.ivangarzab.bark.detectors
 
+import com.ivangarzab.bark.BarkConfig
 import kotlinx.cinterop.*
 import platform.Foundation.*
 import platform.darwin.*
@@ -20,9 +21,17 @@ import platform.posix.free
  * 2. Backtrace inspection (fallback)
  * 3. Direct caller information when available
  *
+ * Auto-detection can be disabled via [BarkIosConfig.enableAutoTagDetection] for
+ * better performance in performance-critical code paths.
+ *
  * @return The simple class name of the caller, or a fallback if detection fails
  */
 internal actual fun getCallerTag(): String {
+    // Check if auto-detection is disabled
+    if (BarkConfig.autoTagDisabled) {
+        return ""
+    }
+
     return try {
         // Try to get caller using thread call stack symbols
         getCallerFromCallStack() ?:
@@ -51,20 +60,13 @@ private fun getCallerFromCallStack(): String? {
 
             // Parse the symbol to extract class name
             val className = parseSymbolForClassName(symbol)
-            println("Symbol [$i]: $symbol")
-            println("  -> Parsed: '$className'")
             if (className != null && shouldIncludeClass(className)) {
-                val result = extractSimpleClassName(className)
-                println("  -> ✅ USING TAG: '$result'")
-                return result
-            } else if (className != null) {
-                println("  -> ❌ Filtered out")
+                return extractSimpleClassName(className)
             }
         }
 
         null
     } catch (e: Exception) {
-//        println("Error in getCallerFromCallStack: ${e.message}")
         null
     }
 }

@@ -3,12 +3,12 @@ package com.ivangarzab.bark.trainers
 import com.ivangarzab.bark.Level
 
 /**
- * ColoredTestTrainer extends TestTrainer with ANSI color support.
+ * ColoredTestTrainer extends [UnitTestTrainer] with ANSI color support.
  *
- * This trainer inherits all the functionality of TestTrainer but adds
+ * This trainer inherits all the functionality of [UnitTestTrainer] but adds
  * beautiful color coding for different log levels and exceptions.
  *
- * Features over base TestTrainer:
+ * Features over base [UnitTestTrainer]:
  * - ANSI color coding by log level
  * - Colored exception highlighting
  * - All the same smart features (test detection, timestamps, etc.)

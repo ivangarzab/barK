@@ -13,10 +13,6 @@ import platform.Foundation.*
  * Perfect for Xcode's test console or when you prefer simple, clean test
  * output without formatting.
  *
- * This class is designed to be extensible - ColoredUnitTestTrainer inherits
- * from this class and adds automatic color detection and formatting for
- * color-capable environments (terminal, CI/CD, etc.).
- *
  * @since 0.2.0
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
@@ -76,7 +72,7 @@ open class UnitTestTrainer(
     }
 
     /**
-     * Format the level label - can be overridden by subclasses
+     * Format the level label - can be overridden by subclasses.
      * .
      */
     protected open fun formatLevelLabel(level: Level): String {

@@ -4,15 +4,15 @@ import com.ivangarzab.bark.Level
 import com.ivangarzab.bark.detectors.supportsAnsiColors
 
 /**
- * ColoredUnitTestTrainer extends UnitTestTrainer with ANSI color support for iOS.
+ * ColoredUnitTestTrainer extends [UnitTestTrainer] with ANSI color support for iOS.
  *
- * This trainer inherits all the functionality of UnitTestTrainer but adds
- * beautiful color coding for different log levels and exceptions when running
- * in color-capable environments.
+ * This trainer inherits all the functionality of [UnitTestTrainer] but adds
+ * beautiful color coding for different log levels and errors,
+ * when running in color-capable environments.
  *
- * Features over base UnitTestTrainer:
+ * Features over base [UnitTestTrainer]:
  * - ANSI color coding by log level
- * - Colored exception highlighting
+ * - Colored error highlighting
  * - All the same smart features (test detection, timestamps, etc.)
  * - Automatic color detection (only uses colors in compatible environments)
  *
@@ -23,8 +23,8 @@ import com.ivangarzab.bark.detectors.supportsAnsiColors
  * - ❌ Xcode Test Console: Falls back to plain text (Xcode limitation)
  *
  * The trainer automatically detects the environment and only outputs ANSI codes
- * when they will be properly rendered. In Xcode's test console, it behaves
- * identically to UnitTestTrainer (plain text output).
+ * when they will be properly rendered.
+ * In Xcode's test console, it behaves identically to [UnitTestTrainer] (plain text output).
  *
  * @since 0.2.0
  * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)

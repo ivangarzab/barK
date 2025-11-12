@@ -9,14 +9,11 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * TestTrainer handles simple console logging during tests
+ * TestTrainer handles simple console logging during Kotlin tests.
  *
  * This trainer provides clean, uncolored console output during tests.
- * Perfect for environments that don't support ANSI colors or when you
- * prefer simple, clean test output without formatting.
- *
- * This class is designed to be extensible - ColoredTestTrainer inherits
- * from this class and adds color formatting.
+ * Perfect for environments that don't support ANSI colors,
+ * or when you prefer simple clean output.
  *
  * @since 0.0.1
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)

@@ -10,11 +10,12 @@ import platform.Foundation.*
  * UnitTestTrainer handles simple console logging during tests on iOS.
  *
  * This trainer provides clean, uncolored console output during tests using print().
- * Perfect for environments that don't support ANSI colors or when you
- * prefer simple, clean test output without formatting.
+ * Perfect for Xcode's test console or when you prefer simple, clean test
+ * output without formatting.
  *
  * This class is designed to be extensible - ColoredUnitTestTrainer inherits
- * from this class and adds color formatting.
+ * from this class and adds automatic color detection and formatting for
+ * color-capable environments (terminal, CI/CD, etc.).
  *
  * @since 0.2.0
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)

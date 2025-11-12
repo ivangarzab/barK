@@ -1,21 +1,30 @@
 package com.ivangarzab.bark.trainers
 
 import com.ivangarzab.bark.Level
+import com.ivangarzab.bark.detectors.supportsAnsiColors
 
 /**
  * ColoredUnitTestTrainer extends UnitTestTrainer with ANSI color support for iOS.
  *
  * This trainer inherits all the functionality of UnitTestTrainer but adds
- * beautiful color coding for different log levels and exceptions in the
- * Xcode console during test runs.
+ * beautiful color coding for different log levels and exceptions when running
+ * in color-capable environments.
  *
  * Features over base UnitTestTrainer:
  * - ANSI color coding by log level
  * - Colored exception highlighting
  * - All the same smart features (test detection, timestamps, etc.)
+ * - Automatic color detection (only uses colors in compatible environments)
  *
- * Note: ANSI colors work in Xcode's console output during test runs,
- * similar to how they work in Android Studio's console (not in production logs).
+ * **Environment Support:**
+ * - ✅ Terminal/Command Line: Full color support
+ * - ✅ CI/CD (GitHub Actions, etc.): Full color support
+ * - ✅ Fastlane: Full color support
+ * - ❌ Xcode Test Console: Falls back to plain text (Xcode limitation)
+ *
+ * The trainer automatically detects the environment and only outputs ANSI codes
+ * when they will be properly rendered. In Xcode's test console, it behaves
+ * identically to UnitTestTrainer (plain text output).
  *
  * @since 0.2.0
  * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
@@ -27,17 +36,33 @@ open class ColoredUnitTestTrainer(
 ) : UnitTestTrainer(volume, showTimestamp) {
 
     /**
+     * Cached result of color support detection.
+     * Checked once on initialization for performance.
+     */
+    private val useColors: Boolean = supportsAnsiColors()
+
+    /**
      * Override to add color formatting to the level label.
+     * Only adds colors if the environment supports them.
      */
     override fun formatLevelLabel(level: Level): String {
-        return "${getColorForLevel(level)}${level.label}${ANSI_RESET}"
+        return if (useColors) {
+            "${getColorForLevel(level)}${level.label}${ANSI_RESET}"
+        } else {
+            level.label
+        }
     }
 
     /**
      * Override to add color formatting to exception messages.
+     * Only adds colors if the environment supports them.
      */
     override fun formatException(throwable: Throwable): String {
-        return "${ANSI_RED}Error: ${throwable.message}${ANSI_RESET}"
+        return if (useColors) {
+            "${ANSI_RED}Error: ${throwable.message}${ANSI_RESET}"
+        } else {
+            "Error: ${throwable.message}"
+        }
     }
 
     /**

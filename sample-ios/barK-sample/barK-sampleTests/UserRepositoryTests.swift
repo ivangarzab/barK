@@ -22,62 +22,62 @@ final class UserRepositoryTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: true))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: true))
 
-        Bark.shared.i(message: "=== Setting up UserRepositoryTests ===", throwable: nil)
+        Bark.i("=== Setting up UserRepositoryTests ===")
 
         userRepository = UserRepository()
 
-        Bark.shared.d(message: "UserRepository instance created", throwable: nil)
+        Bark.d("UserRepository instance created")
     }
 
     func testLoadUsersShouldReturnInitialUserList() async {
-        Bark.shared.i(message: "Testing UserRepository.loadUsers()", throwable: nil)
+        Bark.i("Testing UserRepository.loadUsers()")
 
         let users = await userRepository.loadUsers()
 
-        Bark.shared.d(message: "Loaded \(users.count) users from repository", throwable: nil)
+        Bark.d("Loaded \(users.count) users from repository")
         XCTAssertFalse(users.isEmpty, "Should load at least some users")
 
         // Verify user structure
         for user in users {
-            Bark.shared.v(message: "User: \(user.name) (ID: \(user.id), Active: \(user.isActive))", throwable: nil)
+            Bark.v("User: \(user.name) (ID: \(user.id), Active: \(user.isActive))")
             XCTAssertFalse(user.id.isEmpty, "User ID should not be empty")
             XCTAssertFalse(user.name.isEmpty, "User name should not be empty")
         }
 
-        Bark.shared.i(message: "✅ loadUsers() test completed successfully", throwable: nil)
+        Bark.i("✅ loadUsers() test completed successfully")
     }
 
     func testCreateUserShouldAddNewUserToRepository() async throws {
-        Bark.shared.i(message: "Testing user creation", throwable: nil)
+        Bark.i("Testing user creation")
 
         let initialUsers = userRepository.getUsers()
         let initialCount = initialUsers.count
-        Bark.shared.d(message: "Initial user count: \(initialCount)", throwable: nil)
+        Bark.d("Initial user count: \(initialCount)")
 
         let newUser = try await userRepository.createUser(name: "Test User")
 
-        Bark.shared.i(message: "Created user: \(newUser.name) with ID: \(newUser.id)", throwable: nil)
+        Bark.i("Created user: \(newUser.name) with ID: \(newUser.id)")
 
         let updatedUsers = userRepository.getUsers()
-        Bark.shared.d(message: "Updated user count: \(updatedUsers.count)", throwable: nil)
+        Bark.d("Updated user count: \(updatedUsers.count)")
 
         XCTAssertEqual(initialCount + 1, updatedUsers.count, "User count should increase by 1")
         XCTAssertTrue(updatedUsers.contains(where: { $0.id == newUser.id }), "New user should be in the list")
 
-        Bark.shared.i(message: "✅ User creation test passed", throwable: nil)
+        Bark.i("✅ User creation test passed")
     }
 
     func testCreateUserWithEmptyNameShouldThrowException() async {
-        Bark.shared.i(message: "Testing user creation with invalid input", throwable: nil)
+        Bark.i("Testing user creation with invalid input")
 
         do {
             _ = try await userRepository.createUser(name: "")
             XCTFail("Should have thrown exception for empty name")
         } catch {
-            Bark.shared.i(message: "✅ Correctly caught error: \(error.localizedDescription)", throwable: nil)
+            Bark.i("✅ Correctly caught error: \(error.localizedDescription)")
         }
 
         // Test with blank name too
@@ -85,42 +85,42 @@ final class UserRepositoryTests: XCTestCase {
             _ = try await userRepository.createUser(name: "   ")
             XCTFail("Should have thrown exception for blank name")
         } catch {
-            Bark.shared.i(message: "✅ Correctly caught exception for blank name", throwable: nil)
+            Bark.i("✅ Correctly caught exception for blank name")
         }
     }
 
     func testToggleUserActiveShouldChangeUserStatus() async throws {
-        Bark.shared.i(message: "Testing user status toggle", throwable: nil)
+        Bark.i("Testing user status toggle")
 
         // First create a user
         let user = try await userRepository.createUser(name: "Toggle Test User")
         let originalStatus = user.isActive
-        Bark.shared.d(message: "Original user status: active=\(originalStatus)", throwable: nil)
+        Bark.d("Original user status: active=\(originalStatus)")
 
         // Toggle the status
         let updatedUser = try await userRepository.toggleUserActive(userId: user.id)
-        Bark.shared.i(message: "Toggled user status: active=\(updatedUser.isActive)", throwable: nil)
+        Bark.i("Toggled user status: active=\(updatedUser.isActive)")
 
         XCTAssertNotEqual(originalStatus, updatedUser.isActive, "Status should have changed")
         XCTAssertEqual(user.id, updatedUser.id, "User ID should remain the same")
         XCTAssertEqual(user.name, updatedUser.name, "User name should remain the same")
 
-        Bark.shared.i(message: "✅ User toggle test completed", throwable: nil)
+        Bark.i("✅ User toggle test completed")
     }
 
     func testDeleteUserShouldRemoveUserFromRepository() async throws {
-        Bark.shared.i(message: "Testing user deletion", throwable: nil)
+        Bark.i("Testing user deletion")
 
         // Create a user to delete
         let userToDelete = try await userRepository.createUser(name: "Delete Me")
-        Bark.shared.d(message: "Created user for deletion: \(userToDelete.name)", throwable: nil)
+        Bark.d("Created user for deletion: \(userToDelete.name)")
 
         let beforeDeletion = userRepository.getUsers()
         let initialCount = beforeDeletion.count
 
         // Delete the user
         try await userRepository.deleteUser(userId: userToDelete.id)
-        Bark.shared.i(message: "Deleted user with ID: \(userToDelete.id)", throwable: nil)
+        Bark.i("Deleted user with ID: \(userToDelete.id)")
 
         let afterDeletion = userRepository.getUsers()
         let finalCount = afterDeletion.count
@@ -129,82 +129,82 @@ final class UserRepositoryTests: XCTestCase {
         XCTAssertFalse(afterDeletion.contains(where: { $0.id == userToDelete.id }),
                       "Deleted user should not be in list")
 
-        Bark.shared.i(message: "✅ User deletion test passed", throwable: nil)
+        Bark.i("✅ User deletion test passed")
     }
 
     func testClearUsersShouldRemoveAllUsers() async {
-        Bark.shared.i(message: "Testing clear all users", throwable: nil)
+        Bark.i("Testing clear all users")
 
         // Ensure we have some users
         _ = await userRepository.loadUsers()
         let beforeClear = userRepository.getUsers()
-        Bark.shared.d(message: "Users before clear: \(beforeClear.count)", throwable: nil)
+        Bark.d("Users before clear: \(beforeClear.count)")
 
         await userRepository.clearUsers()
 
         let afterClear = userRepository.getUsers()
-        Bark.shared.i(message: "Users after clear: \(afterClear.count)", throwable: nil)
+        Bark.i("Users after clear: \(afterClear.count)")
 
         XCTAssertTrue(afterClear.isEmpty, "Repository should be empty after clear")
 
-        Bark.shared.i(message: "✅ Clear users test completed", throwable: nil)
+        Bark.i("✅ Clear users test completed")
     }
 
     func testDemonstrateErrorLoggingWithExceptions() async {
-        Bark.shared.i(message: "Testing error scenarios and exception logging", throwable: nil)
+        Bark.i("Testing error scenarios and exception logging")
 
         // Test operations on non-existent user
         do {
             _ = try await userRepository.toggleUserActive(userId: "nonexistent-id")
             XCTFail("Should have thrown exception for non-existent user")
         } catch {
-//            Bark.shared.e(message: "Expected error when toggling non-existent user", throwable: error as NSError)
-            Bark.shared.i(message: "✅ Correctly handled non-existent user toggle", throwable: nil)
+           Bark.e(message: "Expected error when toggling non-existent user", throwable: error)
+            Bark.i("✅ Correctly handled non-existent user toggle")
         }
 
         do {
             try await userRepository.deleteUser(userId: "another-fake-id")
             XCTFail("Should have thrown exception for non-existent user")
         } catch {
-//            Bark.shared.e(message: "Expected error when deleting non-existent user", throwable: error as NSError)
-            Bark.shared.i(message: "✅ Correctly handled non-existent user deletion", throwable: nil)
+           Bark.e(message: "Expected error when deleting non-existent user", throwable: error)
+            Bark.i("✅ Correctly handled non-existent user deletion")
         }
 
-        Bark.shared.i(message: "✅ Error scenario testing completed", throwable: nil)
+        Bark.i("✅ Error scenario testing completed")
     }
 
     func testAsyncOperationsWithColoredOutput() async throws {
-        Bark.shared.i(message: "=== Testing Async Operations with Colored Logging ===", throwable: nil)
+        Bark.i("=== Testing Async Operations with Colored Logging ===")
 
         // Reload repository
         _ = await userRepository.loadUsers()
 
         // Create multiple users rapidly
-        Bark.shared.d(message: "Creating multiple users", throwable: nil)
+        Bark.d("Creating multiple users")
         let names = ["Async User 1", "Async User 2", "Async User 3"]
 
         for name in names {
             let user = try await userRepository.createUser(name: name)
-            Bark.shared.v(message: "Created: \(user.name)", throwable: nil)
+            Bark.v("Created: \(user.name)")
         }
 
         // Toggle some users
         let users = userRepository.getUsers()
-        Bark.shared.d(message: "Toggling user states", throwable: nil)
+        Bark.d("Toggling user states")
         for user in users.prefix(2) {
             let toggled = try await userRepository.toggleUserActive(userId: user.id)
-            Bark.shared.v(message: "Toggled: \(toggled.name) -> \(toggled.isActive ? "active" : "inactive")", throwable: nil)
+            Bark.v("Toggled: \(toggled.name) -> \(toggled.isActive ? "active" : "inactive")")
         }
 
-        Bark.shared.i(message: "✅ Async operations test completed", throwable: nil)
+        Bark.i("✅ Async operations test completed")
     }
 
     func testRepositoryStateManagement() async throws {
-        Bark.shared.i(message: "=== Testing Repository State Management ===", throwable: nil)
+        Bark.i("=== Testing Repository State Management ===")
 
         // Clear and start fresh
         await userRepository.clearUsers()
-        Bark.shared.d(message: "Repository cleared", throwable: nil)
+        Bark.d("Repository cleared")
 
         // Add users
         _ = try await userRepository.createUser(name: "User A")
@@ -212,44 +212,44 @@ final class UserRepositoryTests: XCTestCase {
         _ = try await userRepository.createUser(name: "User C")
 
         let users = userRepository.getUsers()
-        Bark.shared.i(message: "Repository contains \(users.count) users", throwable: nil)
+        Bark.i("Repository contains \(users.count) users")
 
         // Verify all users are present
         XCTAssertEqual(3, users.count, "Should have exactly 3 users")
 
         // Log each user
         for user in users {
-            Bark.shared.v(message: "  - \(user.name) (ID: \(user.id), Active: \(user.isActive))", throwable: nil)
+            Bark.v("  - \(user.name) (ID: \(user.id), Active: \(user.isActive))")
         }
 
-        Bark.shared.i(message: "✅ State management test completed", throwable: nil)
+        Bark.i("✅ State management test completed")
     }
 
     func testDemonstrateLoggingAtDifferentVolumes() async throws {
-        Bark.shared.i(message: "=== Testing Different Volume Levels ===", throwable: nil)
+        Bark.i("=== Testing Different Volume Levels ===")
 
         // Test with VERBOSE (show everything)
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
 
-        Bark.shared.i(message: "--- Volume: VERBOSE ---", throwable: nil)
+        Bark.i("--- Volume: VERBOSE ---")
         await userRepository.clearUsers()
         _ = try await userRepository.createUser(name: "Verbose Test")
 
         // Test with INFO (hide debug/verbose)
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.info, showTimestamp: false))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.info, showTimestamp: false))
 
-        Bark.shared.i(message: "--- Volume: INFO (debug/verbose filtered) ---", throwable: nil)
+        Bark.i("--- Volume: INFO (debug/verbose filtered) ---")
         _ = try await userRepository.createUser(name: "Info Test")
 
         // Test with WARNING (only warnings and errors)
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.warning, showTimestamp: false))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.warning, showTimestamp: false))
 
-        Bark.shared.i(message: "--- Volume: WARNING (only warnings/errors shown) ---", throwable: nil)
+        Bark.i("--- Volume: WARNING (only warnings/errors shown) ---")
         await userRepository.clearUsers()
 
-        Bark.shared.i(message: "✅ Volume demonstration completed", throwable: nil)
+        Bark.i("✅ Volume demonstration completed")
     }
 }

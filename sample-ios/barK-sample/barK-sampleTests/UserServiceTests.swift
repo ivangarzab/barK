@@ -24,137 +24,137 @@ final class UserServiceTests: XCTestCase {
         super.setUp()
 
         // Clear any existing trainers
-        Bark.shared.releaseAllTrainers()
+        Bark.releaseAllTrainers()
 
         // Configure barK for testing - this will show in console output!
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.debug, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.debug, showTimestamp: false))
 
-        Bark.shared.i(message: "=== Setting up UserServiceTests ===", throwable: nil)
+        Bark.i("=== Setting up UserServiceTests ===")
 
         userService = UserService()
 
-        Bark.shared.d(message: "UserService instance created for testing", throwable: nil)
+        Bark.d("UserService instance created for testing")
     }
 
     func testPerformActionShouldExecuteSuccessfully() {
-        Bark.shared.i(message: "Testing UserService.performAction()", throwable: nil)
+        Bark.i("Testing UserService.performAction()")
 
         // This should trigger the UserService's internal logging
         userService.performAction()
 
-        Bark.shared.v(message: "performAction() completed without exceptions", throwable: nil)
-        Bark.shared.i(message: "✅ UserService.performAction() test passed", throwable: nil)
+        Bark.v("performAction() completed without exceptions")
+        Bark.i("✅ UserService.performAction() test passed")
     }
 
     func testMultipleCallsShouldWorkConsistently() {
-        Bark.shared.i(message: "Testing multiple UserService calls", throwable: nil)
+        Bark.i("Testing multiple UserService calls")
 
         for index in 0..<3 {
-            Bark.shared.d(message: "Performing action #\(index + 1)", throwable: nil)
+            Bark.d("Performing action #\(index + 1)")
             userService.performAction()
         }
 
-        Bark.shared.i(message: "✅ Multiple calls test completed successfully", throwable: nil)
+        Bark.i("✅ Multiple calls test completed successfully")
     }
 
     func testDemonstrateDifferentLogLevelsInTests() {
-        Bark.shared.i(message: "Demonstrating various log levels during testing:", throwable: nil)
+        Bark.i("Demonstrating various log levels during testing:")
 
-        Bark.shared.v(message: "VERBOSE: Very detailed test information", throwable: nil)
-        Bark.shared.d(message: "DEBUG: Test debugging information", throwable: nil)
-        Bark.shared.i(message: "INFO: General test progress", throwable: nil)
-        Bark.shared.w(message: "WARNING: Something to watch out for in tests", throwable: nil)
+        Bark.v("VERBOSE: Very detailed test information")
+        Bark.d("DEBUG: Test debugging information")
+        Bark.i("INFO: General test progress")
+        Bark.w("WARNING: Something to watch out for in tests")
 
         // Simulate a successful test scenario
         do {
             userService.performAction()
-            Bark.shared.i(message: "Action completed successfully in test", throwable: nil)
-        } catch {
-//            Bark.shared.e(message: "Unexpected error in test", throwable: error as NSError)
+            Bark.i("Action completed successfully in test")
+        } catch { 
+           Bark.e(message: "Unexpected error in test", throwable: error)
             XCTFail("UserService should not throw exceptions")
         }
 
-        Bark.shared.i(message: "✅ Log level demonstration completed", throwable: nil)
+        Bark.i("✅ Log level demonstration completed")
     }
 
     func testShowPlainVsColoredOutputComparison() {
-        Bark.shared.i(message: "====== Testing with ColoredUnitTestTrainer ======", throwable: nil)
+        Bark.i("====== Testing with ColoredUnitTestTrainer ======")
 
         // Use colored trainer
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
 
-        Bark.shared.v(message: "Verbose message (should be gray)", throwable: nil)
-        Bark.shared.d(message: "Debug message (should be blue)", throwable: nil)
-        Bark.shared.i(message: "Info message (should be green)", throwable: nil)
-        Bark.shared.w(message: "Warning message (should be yellow)", throwable: nil)
-        Bark.shared.e(message: "Error message (should be red)", throwable: nil)
+        Bark.v("Verbose message (should be gray)")
+        Bark.d("Debug message (should be blue)")
+        Bark.i("Info message (should be green)")
+        Bark.w("Warning message (should be yellow)")
+        Bark.e("Error message (should be red)")
 
         userService.performAction()
 
-        Bark.shared.i(message: "====== Switching to plain UnitTestTrainer ======", throwable: nil)
+        Bark.i("====== Switching to plain UnitTestTrainer ======")
 
         // Switch to plain trainer
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: UnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: UnitTestTrainer(volume: Level.verbose, showTimestamp: false))
 
-        Bark.shared.v(message: "Verbose message (plain text)", throwable: nil)
-        Bark.shared.d(message: "Debug message (plain text)", throwable: nil)
-        Bark.shared.i(message: "Info message (plain text)", throwable: nil)
-        Bark.shared.w(message: "Warning message (plain text)", throwable: nil)
-        Bark.shared.e(message: "Error message (plain text)", throwable: nil)
+        Bark.v("Verbose message (plain text)")
+        Bark.d("Debug message (plain text)")
+        Bark.i("Info message (plain text)")
+        Bark.w("Warning message (plain text)")
+        Bark.e("Error message (plain text)")
 
         userService.performAction()
 
-        Bark.shared.i(message: "✅ Trainer comparison completed", throwable: nil)
+        Bark.i("✅ Trainer comparison completed")
     }
 
     func testDemonstrateTimestampOptions() {
-        Bark.shared.i(message: "=== Testing Timestamp Options ===", throwable: nil)
+        Bark.i("=== Testing Timestamp Options ===")
 
         // Test with timestamps enabled
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: true))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: true))
 
-        Bark.shared.i(message: "--- With Timestamps ---", throwable: nil)
+        Bark.i("--- With Timestamps ---")
         userService.performAction()
-        Bark.shared.d(message: "Notice the HH:mm:ss.SSS timestamps on each line", throwable: nil)
+        Bark.d("Notice the HH:mm:ss.SSS timestamps on each line")
 
         // Test with timestamps disabled
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
 
-        Bark.shared.i(message: "--- Without Timestamps ---", throwable: nil)
+        Bark.i("--- Without Timestamps ---")
         userService.performAction()
-        Bark.shared.d(message: "Notice the cleaner output without timestamps", throwable: nil)
+        Bark.d("Notice the cleaner output without timestamps")
 
-        Bark.shared.i(message: "✅ Timestamp options demonstration completed", throwable: nil)
+        Bark.i("✅ Timestamp options demonstration completed")
     }
 
     func testVolumeFilteringInAction() {
-        Bark.shared.i(message: "=== Testing Volume Filtering ===", throwable: nil)
+        Bark.i("=== Testing Volume Filtering ===")
 
         // Test VERBOSE level (shows everything)
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
 
-        Bark.shared.i(message: "--- Volume: VERBOSE (shows all) ---", throwable: nil)
-        Bark.shared.v(message: "Verbose message", throwable: nil)
-        Bark.shared.d(message: "Debug message", throwable: nil)
-        Bark.shared.i(message: "Info message", throwable: nil)
-        Bark.shared.w(message: "Warning message", throwable: nil)
+        Bark.i("--- Volume: VERBOSE (shows all) ---")
+        Bark.v("Verbose message")
+        Bark.d("Debug message")
+        Bark.i("Info message")
+        Bark.w("Warning message")
 
         // Test WARNING level (shows warnings and above)
-        Bark.shared.releaseAllTrainers()
-        Bark.shared.train(trainer: ColoredUnitTestTrainer(volume: Level.warning, showTimestamp: false))
+        Bark.releaseAllTrainers()
+        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.warning, showTimestamp: false))
 
-        Bark.shared.i(message: "--- Volume: WARNING (filters verbose, debug, info) ---", throwable: nil)
-        Bark.shared.v(message: "Verbose message (filtered)", throwable: nil)
-        Bark.shared.d(message: "Debug message (filtered)", throwable: nil)
-        Bark.shared.i(message: "Info message (filtered)", throwable: nil)
-        Bark.shared.w(message: "Warning message (visible)", throwable: nil)
-        Bark.shared.e(message: "Error message (visible)", throwable: nil)
+        Bark.i("--- Volume: WARNING (filters verbose, debug, info) ---")
+        Bark.v("Verbose message (filtered)")
+        Bark.d("Debug message (filtered)")
+        Bark.i("Info message (filtered)")
+        Bark.w("Warning message (visible)")
+        Bark.e("Error message (visible)")
 
-        Bark.shared.i(message: "✅ Volume filtering demonstration completed", throwable: nil)
+        Bark.i("✅ Volume filtering demonstration completed")
     }
 }

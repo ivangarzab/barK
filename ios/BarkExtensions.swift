@@ -9,7 +9,6 @@
 //    Instead of: Bark.shared.i(message: "Hello", throwable: nil)
 //    Use:        Bark.i("Hello")
 //
-// NOTE: Make sure to update this file if ./ios/BarkExtensions changes!
 
 import Foundation
 import shared

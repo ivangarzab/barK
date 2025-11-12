@@ -111,8 +111,18 @@ jobs:
       - name: Grant Execute Permission for Gradlew
         run: chmod +x gradlew
 
-      - name: Run iOS Unit Tests
+      - name: Run iOS Unit Tests (Shared Library)
         run: ./gradlew shared:iosSimulatorArm64Test --continue
+
+      - name: Run iOS Sample App Tests
+        run: |
+          cd sample-ios/barK-sample
+          xcodebuild test \
+            -project barK-sample.xcodeproj \
+            -scheme barK-sample \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -resultBundlePath TestResults \
+            | xcpretty || true
 
       - name: Upload iOS Test Results
         uses: actions/upload-artifact@v4

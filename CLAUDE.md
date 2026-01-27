@@ -1,7 +1,6 @@
 # CLAUDE.md - barK Project Guide
 
 **Last updated:** 2026-01-27
-**Current Version:** 0.1.3
 **Purpose:** Quick reference for Claude Code when working with the barK logging library
 
 ---

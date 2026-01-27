@@ -4,9 +4,25 @@ This directory contains Swift helpers for a better barK experience on iOS.
 
 ## 🚀 Quick Setup
 
-### Step 1: Add barK to your project
+### Step 1: Add barK to your KMP shared module
 
-Add the barK framework to your iOS project using Swift Package Manager, CocoaPods, or by manually linking the framework.
+barK is a Kotlin Multiplatform library distributed via Maven Central. Add it to your shared module:
+
+```kotlin
+// In your shared module's build.gradle.kts
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("com.ivangarzab:bark:<version>")
+        }
+    }
+}
+```
+
+The iOS framework is generated automatically. Import it in your Swift code:
+```swift
+import shared  // Your KMP shared module name
+```
 
 ### Step 2: Add the Swift Extensions (Recommended)
 

@@ -36,21 +36,51 @@ _**Born from real SDK development needs**_ - when you need different logging beh
 
 ---
 
-## Quick Start
+## Installation
 
-<details open>
-<summary><b>Android</b></summary>
+Add barK to your Kotlin Multiplatform project via Maven Central:
 
-### 1. Add Dependency
-
+**Kotlin DSL:**
 ```kotlin
 // build.gradle.kts
-dependencies {
-    implementation("com.ivangarzab:bark:<version>")
+repositories {
+    mavenCentral()
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("com.ivangarzab:bark:<version>")
+        }
+    }
 }
 ```
 
-### 2. Initialize (One-time setup)
+**Groovy:**
+```groovy
+// build.gradle
+repositories {
+    mavenCentral()
+}
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation 'com.ivangarzab:bark:<version>'
+            }
+        }
+    }
+}
+```
+
+---
+
+## Quick Start
+
+### Android
+
+#### Initialize (One-time setup)
 
 ```kotlin
 class MyApplication : Application() {
@@ -68,7 +98,7 @@ class MyApplication : Application() {
 }
 ```
 
-### 3. Log anywhere
+#### Log anywhere
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
@@ -88,35 +118,28 @@ class MainActivity : AppCompatActivity() {
 - ✅ Switches to colored console output during tests
 - ✅ Uses Android Logcat for production
 
-</details>
+---
 
-<details>
-<summary><b>iOS</b></summary>
+### iOS
 
-### 1. Add Dependency
+#### Import the framework
 
-Add barK to your Xcode project via Swift Package Manager or CocoaPods.
-
-**Swift Package Manager:**
 ```swift
-dependencies: [
-    .package(url: "https://github.com/ivangarzab/barK.git", from: "0.2.0")
-]
+import shared  // Your KMP shared module name
 ```
 
-### 2. Copy BarkExtensions.swift
+#### Copy BarkExtensions.swift (Optional but Recommended)
 
-For a cleaner Swift API, copy `ios/BarkExtensions.swift` into your project. This transforms:
+For a cleaner Swift API, copy `ios/BarkExtensions.swift` into your iOS app target. This transforms:
+
 ```swift
 Bark.shared.d(message: "Hello")  // Without extensions
 Bark.d("Hello")                   // With extensions ✨
 ```
 
-### 3. Initialize (One-time setup)
+#### Initialize (One-time setup)
 
 ```swift
-import shared
-
 @main
 struct MyApp: App {
     init() {
@@ -140,7 +163,7 @@ struct MyApp: App {
 }
 ```
 
-### 4. Log anywhere
+#### Log anywhere
 
 ```swift
 class UserRepository {
@@ -161,8 +184,6 @@ class UserRepository {
 - Auto-tag detection is **disabled by default** (performance cost). Enable with `BarkConfig.shared.autoTagDisabled = false`
 - Color support works in Terminal and CI/CD, but not in Xcode console
 - See [ios/README.md](ios/README.md) for detailed iOS integration guide
-
-</details>
 
 ---
 
@@ -225,50 +246,6 @@ Bark.train(FileTrainer(volume = Level.ERROR))          // Errors only
 **Platform Parity:**
 - Android: `AndroidLogTrainer`, `AndroidTestLogTrainer`, `UnitTestTrainer`, `ColoredUnitTestTrainer`
 - iOS: `NSLogTrainer`, `UnitTestTrainer`, `ColoredUnitTestTrainer`
-
----
-
-## Installation
-
-### Android (Gradle)
-
-**Kotlin DSL:**
-```kotlin
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation("com.ivangarzab:bark:<version>")
-}
-```
-
-**Groovy:**
-```groovy
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'com.ivangarzab:bark:<version>'
-}
-```
-
-### iOS (Swift Package Manager)
-
-Add to your `Package.swift`:
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/ivangarzab/barK.git", from: "0.2.0")
-]
-```
-
-Or add via Xcode: File → Add Package Dependencies → Enter `https://github.com/ivangarzab/barK`
-
-**Don't forget to copy** `ios/BarkExtensions.swift` into your project for a cleaner Swift API!
-
-See [ios/README.md](ios/README.md) for detailed iOS setup.
 
 ---
 

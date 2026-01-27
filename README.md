@@ -1,9 +1,10 @@
-[![Build Check](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.ivangarzab/bark.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.ivangarzab/bark)
-[![Kotlin](https://img.shields.io/badge/kotlin-multiplatform-blue.svg)](https://kotlinlang.org/docs/multiplatform.html)
-[![Kotlin](https://img.shields.io/badge/kotlin-android-green.svg)](https://kotlinlang.org/docs/multiplatform.html)
+![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-orange?logo=kotlin)
+![Android](https://img.shields.io/badge/Android-✔️-green?logo=android)
+![iOS](https://img.shields.io/badge/iOS-✔️-lightgrey?logo=apple)
 [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/Heapy/awesome-kotlin)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build Check](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
 
 ![wordmark](/assets/wordmark.png)
 
@@ -23,17 +24,22 @@ barK solves common logging pain points with a **memorable, themed API** and **po
 - 🏷️ **Automatic tag detection** - No more manual TAG constants
 - 🧪 **Smart test detection** - Different output for tests vs. production
 - 🎯 **Trainer system** - Flexible, extensible output destinations
-- 🔄 **Kotlin Multiplatform** - Works across Android + iOS
+- 🔄 **Kotlin Multiplatform** - Full Android + iOS support
 
 _**Born from real SDK development needs**_ - when you need different logging behavior for Android runs vs. test runs, **barK** has you covered.
 
 ### As Seen On
 
-**Medium:** *[barK: A Lightweight Logging Library for Android](https://levelup.gitconnected.com/bark-a-lightweight-logging-library-for-android-14583711bc04)*
+**Medium:**
+- *[barK: A Lightweight Logging Library for Android](https://levelup.gitconnected.com/bark-a-lightweight-logging-library-for-android-14583711bc04)*
+- *iOS platform support article coming soon!*
 
 ---
 
 ## Quick Start
+
+<details open>
+<summary><b>Android</b></summary>
 
 ### 1. Add Dependency
 
@@ -50,14 +56,14 @@ dependencies {
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        
+
         // Train barK with Android logging
         if (BuildConfig.DEBUG) {
             Bark.train(AndroidLogTrainer())
         }
-        
+
         // Optionally add test trainer (auto-activates during tests)
-        Bark.train(ColoredTestTrainer())
+        Bark.train(ColoredUnitTestTrainer())
     }
 }
 ```
@@ -68,7 +74,7 @@ class MyApplication : Application() {
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         // Automatic tag detection - shows [MainActivity] in logs
         Bark.d("App started successfully")
         Bark.i("User logged in: ${user.name}")
@@ -81,6 +87,82 @@ class MainActivity : AppCompatActivity() {
 - ✅ Detects your class names as tags
 - ✅ Switches to colored console output during tests
 - ✅ Uses Android Logcat for production
+
+</details>
+
+<details>
+<summary><b>iOS</b></summary>
+
+### 1. Add Dependency
+
+Add barK to your Xcode project via Swift Package Manager or CocoaPods.
+
+**Swift Package Manager:**
+```swift
+dependencies: [
+    .package(url: "https://github.com/ivangarzab/barK.git", from: "0.2.0")
+]
+```
+
+### 2. Copy BarkExtensions.swift
+
+For a cleaner Swift API, copy `ios/BarkExtensions.swift` into your project. This transforms:
+```swift
+Bark.shared.d(message: "Hello")  // Without extensions
+Bark.d("Hello")                   // With extensions ✨
+```
+
+### 3. Initialize (One-time setup)
+
+```swift
+import shared
+
+@main
+struct MyApp: App {
+    init() {
+        // Enable auto-tag detection (optional, has performance cost)
+        BarkConfig.shared.autoTagDisabled = false
+
+        // Train barK with iOS logging
+        #if DEBUG
+        Bark.train(trainer: NSLogTrainer())
+        Bark.train(trainer: ColoredUnitTestTrainer())
+        #else
+        Bark.train(trainer: NSLogTrainer(volume: .warning))
+        #endif
+    }
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+```
+
+### 4. Log anywhere
+
+```swift
+class UserRepository {
+    func saveUser(user: User) {
+        // Automatic tag detection - shows [UserRepository] in logs
+        Bark.d("Saving user: \(user.name)")
+        Bark.i("User saved successfully")
+    }
+}
+```
+
+**That's it!** barK automatically:
+- ✅ Detects your class names as tags (when enabled)
+- ✅ Switches to colored console output during tests
+- ✅ Uses NSLog for system logging
+
+**iOS-Specific Notes:**
+- Auto-tag detection is **disabled by default** (performance cost). Enable with `BarkConfig.shared.autoTagDisabled = false`
+- Color support works in Terminal and CI/CD, but not in Xcode console
+- See [ios/README.md](ios/README.md) for detailed iOS integration guide
+
+</details>
 
 ---
 
@@ -99,7 +181,7 @@ class UserRepository {
 
 class MainActivity : AppCompatActivity() {
     fun onCreate() {
-        Bark.d("Activity created")  // Tag: [MainActivity] 
+        Bark.d("Activity created")  // Tag: [MainActivity]
     }
 }
 ```
@@ -109,15 +191,17 @@ class MainActivity : AppCompatActivity() {
 Different output for different environments:
 
 ```kotlin
-// In your app: Shows in Android Logcat
+// In your app: Shows in system logs (Logcat/NSLog)
 Bark.d("User action performed")
 
-// In unit tests: Shows colored in IDE console  
+// In unit tests: Shows colored in console
 @Test
 fun testUserAction() {
     Bark.d("Testing user action")  // Colored console output!
 }
 ```
+
+Works on both Android and iOS with automatic detection of JUnit, XCTest, and other testing frameworks.
 
 ### 🎯 Flexible Trainer System
 
@@ -128,187 +212,28 @@ Easy to extend and customize:
 Bark.train(AndroidLogTrainer())
 
 // Multiple outputs
-Bark.train(AndroidLogTrainer())           // Regular Logcat
-Bark.train(UnitTestTrainer())             // Colored console output using print()
-Bark.train(FileTrainer("app.log"))        // File logging  
+Bark.train(AndroidLogTrainer())           // System Logcat
+Bark.train(ColoredUnitTestTrainer())      // Colored console output
+Bark.train(FileTrainer("app.log"))        // File logging
 Bark.train(CrashReportingTrainer())       // Custom trainers
 
 // Custom volume control per trainer
 Bark.train(AndroidLogTrainer(volume = Level.DEBUG))    // All levels
-Bark.train(UnitTestTrainer(volume = Level.ERROR))      // Errors only
+Bark.train(FileTrainer(volume = Level.ERROR))          // Errors only
 ```
 
----
-
-## Advanced Usage
-
-### Custom Trainers
-
-Create your own output destinations:
-
-```kotlin
-// Custom error capturing trainer for warnings, crashing and other all errors
-class CustomErrorTrainer(
-    override val volume: Level = Level.WARNING,
-) : Trainer {
-    override val pack: Pack = Pack.CUSTOM
-
-    override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
-        if (level.ordinal >= volume.ordinal) {
-            // Handle error
-        }
-    }
-}
-
-// Custom trainer to send Slack messages
-class SlackTrainer(
-    override val volume: Level = Level.INFO,
-    private val webhookUrl: String
-) : Trainer {
-    override val pack: Pack = Pack.CUSTOM
-
-    override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
-        if (level.ordinal >= volume.ordinal) {
-            // Send to Slack
-        }
-    }
-}
-```
-
-### Volume Control
-
-Different trainers can have different volume thresholds:
-
-```kotlin
-Bark.train(AndroidLogTrainer(volume = Level.DEBUG))     // Everything to Logcat
-Bark.train(FileTrainer(volume = Level.WARNING))         // Warnings+ to file  
-Bark.train(CrashReportingTrainer())                     // Errors only (internal logic)
-```
-
-### Global vs Auto-Detection Tags
-
-```kotlin
-// Auto-detection (default)
-class PaymentService {
-    fun processPayment() {
-        Bark.d("Processing payment")  // Tag: [PaymentService]
-    }
-}
-
-// Global tag override
-Bark.tag("PAYMENT_SDK")
-Bark.d("Payment processed")  // Tag: [PAYMENT_SDK]
-
-// Back to auto-detection
-Bark.untag()
-Bark.d("Payment completed")  // Tag: [PaymentService]
-```
-
-### Runtime Control
-
-```kotlin
-// Disable all logging
-Bark.muzzle()
-Bark.d("This won't appear anywhere")
-
-// Re-enable  
-Bark.unmuzzle()
-Bark.d("This will appear")
-
-// Check current status
-println(Bark.getStatus())
-// Output:
-// Bark Status:
-//   Muzzled: false
-//   Tag: auto-detect  
-//   Trainers: 2
-//     [0] AndroidLogTrainer
-//     [1] ColoredUnitTestTrainer
-```
-
----
-
-## SDK Integration
-
-Perfect for SDK developers who need different logging behavior in different contexts:
-
-```kotlin
-class MySDK {
-    fun initialize() {
-        // Smart trainer setup
-        if (BuildConfig.DEBUG) {
-            Bark.train(AndroidLogTrainer(volume = Level.DEBUG))
-            Bark.train(ColoredTestTrainer(volume = Level.DEBUG))
-        } else {
-            // Production: only errors, and only to crash reporting with a global tag
-            Bark.train(CrashReportingTrainer())
-            Bark.tag("MySDK")
-        }
-        
-        Bark.i("SDK initialized")
-    }
-    
-    fun performOperation() {
-        Bark.d("Starting operation")
-        try {
-            // Your SDK logic
-            Bark.i("Operation completed successfully")
-        } catch (e: Exception) {
-            Bark.e("Operation failed", e)
-            throw e
-        }
-    }
-}
-```
-
-SDK integrators can easily muzzle the barK instance, or retrain it with their own trainers:
-
-```kotlin
-// Muzzle SDK from integrating client side
-Bark.muzzle()
-
-// Or retrain for client's needs
-Bark.train(AndroidLogTrainer(volume = System.Logger.Level.WARNING))
-```
-
----
-
-## Sample App
-
-Check out the included sample app to see barK in action:
-
-```bash
-./gradlew :sample-android:installDebug
-```
-
-The sample demonstrates:
-- 📱 **Realistic usage** in a typical Android app
-- 🔧 **Debug console** for testing all features
-- 🏷️ **Auto-tag detection** across multiple classes
-- 🎯 **Trainer switching** and configuration
-- 🧪 **Unit Test suite** to showcase console print features
-
----
-
-## Kotlin Multiplatform
-
-barK is built for Kotlin Multiplatform from the ground up:
-
-```kotlin
-// Platform implementations
-// ✅ Kotlin Multiplatform (brand new!)
-// ✅ Android (available now)
-// 🏗️ iOS (working on it...)
-```
+**Platform Parity:**
+- Android: `AndroidLogTrainer`, `AndroidTestLogTrainer`, `UnitTestTrainer`, `ColoredUnitTestTrainer`
+- iOS: `NSLogTrainer`, `UnitTestTrainer`, `ColoredUnitTestTrainer`
 
 ---
 
 ## Installation
 
-### Gradle (Kotlin DSL)
+### Android (Gradle)
 
+**Kotlin DSL:**
 ```kotlin
-// dependencyResolutionManagement
 repositories {
     mavenCentral()
 }
@@ -318,8 +243,7 @@ dependencies {
 }
 ```
 
-### Gradle (Groovy)
-
+**Groovy:**
 ```groovy
 repositories {
     mavenCentral()
@@ -329,6 +253,69 @@ dependencies {
     implementation 'com.ivangarzab:bark:<version>'
 }
 ```
+
+### iOS (Swift Package Manager)
+
+Add to your `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/ivangarzab/barK.git", from: "0.2.0")
+]
+```
+
+Or add via Xcode: File → Add Package Dependencies → Enter `https://github.com/ivangarzab/barK`
+
+**Don't forget to copy** `ios/BarkExtensions.swift` into your project for a cleaner Swift API!
+
+See [ios/README.md](ios/README.md) for detailed iOS setup.
+
+---
+
+## Sample Apps
+
+Check out the included sample apps to see barK in action:
+
+**Android:**
+```bash
+./gradlew :sample-android:installDebug
+```
+
+**iOS:**
+Open `sample-ios/barK-sample/barK-sample.xcodeproj` in Xcode and run.
+
+Both samples demonstrate:
+- 📱 **Realistic usage** with repository pattern
+- 🔧 **Multiple trainers** and configuration
+- 🏷️ **Auto-tag detection** across multiple classes
+- 🎯 **Trainer switching** between environments
+- 🧪 **Unit test suites** showcasing console features
+
+---
+
+## Kotlin Multiplatform
+
+barK is built for Kotlin Multiplatform from the ground up with full platform parity:
+
+```kotlin
+// ✅ Kotlin Multiplatform - Shared API
+// ✅ Android - Logcat, test detection, colored console
+// ✅ iOS - NSLog, XCTest detection, colored console (Terminal/CI)
+```
+
+**Common API, platform-specific implementations:**
+- Automatic tag detection works on both platforms (with platform-specific stack trace parsing)
+- Test environment detection on Android (JUnit, Robolectric, Espresso) and iOS (XCTest)
+- Colored console output with automatic color support detection
+
+---
+
+## Documentation
+
+- **[Advanced Usage Guide](docs/ADVANCED_USAGE.md)** - Custom trainers, volume control, runtime management, platform-specific notes
+- **[SDK Integration Guide](docs/SDK_INTEGRATION.md)** - Using barK in SDKs, integrator control, best practices
+- **[iOS Integration Guide](ios/README.md)** - Detailed iOS setup, BarkExtensions.swift, platform-specific configuration
+- **[Contributing Guide](CONTRIBUTING.md)** - Development setup, coding guidelines, PR process
 
 ---
 
@@ -342,7 +329,7 @@ dependencies {
 | Test environment handling | ✅ | ❌ |
 | Multiple outputs | ✅ | ❌ |
 | Runtime control | ✅ | ❌ |
-| String formatting | ✅ | ❌ |
+| Kotlin Multiplatform | ✅ | ❌ |
 
 ### vs. Timber
 

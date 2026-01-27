@@ -4,18 +4,16 @@ import com.ivangarzab.bark.Level
 import com.ivangarzab.bark.Pack
 import com.ivangarzab.bark.Trainer
 import com.ivangarzab.bark.detectors.isRunningTests
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import platform.Foundation.*
 
 /**
- * TestTrainer handles simple console logging during Kotlin tests.
+ * UnitTestTrainer handles simple console logging during tests on iOS.
  *
- * This trainer provides clean, uncolored console output during tests.
- * Perfect for environments that don't support ANSI colors,
- * or when you prefer simple clean output.
+ * This trainer provides clean, uncolored console output during tests using print().
+ * Perfect for Xcode's test console or when you prefer simple, clean test
+ * output without formatting.
  *
- * @since 0.0.1
+ * @since 0.2.0
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */
@@ -60,7 +58,7 @@ open class UnitTestTrainer(
             append(message)
         }
 
-        // Print the main message
+        // Print the main message using iOS print()
         println(formattedMessage)
 
         // Print exception if present
@@ -75,6 +73,7 @@ open class UnitTestTrainer(
 
     /**
      * Format the level label - can be overridden by subclasses.
+     * .
      */
     protected open fun formatLevelLabel(level: Level): String {
         return level.label
@@ -84,7 +83,7 @@ open class UnitTestTrainer(
      * Format exception message - can be overridden by subclasses.
      */
     protected open fun formatException(throwable: Throwable): String {
-        return "Exception: ${throwable.message}"
+        return "Error: ${throwable.message}"
     }
 
     /**
@@ -99,7 +98,9 @@ open class UnitTestTrainer(
      * Get formatted timestamp for log entries.
      */
     private fun getTimestamp(): String {
-        val formatter = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault())
-        return formatter.format(Date())
+        val dateFormatter = NSDateFormatter().apply {
+            dateFormat = "HH:mm:ss.SSS"
+        }
+        return dateFormatter.stringFromDate(NSDate())
     }
 }

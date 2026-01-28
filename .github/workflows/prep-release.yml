@@ -117,6 +117,11 @@ jobs:
       - name: Finalize All Staged Repositories via Script
         run: ./tools/publish-finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab
 
+        # This secondary, duplicative call is required due to the conflicting namespaces
+        # TODO: Delete this step once we migrate the library to the new namespace!
+      - name: Finalize All Staged Repositories via Script v2
+        run: ./tools/publish-finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab.bark
+
   release-summary:
     name: Release Summary
     runs-on: ubuntu-latest

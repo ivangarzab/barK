@@ -1,0 +1,4 @@
+site_name: barK Documemtation
+site_url: https://ivangarzab.github.io/bark/
+theme:
+  name: material

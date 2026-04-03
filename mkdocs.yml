@@ -1,5 +1,7 @@
 site_name: barK
 site_url: https://ivangarzab.github.io/bark/
+repo_url: https://github.com/ivangarzab/barK
+repo_name: ivangarzab/barK
 theme:
   name: material
   font:
@@ -23,6 +25,21 @@ theme:
         name: Light mode
       primary: custom
       accent: deep orange
+
+copyright: Copyright &copy; Iván Garza Bermea
+
+extra:
+  social:
+    - icon: material/web
+      link: https://ivangarzab.com
+    - icon: fontawesome/brands/github
+      link: https://github.com/ivangarzab
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/ivangarzab/
+    - icon: fontawesome/brands/stack-overflow
+      link: https://stackoverflow.com/users/13021452/iv%c3%a1n-garza-bermea
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ivangarzab
 
 extra_css:
   - stylesheets/extra.css

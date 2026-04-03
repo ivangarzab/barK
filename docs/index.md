@@ -1,11 +1,8 @@
-# barK
+# **barK**
 
-**A lightweight, extensible logging library for Kotlin Multiplatform** with automatic tag detection and smart test environment handling.
+**A lightweight, extensible logging library for Kotlin Multiplatform**.
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.ivangarzab/bark.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.ivangarzab/bark)
-[![Build](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-orange?logo=kotlin)
+*Because every log deserves a good home* 🐕🏠
 
 ---
 

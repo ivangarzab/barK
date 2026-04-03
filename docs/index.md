@@ -10,25 +10,25 @@
 
 <div class="grid cards" markdown>
 
+-   :material-cellphone-link: **Kotlin Multiplatform**
+
+    ---
+    Full platform parity across Android and iOS from a single shared API.
+
 -   :material-tag-outline: **Automatic tag detection**
 
     ---
-    No more manual `TAG` constants. barK reads the calling class name from the stack trace automatically.
-
--   :material-flask-outline: **Smart test detection**
-
-    ---
-    Automatically switches between system output and colored console output depending on whether you're in a test run.
+    No more manual `TAG` constants. **barK** reads the calling class name from the stack trace automatically.
 
 -   :material-puzzle-outline: **Trainer system**
 
     ---
     Plug in any number of output destinations — Logcat, NSLog, files, crash reporters, or your own.
 
--   :material-cellphone-link: **Kotlin Multiplatform**
+-   :material-flask-outline: **Smart test detection**
 
     ---
-    Full platform parity across Android and iOS from a single shared API.
+    Automatically switches between system output and colored console output depending on whether you're in a test run.
 
 </div>
 

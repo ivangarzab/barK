@@ -4,6 +4,7 @@ repo_url: https://github.com/ivangarzab/barK
 repo_name: ivangarzab/barK
 theme:
   name: material
+  custom_dir: overrides
   font:
     text: Nunito Sans
     code: Roboto Mono

@@ -1,9 +1,9 @@
-site_name: barK Documentation
+site_name: barK
 site_url: https://ivangarzab.github.io/bark/
 theme:
   name: material
   font:
-    text: Gothic A1
+    text: Nunito Sans
     code: Roboto Mono
   logo: assets/barK-mark-white.png
   favicon: assets/barK-mark.png
@@ -29,6 +29,9 @@ extra_css:
 
 markdown_extensions:
   - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -39,3 +42,10 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Overview: index.md
+  - Advanced Usage: ADVANCED_USAGE.md
+  - SDK Integration: SDK_INTEGRATION.md

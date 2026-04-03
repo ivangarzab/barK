@@ -8,7 +8,7 @@ This guide covers advanced features and customization options for barK.
 
 Create your own output destinations by implementing the `Trainer` interface:
 
-```kotlin
+```kotlin title="CustomErrorTrainer.kt" linenums="1"
 // Custom error capturing trainer for warnings, errors, and critical logs
 class CustomErrorTrainer(
     override val volume: Level = Level.WARNING,
@@ -56,7 +56,7 @@ class FileTrainer(
 
 **Register your custom trainers:**
 
-```kotlin
+```kotlin title="Any Class" linenums="1"
 Bark.train(CustomErrorTrainer())
 Bark.train(SlackTrainer(webhookUrl = "https://hooks.slack.com/..."))
 Bark.train(FileTrainer(logFile = File("app.log")))

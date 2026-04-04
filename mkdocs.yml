@@ -86,4 +86,5 @@ nav:
     - Custom Trainers: advanced/custom-trainers.md
     - SDK Integration: advanced/sdk-integration.md
   - Comparison: comparison.md
+  - In the Wild: in-the-wild.md
   - API Reference: api-reference.md

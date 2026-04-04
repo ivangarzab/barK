@@ -59,14 +59,13 @@ Set up **barK** once at app launch — typically in your `App` struct:
 @main
 struct MyApp: App {
     init() {
-        // Optional: enable auto-tag detection (disabled by default — has performance cost)
-        BarkConfig.shared.autoTagDisabled = false
+        BarkConfig.shared.autoTagDisabled = false // (1)!
 
         #if DEBUG
-        Bark.train(trainer: NSLogTrainer())
-        Bark.train(trainer: ColoredUnitTestTrainer())  // Auto-activates in XCTest runs
+        Bark.train(trainer: NSLogTrainer())              // (2)!
+        Bark.train(trainer: ColoredUnitTestTrainer())    // (3)!
         #else
-        Bark.train(trainer: NSLogTrainer(volume: .warning))
+        Bark.train(trainer: NSLogTrainer(volume: .warning)) // (4)!
         #endif
     }
 
@@ -75,6 +74,11 @@ struct MyApp: App {
     }
 }
 ```
+
+1. Enables auto-tag detection from the call stack. Disabled by default due to the performance cost of C interop and Swift symbol demangling — skip this line if you don't need per-class tags.
+2. Routes logs through iOS's NSLog system. Visible in Console.app and Xcode's debug console.
+3. Colored console output for XCTest runs. Activates automatically when a test environment is detected.
+4. In production, only `WARNING` and above reach NSLog. Keeps system logs clean and meaningful.
 
 ---
 

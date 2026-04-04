@@ -16,6 +16,7 @@ theme:
     - navigation.footer
     - search.highlight
     - content.code.copy
+    - content.code.annotate
   palette:
     # Dark Mode
     - scheme: slate

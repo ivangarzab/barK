@@ -9,19 +9,19 @@ This section covers **barK**'s deeper configuration options — volume control, 
 Each trainer has an independent volume threshold. Logs below the threshold are silently ignored by that trainer, but may still be handled by others:
 
 ```kotlin
-// Logcat gets everything
-Bark.train(AndroidLogTrainer(volume = Level.VERBOSE))
+Bark.train(AndroidLogTrainer(volume = Level.VERBOSE))           // (1)!
+Bark.train(FileTrainer(volume = Level.WARNING, logFile = File("app.log"))) // (2)!
+Bark.train(CrashReportingTrainer(volume = Level.ERROR))         // (3)!
 
-// File only gets warnings and above
-Bark.train(FileTrainer(volume = Level.WARNING, logFile = File("app.log")))
-
-// Crash reporter only gets errors
-Bark.train(CrashReportingTrainer(volume = Level.ERROR))
-
-Bark.v("Logcat only")
+Bark.v("Logcat only")       // (4)!
 Bark.w("Logcat + file")
 Bark.e("All three trainers")
 ```
+
+1. Logcat receives everything — `VERBOSE` and above.
+2. The file trainer only writes `WARNING` and above, keeping the log file focused on actionable issues.
+3. The crash reporter only activates on `ERROR` and above — high-signal, low-noise.
+4. A `VERBOSE` log reaches only Logcat. As severity increases, more trainers pick it up.
 
 **Level hierarchy:**
 

@@ -54,14 +54,18 @@ class MyApplication : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
-            Bark.train(AndroidLogTrainer())           // Logcat output
-            Bark.train(ColoredUnitTestTrainer())      // Colored console (auto-activates in tests)
+            Bark.train(AndroidLogTrainer())           // (1)!
+            Bark.train(ColoredUnitTestTrainer())      // (2)!
         } else {
-            Bark.train(AndroidLogTrainer(volume = Level.WARNING))  // Warnings+ in production
+            Bark.train(AndroidLogTrainer(volume = Level.WARNING))  // (3)!
         }
     }
 }
 ```
+
+1. Routes all logs to Android Logcat. Uses the `SYSTEM` pack — only one system trainer can be active at a time.
+2. Colored console output for unit tests. Activates automatically when a test environment is detected — no extra config needed.
+3. In production, only `WARNING` and above reach Logcat. Keeps logs meaningful and reduces noise.
 
 ---
 

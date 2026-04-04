@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kover)
+    alias(libs.plugins.dokka)
     `maven-publish`
     signing
 }
@@ -87,7 +88,7 @@ publishing {
         publications.withType<MavenPublication> {
             artifactId = artifactId.replace("shared", "bark")
             groupId = "com.ivangarzab"
-            version = "0.2.2"
+            version = "0.2.3"
 
             pom {
                 name = "barK"

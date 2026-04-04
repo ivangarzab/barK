@@ -1,14 +1,11 @@
 # API Reference
 
-Full API documentation is generated from source via [Dokka](https://github.com/Kotlin/dokka) and will be hosted here.
+Full API documentation is generated from source via [Dokka](https://github.com/Kotlin/dokka) and published here on each release.
 
----
+[:octicons-arrow-right-24: Browse the full API Reference](dokka/index.html){ .md-button .md-button--primary }
 
-!!! info "Coming soon"
-    The **barK** API reference is not yet published. In the meantime, refer to the source on GitHub or the guides in this documentation.
-
-    **Source:**
-    [github.com/ivangarzab/barK](https://github.com/ivangarzab/barK/tree/main/shared/src/commonMain)
+!!! info
+    The API reference is generated from source via Dokka and published alongside this site. If the link above doesn't work yet, refer to the source on [GitHub](https://github.com/ivangarzab/barK/tree/main/shared/src/commonMain).
 
 ---
 
@@ -41,3 +38,4 @@ Full API documentation is generated from source via [Dokka](https://github.com/K
 | `Bark.unmuzzle()` | Resume output |
 | `Bark.tag(tag)` | Set a global tag |
 | `Bark.untag()` | Remove the global tag |
+| `Bark.getStatus()` | Returns a status string with current configuration |

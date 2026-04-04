@@ -10,3 +10,4 @@ captures
 local.properties
 xcuserdata
 .claude/plans
+docs/api/dokka/

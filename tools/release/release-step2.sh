@@ -20,6 +20,16 @@ if ! ./tools/update-lib-version.sh "$VERSION_NAME"; then
   exit 1
 fi
 
+# Update CHANGELOG.md with commits since the last tag
+if command -v git-cliff &>/dev/null; then
+  echo "📋 Generating changelog for v$VERSION_NAME..."
+  git-cliff --tag "$VERSION_NAME" --output CHANGELOG.md
+  echo "☑️ CHANGELOG.md updated"
+else
+  echo "⚠️  git-cliff not found — skipping changelog generation"
+  echo "   Install with: cargo install git-cliff  or  brew install git-cliff"
+fi
+
 git add .
 echo "Changes to commit:"
 git --no-pager diff --cached

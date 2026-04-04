@@ -34,7 +34,7 @@ class UnitTestTrainerTest {
 
     @Test
     fun `trainer should have correct pack type`() {
-        assertEquals(Pack.CONSOLE, trainer.pack, "UnitTestTrainer should use CONSOLE pack")
+        assertEquals(Pack.TEST, trainer.pack, "UnitTestTrainer should use CONSOLE pack")
     }
 
     @Test
@@ -230,6 +230,6 @@ class UnitTestTrainerTest {
         )
 
         assertEquals(Level.ERROR, customTrainer.volume)
-        assertEquals(Pack.CONSOLE, customTrainer.pack)
+        assertEquals(Pack.TEST, customTrainer.pack)
     }
 }

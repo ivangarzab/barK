@@ -50,7 +50,7 @@ class UnitTestTrainerTest {
 
     @Test
     fun `trainer should have correct pack type`() {
-        assertEquals("UnitTestTrainer should use CONSOLE pack", Pack.CONSOLE, trainer.pack)
+        assertEquals("UnitTestTrainer should use CONSOLE pack", Pack.TEST, trainer.pack)
     }
 
     @Test

@@ -32,7 +32,7 @@ class BarkTest {
 
     private class ConsoleTestTrainer(
         volume: Level = Level.VERBOSE,
-        pack: Pack = Pack.CONSOLE
+        pack: Pack = Pack.TEST
     ) : BaseTestTrainer(volume, pack)
 
     private class SystemTestTrainer(

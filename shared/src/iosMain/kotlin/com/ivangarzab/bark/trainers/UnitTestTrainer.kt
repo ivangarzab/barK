@@ -22,7 +22,7 @@ open class UnitTestTrainer(
     private val showTimestamp: Boolean = true
 ) : Trainer {
 
-    final override val pack = Pack.CONSOLE
+    final override val pack = Pack.TEST
 
     /**
      * Handle a log message by outputting it to plain console during tests.

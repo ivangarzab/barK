@@ -3,6 +3,7 @@ package com.ivangarzab.bark.trainers
 import com.ivangarzab.bark.Level
 import com.ivangarzab.bark.Pack
 import com.ivangarzab.bark.Trainer
+import com.ivangarzab.bark.detectors.isRunningTests
 import platform.Foundation.*
 
 /**
@@ -30,6 +31,9 @@ class NSLogTrainer(
      * @param throwable Optional throwable/exception associated with the log
      */
     override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
+        // Only log to console when NOT running tests
+        if (isRunningTests()) return
+
         // Filter based on volume setting
         if (level.ordinal < volume.ordinal) return
 

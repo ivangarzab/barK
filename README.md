@@ -6,9 +6,13 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Check](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
 
+<div align="center">
+
 ![wordmark](/assets/wordmark.png)
 
-***barK**: A simple, extensible logging library for Kotlin Multiplatform*
+</div>
+
+***barK**: A simple, light-weight and extensible logging library for Kotlin Multiplatform*
 
 ---
 
@@ -57,8 +61,6 @@ Open `sample-ios/barK-sample/barK-sample.xcodeproj` in Xcode and run.
 ## Documentation
 
 Full documentation, guides, and API reference at **[ivangarzab.github.io/bark](https://ivangarzab.github.io/bark/)**.
-
----
 
 ## Contributing
 

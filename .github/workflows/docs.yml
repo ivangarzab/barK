@@ -45,13 +45,17 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-home-cache-cleanup: true
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Generate API Documentation
-        run: ./gradlew :shared:dokkaGeneratePublicationHtml
+        run: ./gradlew :shared:dokkaHtml
 
       - name: Copy API Docs into MkDocs
         run: |

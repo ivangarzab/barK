@@ -23,7 +23,7 @@
 -   :material-puzzle-outline: **Trainer system**
 
     ---
-    Plug in any number of output destinations — Logcat, NSLog, files, crash reporters, or your own.
+    Plug in any number of output destinations: Logcat, NSLog, files, crash reporters, or your own.
 
 -   :material-flask-outline: **Smart test detection**
 
@@ -90,7 +90,6 @@ Add barK to your project via Maven Central:
             if (BuildConfig.DEBUG) {
                 Bark.train(AndroidLogTrainer())
             }
-            Bark.train(ColoredUnitTestTrainer()) // auto-activates in tests
         }
     }
     ```
@@ -101,7 +100,7 @@ Add barK to your project via Maven Central:
     class MainActivity : AppCompatActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            Bark.d("Activity created")          // Tag: [MainActivity]
+            Bark.d("Activity created")
             Bark.i("User logged in: ${user.name}")
             Bark.e("Network error", exception)
         }
@@ -135,13 +134,13 @@ Add barK to your project via Maven Central:
     ```swift
     class UserRepository {
         func saveUser(user: User) {
-            Bark.d("Saving user: \(user.name)")  // Tag: [UserRepository]
+            Bark.d("Saving user: \(user.name)")
             Bark.i("User saved successfully")
         }
     }
     ```
 
-    !!! note
+    !!! tip
         Copy `ios/BarkExtensions.swift` into your app target for the clean `Bark.d(...)` syntax shown above.
 
 ---
@@ -155,26 +154,25 @@ Add barK to your project via Maven Central:
 | `Bark.i()` | INFO | Key operations, state changes |
 | `Bark.w()` | WARNING | Recoverable issues |
 | `Bark.e()` | ERROR | Failures affecting functionality |
-| `Bark.wtf()` | CRITICAL | Fatal, unrecoverable errors |
 
 ---
 
-## Go Further
+## Choose Your Platform
 
 <div class="grid cards" markdown>
 
--   :material-book-open-outline: **Advanced Usage**
+-   :fontawesome-brands-android:{ .lg .middle } **Android Guide**
 
     ---
-    Custom trainers, volume control, runtime muzzling, and platform-specific notes.
+    Get started using barK for Android.
 
-    [:octicons-arrow-right-24: Advanced Usage](ADVANCED_USAGE.md)
+    [:octicons-arrow-right-24: Android Guide](android/index.md)
 
--   :material-package-variant-closed: **SDK Integration**
+-   :fontawesome-brands-apple:{ .lg } **iOS Guide**
 
     ---
-    Using barK inside an SDK — integrator controls, environment-specific setup, best practices.
+    Get started using barK for iOS.
 
-    [:octicons-arrow-right-24: SDK Integration](SDK_INTEGRATION.md)
+    [:octicons-arrow-right-24: iOS Guide](ios/index.md)
 
 </div>

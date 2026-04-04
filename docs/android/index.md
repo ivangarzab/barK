@@ -54,18 +54,16 @@ class MyApplication : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
-            Bark.train(AndroidLogTrainer())           // (1)!
-            Bark.train(ColoredUnitTestTrainer())      // (2)!
+            Bark.train(AndroidLogTrainer())                         // (1)!
         } else {
-            Bark.train(AndroidLogTrainer(volume = Level.WARNING))  // (3)!
+            Bark.train(AndroidLogTrainer(volume = Level.WARNING))   // (2)!
         }
     }
 }
 ```
 
 1. Routes all logs to Android Logcat. Uses the `SYSTEM` pack — only one system trainer can be active at a time.
-2. Colored console output for unit tests. Activates automatically when a test environment is detected — no extra config needed.
-3. In production, only `WARNING` and above reach Logcat. Keeps logs meaningful and reduces noise.
+2. In production, only `WARNING` and above reach Logcat. Keeps logs meaningful and reduces noise.
 
 ---
 
@@ -78,7 +76,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Bark.v("Verbose detail")             // Tag: [MainActivity]
+        // Tag: [MainActivity]
+        Bark.v("Verbose detail")
         Bark.d("Debug info")
         Bark.i("User logged in: ${user.name}")
         Bark.w("Token expiring soon")
@@ -99,8 +98,8 @@ class MainActivity : AppCompatActivity() {
 | `UnitTestTrainer` | CONSOLE | Plain console output in unit tests |
 | `ColoredUnitTestTrainer` | CONSOLE | ANSI-colored console output in unit tests |
 
-!!! tip
-    `ColoredUnitTestTrainer` automatically detects whether it's running in a test environment and activates accordingly — no configuration needed.
+!!! note
+    Both `UnitTestTrainer` classes automatically detects whether it's running in a test environment and activates accordingly — no configuration needed.
 
 ---
 
@@ -152,11 +151,14 @@ Bark.unmuzzle()  // Resume output
 println(Bark.getStatus())  // Inspect current configuration
 ```
 
+!!! tip
+    Useful for app flows that deal with sensitive data.
+
 ---
 
 ## Sample App
 
-See **barK** in action with the included Android sample:
+See **barK** in action with the included Android sample app:
 
 ```bash
 ./gradlew :sample-android:installDebug

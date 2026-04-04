@@ -15,5 +15,5 @@
 
 ---
 
-!!! note "Written something about barK?"
+!!! question "Written something about barK?"
     Feel free to open a PR adding it here, or reach out via [GitHub](https://github.com/ivangarzab/barK).

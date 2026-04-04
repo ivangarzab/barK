@@ -62,4 +62,4 @@ The built-in `android.util.Log` is fine for simple apps but falls apart quickly 
 
 - Coming from **Android Log** → **barK** removes boilerplate and adds multiplatform support.
 - Coming from **Timber** → **barK** is the natural upgrade path for KMP projects.
-- Comparing with **Napier** → **barK** adds test detection, runtime control, and colored output.
+- Comparing with **Napier** → **barK** adds test detection, runtime control, and colored output on the Kotlin side.

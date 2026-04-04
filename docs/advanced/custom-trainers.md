@@ -17,6 +17,67 @@ interface Trainer {
 
 ---
 
+## The Pack System
+
+`Pack` categorizes trainers and enforces a one-per-category rule (except `CUSTOM`):
+
+| Pack | Used by | Rule |
+|------|---------|------|
+| `CONSOLE` | `UnitTestTrainer`, `ColoredUnitTestTrainer` | Only one active at a time |
+| `SYSTEM` | `AndroidLogTrainer`, `NSLogTrainer` | Only one active at a time |
+| `FILE` | `FileTrainer` | Only one active at a time |
+| `CUSTOM` | Your custom trainers | Multiple allowed |
+
+### Choosing a Pack
+
+Training a new trainer into an occupied pack **replaces** the existing one:
+
+```kotlin
+Bark.train(AndroidLogTrainer())       // SYSTEM slot: AndroidLogTrainer
+Bark.train(UnitTestTrainer())         // SYSTEM slot replaced — now UnitTestTrainer
+
+// But CUSTOM trainers stack
+Bark.train(SlackTrainer())            // CUSTOM #1
+Bark.train(ErrorTracker())            // CUSTOM #2 — both remain active
+```
+
+Use `Pack.CUSTOM` for most custom trainers — it allows multiple instances to coexist:
+
+```kotlin
+Bark.train(SlackTrainer())      // CUSTOM #1
+Bark.train(ErrorTracker())      // CUSTOM #2
+Bark.train(AnalyticsLogger())   // CUSTOM #3 — all three remain active
+```
+
+The `Pack.FILE` is reserved for a single file logger, as to avoid having multiple file writers:
+
+```kotlin
+Bark.train(FileTrainer(logFile = File("v1.log")))
+Bark.train(FileTrainer(logFile = File("v2.log")))  // Replaces the first one
+```
+
+---
+
+## Volume Filtering
+
+**barK** calls `handle()` for every log — your trainer is responsible for its own threshold check, or you can rely on **barK**'s built-in filtering by setting `volume` correctly:
+
+```kotlin
+class MyTrainer(
+    override val volume: Level = Level.INFO,
+) : Trainer {
+    override val pack = Pack.CUSTOM
+
+    override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
+        // handle volume filter for custom functionality
+        if (level.ordinal < volume.ordinal) return
+        // ... send log
+    }
+}
+```
+
+---
+
 ## Examples
 
 ### Error Tracking (e.g. Sentry, Crashlytics)
@@ -72,49 +133,6 @@ class FileTrainer(
 Bark.train(CrashReportingTrainer())
 Bark.train(SlackTrainer(webhookUrl = "https://hooks.slack.com/..."))
 Bark.train(FileTrainer(logFile = File("app.log")))
-```
-
----
-
-## Choosing a Pack
-
-Use `Pack.CUSTOM` for most custom trainers — it allows multiple instances to coexist:
-
-```kotlin
-Bark.train(SlackTrainer())      // CUSTOM #1
-Bark.train(ErrorTracker())      // CUSTOM #2
-Bark.train(AnalyticsLogger())   // CUSTOM #3 — all three remain active
-```
-
-Use `Pack.FILE` if your trainer is a file-based logger that should replace any other file trainer:
-
-```kotlin
-Bark.train(FileTrainer(logFile = File("v1.log")))
-Bark.train(FileTrainer(logFile = File("v2.log")))  // Replaces the first one
-```
-
-!!! warning
-    `Pack.SYSTEM` and `Pack.CONSOLE` are reserved for **barK**'s built-in trainers. Avoid using them in custom implementations to prevent unexpected replacements.
-
----
-
-## Volume Filtering
-
-**barK** calls `handle()` for every log — your trainer is responsible for its own threshold check, or you can rely on **barK**'s built-in filtering by setting `volume` correctly:
-
-```kotlin
-class MyTrainer(
-    override val volume: Level = Level.INFO,
-) : Trainer {
-    override val pack = Pack.CUSTOM
-
-    override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
-        // barK already filters by volume before calling handle(),
-        // but double-checking here is harmless and explicit
-        if (level.ordinal < volume.ordinal) return
-        // ... send log
-    }
-}
 ```
 
 ---

@@ -15,7 +15,7 @@ At runtime, **barK** inspects the JVM classpath for known testing frameworks:
 | Espresso | `androidx.test.espresso.Espresso` |
 | AndroidX Test | `androidx.test.core.app.ApplicationProvider` |
 
-When any of these are found, `ColoredUnitTestTrainer` activates and system trainers like `AndroidLogTrainer` are suppressed automatically.
+Only when any of these are found do the `UnitTestTrainer` classes activate.
 
 ---
 
@@ -27,7 +27,7 @@ class ExampleTest {
     @Before
     fun setup() {
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer())  // Colored output with level prefix
+        Bark.train(ColoredUnitTestTrainer())
     }
 
     @After
@@ -48,25 +48,13 @@ class ExampleTest {
 
 ## Choosing a Test Trainer
 
-### `ColoredUnitTestTrainer`
-
-ANSI-colored output with automatic level prefixes. Best for local development where your terminal supports color.
-
-```
-[D] MyClass: Debug message
-[I] MyClass: Info message
-[W] MyClass: Warning message
-[E] MyClass: Error message
-```
-
 ### `UnitTestTrainer`
 
-Plain text output with timestamps. Best for CI environments or when color is not supported.
+Plain text output with optional `Level` and timestamps.
 
-```
-12:34:56 [D] MyClass: Debug message
-12:34:56 [I] MyClass: Info message
-```
+### `ColoredUnitTestTrainer`
+
+Extends the `UnitTestTrainer` with ANSI-colored output. Best a full aesthetic experience.
 
 ---
 
@@ -78,7 +66,6 @@ Control how much noise appears in test output:
 @Before
 fun setup() {
     Bark.releaseAllTrainers()
-    // Only show warnings and above during this test class
     Bark.train(ColoredUnitTestTrainer(volume = Level.WARNING))
 }
 ```
@@ -91,8 +78,8 @@ fun setup() {
 @Before
 fun setup() {
     Bark.releaseAllTrainers()
-    Bark.train(ColoredUnitTestTrainer())          // Console output
-    Bark.train(FileTrainer(                        // Also write to file
+    Bark.train(ColoredUnitTestTrainer())    // Console output
+    Bark.train(FileTrainer(                 // Also write to file
         volume = Level.ERROR,
         logFile = File("test-errors.log")
     ))

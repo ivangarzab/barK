@@ -1,69 +1,49 @@
 # SDK Integration Guide
 
-barK is designed for SDK developers who need flexible, controllable logging that integrators can customize or disable.
+**barK** is designed for SDK developers who need flexible, controllable logging that integrators can customize or disable.
 
 ---
 
 ## Why barK for SDKs?
 
 SDKs have unique logging requirements:
-- **Flexibility** - Different environments (development, staging, production) need different logging strategies
-- **Transparency** - Integrators want to see what your SDK is doing
-- **Control** - Integrators want to control log verbosity or disable it entirely
-- **Non-intrusive** - SDK logs shouldn't pollute integrator's logs
 
-barK solves all of these with its trainer system, runtime control, and global tagging.
+- :material-tune: **Flexibility** — Different environments need different logging strategies
+- :material-eye-outline: **Transparency** — Integrators want to see what your SDK is doing
+- :material-toggle-switch-outline: **Control** — Integrators want to control verbosity or disable it entirely
+- :material-filter-outline: **Non-intrusive** — SDK logs shouldn't pollute integrator's logs
+
+**barK** addresses all of these through its trainer system, runtime control, and global tagging.
 
 ---
 
-## Basic SDK Setup
+## SDK Setup
 
-### 1. Initialize barK in Your SDK
+### Initialize barK in Your SDK
 
-```kotlin
-class MySDK {
-    companion object {
-        private var initialized = false
+Use a global tag so all logs from your SDK are clearly identifiable:
+
+```kotlin title="MySDK.kt"
+fun initialize(context: Context) {
+    if (BuildConfig.DEBUG) {
+        Bark.train(AndroidLogTrainer(volume = Level.DEBUG))
+    } else {
+        Bark.train(CrashReportingTrainer(volume = Level.ERROR)) // (1)!
     }
-
-    fun initialize(context: Context, config: SDKConfig) {
-        if (initialized) return
-        initialized = true
-
-        // Smart trainer setup based on build type
-        if (BuildConfig.DEBUG) {
-            Bark.train(AndroidLogTrainer(volume = Level.DEBUG))
-        } else {
-            // Production: only errors to crash reporting
-            Bark.train(CrashReportingTrainer(volume = Level.ERROR))
-        }
-
-        // Use global tag for all SDK logs
-        Bark.tag("MySDK")
-
-        Bark.i("SDK initialized v${BuildConfig.VERSION_NAME}")
-    }
-
-    fun performOperation() {
-        Bark.d("Starting operation")
-        try {
-            // Your SDK logic
-            Bark.i("Operation completed successfully")
-        } catch (e: Exception) {
-            Bark.e("Operation failed", e)
-            throw e
-        }
-    }
+    Bark.tag("MySDK") // (2)!
+    Bark.i("SDK initialized v${BuildConfig.VERSION_NAME}")
 }
 ```
 
-### 2. Use barK Throughout Your SDK
+1. In production, only route errors to your crash reporter (don't spam the integrator's Logcat.)
+2. A global tag means every log from your SDK is clearly prefixed with `[MySDK]`, making it easy for integrators to filter.
+
+### 2. Log Throughout
 
 ```kotlin
 class PaymentProcessor {
     fun processPayment(amount: Double) {
-        Bark.d("Processing payment: $$amount")  // Tag: [MySDK]
-
+        Bark.d("Processing payment: $$amount")
         try {
             val result = apiClient.charge(amount)
             Bark.i("Payment successful: ${result.transactionId}")
@@ -73,306 +53,57 @@ class PaymentProcessor {
         }
     }
 }
-
-class UserManager {
-    fun login(username: String) {
-        Bark.d("User login attempt: $username")  // Tag: [MySDK]
-
-        // Login logic
-        Bark.i("User logged in successfully")
-    }
-}
 ```
 
 ---
 
-## Integrator Control
+## The Integrator's Side
 
-Give integrators control over your SDK's logging:
+Integrators who also use **barK** can interact with the same global `Bark` instance your SDK uses. This is both a feature and a responsibility — document your SDK's logging behavior clearly.
 
-### Option 1: Muzzle/Unmuzzle
-
-The simplest approach - let integrators disable all SDK logging:
+### Silence Your SDK's Logs
 
 ```kotlin
-// In your SDK's public API
-class MySDK {
-    fun enableLogging(enabled: Boolean) {
-        if (enabled) {
-            Bark.unmuzzle()
-        } else {
-            Bark.muzzle()
-        }
+// In the integrator's app
+Bark.muzzle()           // Silences all barK output, including your SDK's
+MySdk.doSomething()     // No logs
+Bark.unmuzzle()
+```
+
+### Add Their Own Trainer
+
+An integrator can stack their own trainer alongside yours:
+
+```kotlin
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        Bark.train(SentryTrainer(volume = Level.WARNING)) // (1)!
     }
 }
 ```
 
-**Integrator usage:**
-```kotlin
-// Disable SDK logs
-mySDK.enableLogging(false)
+1. Using `Pack.CUSTOM`aggregates into all other Trainers without disruption.
 
-// Re-enable SDK logs
-mySDK.enableLogging(true)
-```
+### Replace Your System Trainer
 
-### Option 2: Retraining
-
-Allow integrators to provide their own trainers:
+An integrator can replace your `SYSTEM` trainer with their own:
 
 ```kotlin
-class MySDK {
-    fun setLogTrainer(trainer: Trainer?) {
-        Bark.releaseAllTrainers()
-        trainer?.let { Bark.train(it) }
-    }
-
-    fun setLogLevel(level: Level) {
-        Bark.releaseAllTrainers()
-        Bark.train(AndroidLogTrainer(volume = level))
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        Bark.train(AndroidLogTrainer(volume = Level.INFO)) // (1)!
     }
 }
 ```
 
-**Integrator usage:**
-```kotlin
-// Use integrator's preferred trainer
-mySDK.setLogTrainer(AndroidLogTrainer(volume = Level.WARNING))
-
-// Or set custom log level
-mySDK.setLogLevel(Level.ERROR)  // Only errors and critical
-
-// Or disable entirely
-mySDK.setLogTrainer(null)
-```
+1. Trains a new `SYSTEM` trainer :arrow-right: replaces whichever `SYSTEM` trainer your SDK registered.
 
 ---
 
-## Environment-Specific Logging
+## Best Practices
 
-### Development
-
-```kotlin
-if (BuildConfig.DEBUG) {
-    Bark.train(AndroidLogTrainer(volume = Level.VERBOSE))
-    Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE))
-    Bark.tag("MySDK-DEV")
-}
-```
-
-### Staging
-
-```kotlin
-if (BuildConfig.BUILD_TYPE == "staging") {
-    Bark.train(AndroidLogTrainer(volume = Level.INFO))
-    Bark.train(FileTrainer(volume = Level.WARNING, logFile = File("sdk.log")))
-    Bark.tag("MySDK-STAGING")
-}
-```
-
-### Production
-
-```kotlin
-if (BuildConfig.BUILD_TYPE == "release") {
-    // Only errors to crash reporting, no console logs
-    Bark.train(CrashReportingTrainer(volume = Level.ERROR))
-    Bark.tag("MySDK")
-}
-```
-
----
-
-## Testing Your SDK
-
-barK's test detection makes SDK testing easy:
-
-```kotlin
-class PaymentProcessorTest {
-    @Before
-    fun setup() {
-        // Automatically uses ColoredUnitTestTrainer if trained
-        Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer())
-        Bark.tag("TEST")
-    }
-
-    @Test
-    fun testPaymentFlow() {
-        Bark.d("Starting payment test")
-
-        val processor = PaymentProcessor()
-        processor.processPayment(100.0)
-
-        Bark.i("Payment test completed")
-    }
-}
-```
-
-barK automatically detects test environments and switches to console output.
-
----
-
-## Best Practices for SDK Developers
-
-### 1. Consider Using Global Tags
-```kotlin
-Bark.tag("YourSDKName")
-```
-
-This makes it easy for integrators to filter your SDK's logs.
-
-### 2. Provide Logging Controls
-```kotlin
-class YourSDK {
-    fun setLoggingEnabled(enabled: Boolean) { /* ... */ }
-    fun setLogLevel(level: Level) { /* ... */ }
-}
-```
-
-### 3. Log at Appropriate Levels
-- **VERBOSE/DEBUG** - Internal state, data flow
-- **INFO** - Important operations, successful completions
-- **WARNING** - Recoverable errors, deprecated API usage
-- **ERROR** - Failures that affect functionality
-- **CRITICAL** - Fatal errors requiring immediate attention
-
-### 4. Avoid Logging Sensitive Data
-```kotlin
-// Bad
-Bark.d("User password: $password")
-
-// Good
-Bark.d("User authentication successful")
-```
-
-### 5. Use Structured Logging
-```kotlin
-// Consistent format makes logs easier to parse
-Bark.i("operation=payment status=success transaction_id=${txId} amount=${amount}")
-```
-
-### 6. Document Logging Behavior
-Tell integrators:
-- Default log level
-- How to disable logging
-- How to customize trainers
-- What gets logged at each level
-
----
-
-## Example: Complete SDK Implementation
-
-```kotlin
-class PaymentSDK private constructor() {
-
-    companion object {
-        @Volatile
-        private var instance: PaymentSDK? = null
-
-        fun getInstance(): PaymentSDK {
-            return instance ?: synchronized(this) {
-                instance ?: PaymentSDK().also { instance = it }
-            }
-        }
-    }
-
-    private var initialized = false
-
-    fun initialize(context: Context, config: PaymentConfig) {
-        if (initialized) {
-            Bark.w("SDK already initialized")
-            return
-        }
-
-        setupLogging(config)
-        Bark.tag("PaymentSDK")
-
-        Bark.i("Initializing SDK v${BuildConfig.VERSION_NAME}")
-
-        // Initialize SDK components
-        initialized = true
-        Bark.i("SDK initialized successfully")
-    }
-
-    private fun setupLogging(config: PaymentConfig) {
-        when {
-            !config.loggingEnabled -> {
-                Bark.muzzle()
-            }
-            config.customTrainer != null -> {
-                Bark.train(config.customTrainer)
-            }
-            else -> {
-                if (BuildConfig.DEBUG) {
-                    Bark.train(AndroidLogTrainer(volume = config.logLevel))
-                    Bark.train(ColoredUnitTestTrainer())
-                } else {
-                    Bark.train(CrashReportingTrainer(volume = Level.ERROR))
-                }
-            }
-        }
-    }
-
-    fun setLoggingEnabled(enabled: Boolean) {
-        if (enabled) Bark.unmuzzle() else Bark.muzzle()
-    }
-
-    fun processPayment(request: PaymentRequest): PaymentResult {
-        Bark.d("Processing payment: amount=${request.amount} currency=${request.currency}")
-
-        try {
-            val result = performPayment(request)
-            Bark.i("Payment successful: transaction_id=${result.transactionId}")
-            return result
-        } catch (e: NetworkException) {
-            Bark.e("Payment failed: network error", e)
-            throw e
-        } catch (e: Exception) {
-            Bark.e("Payment failed: unexpected error", e)
-            throw PaymentException("Payment processing failed", e)
-        }
-    }
-
-    private fun performPayment(request: PaymentRequest): PaymentResult {
-        // Payment logic
-        return PaymentResult(/* ... */)
-    }
-}
-
-data class PaymentConfig(
-    val loggingEnabled: Boolean = true,
-    val logLevel: Level = Level.INFO,
-    val customTrainer: Trainer? = null
-)
-```
-
-**Integrator usage:**
-
-```kotlin
-// Default setup
-PaymentSDK.getInstance().initialize(
-    context,
-    PaymentConfig()
-)
-
-// Custom setup
-PaymentSDK.getInstance().initialize(
-    context,
-    PaymentConfig(
-        loggingEnabled = true,
-        logLevel = Level.WARNING,
-        customTrainer = MyCustomTrainer()
-    )
-)
-
-// Disable logging later
-PaymentSDK.getInstance().setLoggingEnabled(false)
-```
-
----
-
-## See Also
-
-- [Advanced Usage](index.md) - Custom trainers, volume control, runtime management
-- [Overview](../index.md) - Quick start and features
-- [iOS Guide](../ios/index.md) - iOS-specific SDK integration
+- **Use a global tag** — makes your SDK's logs easy to identify and filter
+- **Default to minimal production logging** — errors only, or muzzled entirely
+- **Document Pack usage** — tell integrators which Pack your trainers use, so they know what they can replace

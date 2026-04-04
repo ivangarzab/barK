@@ -22,7 +22,7 @@ open class AndroidLogTrainer(
     override val volume: Level = Level.VERBOSE
 ) : Trainer {
 
-    final override val pack = Pack.SYSTEM
+    override val pack = Pack.SYSTEM
 
     /**
      * Handle a log message by outputting it to Android Logcat.

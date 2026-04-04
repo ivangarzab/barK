@@ -22,7 +22,7 @@ class AndroidTestLogTrainerTest {
     @Test
     fun `trainer should have correct pack type`() {
         val trainer = AndroidTestLogTrainer()
-        assertEquals("AndroidTestLogTrainer should use SYSTEM pack", Pack.SYSTEM, trainer.pack)
+        assertEquals("AndroidTestLogTrainer should use TEST pack", Pack.TEST, trainer.pack)
     }
 
     @Test
@@ -82,13 +82,14 @@ class AndroidTestLogTrainerTest {
     }
 
     @Test
-    fun `should maintain same pack type as parent`() {
+    fun `should have different pack type from parent`() {
         val testTrainer = AndroidTestLogTrainer()
         val regularTrainer = AndroidLogTrainer()
 
-        assertEquals("Both trainers should use same pack type",
+        assertNotEquals("Trainers should use different pack types",
             regularTrainer.pack, testTrainer.pack)
-        assertEquals("Should be SYSTEM pack", Pack.SYSTEM, testTrainer.pack)
+        assertEquals("AndroidLogTrainer should be SYSTEM pack", Pack.SYSTEM, regularTrainer.pack)
+        assertEquals("AndroidTestLogTrainer should be TEST pack", Pack.TEST, testTrainer.pack)
     }
 
     @Test
@@ -175,7 +176,7 @@ class AndroidTestLogTrainerTest {
         // Test that the trainer has the expected configuration for test usage
         assertEquals("Should default to VERBOSE for comprehensive test logging",
             Level.VERBOSE, trainer.volume)
-        assertEquals("Should use SYSTEM pack like parent", Pack.SYSTEM, trainer.pack)
+        assertEquals("Should use TEST pack for test-environment logging", Pack.TEST, trainer.pack)
 
         // The key difference: it doesn't skip during tests
         val regularTrainer = AndroidLogTrainer()
@@ -183,6 +184,9 @@ class AndroidTestLogTrainerTest {
             regularTrainer.skipTests())
         assertFalse("AndroidTestLogTrainer should NOT skip during tests",
             trainer.skipTests())
+
+        // And uses TEST pack instead of SYSTEM
+        assertEquals("Should use TEST pack for test-environment logging", Pack.TEST, trainer.pack)
     }
 
     // Note: We removed the assertDoesNotThrow helper since we're not calling handle() anymore

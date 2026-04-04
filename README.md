@@ -56,7 +56,42 @@ Open `sample-ios/barK-sample/barK-sample.xcodeproj` in Xcode and run.
 
 ## Documentation
 
-Full documentation, guides, and API reference at **[ivangarzab.github.io/bark](https://ivangarzab.github.io/bark/)**.
+**[Contributing Guide](CONTRIBUTING.md)** - Development setup, coding guidelines, PR process
+
+**[Changelog](CHANGELOG.md)** - All notable changes per release, following [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+
+> Full documentation, guides, and API reference at **[ivangarzab.github.io/bark](https://ivangarzab.github.io/bark/)**.
+
+---
+
+## Comparison
+
+### vs. Android Log
+
+| Feature | barK | Android Log |
+|---------|------|-------------|
+| Manual TAG constants | ❌ | ✅ |
+| Test environment handling | ✅ | ❌ |
+| Multiple outputs | ✅ | ❌ |
+| Runtime control | ✅ | ❌ |
+| Kotlin Multiplatform | ✅ | ❌ |
+
+### vs. Timber
+
+| Feature | barK | Timber |
+|---------|------|--------|
+| Auto-tag detection | ✅ | ✅ |
+| Test environment detection | ✅ | ❌ |
+| Kotlin Multiplatform | ✅ | ❌ |
+| Multiple trainers | ✅ | ✅ |
+| Runtime muzzling | ✅ | ❌ |
+
+---
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+>>>>>>> origin/develop
 
 ## License
 

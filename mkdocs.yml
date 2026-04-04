@@ -1,0 +1,91 @@
+site_name: barK
+site_url: https://ivangarzab.github.io/bark/
+repo_url: https://github.com/ivangarzab/barK
+repo_name: ivangarzab/barK
+theme:
+  name: material
+  custom_dir: overrides
+  font:
+    text: Nunito Sans
+    code: Roboto Mono
+  logo: assets/barK-mark-white.png
+  favicon: assets/barK-mark.png
+  features:
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    # Dark Mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Dark mode
+      primary: custom
+      accent: deep orange
+
+    # Light Mode
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Light mode
+      primary: custom
+      accent: deep orange
+
+copyright: Copyright &copy; Iván Garza Bermea
+
+extra:
+  social:
+    - icon: material/web
+      link: https://ivangarzab.com
+    - icon: fontawesome/brands/github
+      link: https://github.com/ivangarzab
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/ivangarzab/
+    - icon: fontawesome/brands/stack-overflow
+      link: https://stackoverflow.com/users/13021452/iv%c3%a1n-garza-bermea
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ivangarzab
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Overview: index.md
+  - Android Guide:
+    - android/index.md
+    - Unit Tests: android/unit-tests.md
+  - iOS Guide:
+    - ios/index.md
+    - Unit Tests: ios/unit-tests.md
+  - Advanced Usage:
+    - advanced/index.md
+    - Custom Trainers: advanced/custom-trainers.md
+    - SDK Integration: advanced/sdk-integration.md
+  - Comparison: comparison.md
+  - In the Wild: in-the-wild.md
+  - Changelog: changelog.md
+  - API Reference: api-reference.md

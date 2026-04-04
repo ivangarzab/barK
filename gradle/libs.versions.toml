@@ -2,6 +2,7 @@
 # ===== LIBRARY VERSIONS =====
 kotlin = "2.1.21"
 kover = "0.9.3"
+dokka = "2.0.0"
 
 # ===== SAMPLE APP VERSIONS =====
 agp = "8.10.1"
@@ -42,6 +43,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
 # ===== SAMPLE APP PLGUINS =====
 androidApplication = { id = "com.android.application", version.ref = "agp" }

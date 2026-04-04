@@ -49,6 +49,17 @@ jobs:
       - run: echo "Creating new GitHub Release for version ${{ env.VERSION }}"
         if: ${{ !inputs.dry_run }}
 
+      - name: Extract changelog notes for this version
+        id: changelog
+        run: |
+          # Extract the section for this version from CHANGELOG.md
+          NOTES=$(awk "/^## \[${{ env.VERSION }}\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+            NOTES="_No changelog entry found for ${{ env.VERSION }}. See [CHANGELOG.md](https://github.com/ivangarzab/barK/blob/main/CHANGELOG.md) for details._"
+          fi
+          # Write to a file to safely handle multiline content
+          echo "$NOTES" > release_notes.md
+
       - name: Create new GitHub Release
         if: ${{ !inputs.dry_run }}
         uses: actions/create-release@v1
@@ -57,22 +68,7 @@ jobs:
         with:
           tag_name: ${{ env.VERSION }}
           release_name: v${{ env.VERSION }}
-          body: |
-            ## barK v${{ env.VERSION }}
-            
-            ### Hosting
-            Maven Central: [com.ivangarzab:bark:${{ env.VERSION }}](https://central.sonatype.com/artifact/com.ivangarzab/bark)
-            
-            ### Usage
-            ```kotlin
-            dependencies {
-                implementation("com.ivangarzab:bark:${{ env.VERSION }}")
-            }
-            ```
-            
-            ### What's Changed
-            - Release barK v${{ env.VERSION }}
-            - See [README](https://github.com/ivangarzab/barK/blob/main/README.md) for full documentation
+          body_path: release_notes.md
           draft: false
           prerelease: false
 

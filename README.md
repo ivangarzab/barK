@@ -293,6 +293,7 @@ barK is built for Kotlin Multiplatform from the ground up with full platform par
 - **[SDK Integration Guide](docs/SDK_INTEGRATION.md)** - Using barK in SDKs, integrator control, best practices
 - **[iOS Integration Guide](ios/README.md)** - Detailed iOS setup, BarkExtensions.swift, platform-specific configuration
 - **[Contributing Guide](CONTRIBUTING.md)** - Development setup, coding guidelines, PR process
+- **[Changelog](CHANGELOG.md)** - All notable changes per release, following [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ---
 

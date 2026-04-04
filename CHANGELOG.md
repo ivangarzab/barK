@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [0.2.1] - 2026-04-04
 
 ### CI/CD
 - Update the prep-release.yml workflow to make up for the dual namespace collision
+
+### Documentation
+- Implement CHANGELOG automation (#31)
 
 ### Maintenance
 - Clean up docs for iOS installation (#29)
@@ -116,7 +119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix the :shared module's build.gradle.kts so that it publishes ALL artifacts correctly for KMP
 ## [0.0.1] - 2025-08-13
-[Unreleased]: https://github.com/ivangarzab/barK/compare/0.2.0...HEAD
+[0.2.1]: https://github.com/ivangarzab/barK/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/ivangarzab/barK/compare/0.1.3...0.2.0
 [0.1.3]: https://github.com/ivangarzab/barK/compare/0.1.2...0.1.3
 [0.1.2]: https://github.com/ivangarzab/barK/compare/0.1.1...0.1.2

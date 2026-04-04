@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.3] - 2026-04-04
+
+### Documentation
+- Impl Dokka (#32)
 ## [0.2.2] - 2026-04-04
 
 ### Documentation
@@ -123,6 +127,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix the :shared module's build.gradle.kts so that it publishes ALL artifacts correctly for KMP
 ## [0.0.1] - 2025-08-13
+[0.2.3]: https://github.com/ivangarzab/barK/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/ivangarzab/barK/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/ivangarzab/barK/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/ivangarzab/barK/compare/0.1.3...0.2.0

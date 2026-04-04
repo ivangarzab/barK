@@ -10,6 +10,12 @@ theme:
     code: Roboto Mono
   logo: assets/barK-mark-white.png
   favicon: assets/barK-mark.png
+  features:
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - content.code.copy
   palette:
     # Dark Mode
     - scheme: slate
@@ -68,5 +74,15 @@ markdown_extensions:
 
 nav:
   - Overview: index.md
-  - Advanced Usage: ADVANCED_USAGE.md
-  - SDK Integration: SDK_INTEGRATION.md
+  - Android Guide:
+    - android/index.md
+    - Unit Tests: android/unit-tests.md
+  - iOS Guide:
+    - ios/index.md
+    - Unit Tests: ios/unit-tests.md
+  - Advanced Usage:
+    - advanced/index.md
+    - Custom Trainers: advanced/custom-trainers.md
+    - SDK Integration: advanced/sdk-integration.md
+  - Comparison: comparison.md
+  - API Reference: api-reference.md

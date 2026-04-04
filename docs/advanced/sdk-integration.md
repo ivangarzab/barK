@@ -373,6 +373,6 @@ PaymentSDK.getInstance().setLoggingEnabled(false)
 
 ## See Also
 
-- [Advanced Usage Guide](ADVANCED_USAGE.md) - Custom trainers, volume control, runtime management
-- [Main README](../README.md) - Quick start and features
-- [iOS Integration Guide](../ios/README.md) - iOS-specific SDK integration
+- [Advanced Usage](index.md) - Custom trainers, volume control, runtime management
+- [Overview](../index.md) - Quick start and features
+- [iOS Guide](../ios/index.md) - iOS-specific SDK integration

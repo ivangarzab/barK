@@ -9,9 +9,9 @@ import platform.Foundation.*
 /**
  * UnitTestTrainer handles simple console logging during tests on iOS.
  *
- * This trainer provides clean, uncolored console output during tests using print().
- * Perfect for Xcode's test console or when you prefer simple, clean test
- * output without formatting.
+ * This trainer provides clean, uncolored output during tests using NSLog().
+ * Unlike [NSLogTrainer], it adds configurable timestamps and structured level
+ * labels, making it easier to read test output at a glance.
  *
  * @since 0.2.0
  * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
@@ -25,7 +25,7 @@ open class UnitTestTrainer(
     final override val pack = Pack.TEST
 
     /**
-     * Handle a log message by outputting it to plain console during tests.
+     * Handle a log message by outputting it via NSLog during tests.
      *
      * @param level The severity level of the log message
      * @param tag The tag for the log message
@@ -46,24 +46,20 @@ open class UnitTestTrainer(
                 append(getTimestamp())
                 append(" ")
             }
-
             // Add level label (can be overridden for colors)
             append(formatLevelLabel(level))
             append(" - ")
-
             // Add tag
             append("$tag: ")
-
             // Add the actual message
             append(message)
         }
 
-        // Print the main message using iOS print()
-        println(formattedMessage)
-
-        // Print exception if present
+        // Log the main message via NSLog
+        NSLog(formattedMessage)
+        // Log exception if present
         throwable?.let {
-            println(formatException(it))
+            NSLog(formatException(it))
             // Print stack trace for errors/critical
             if (level.ordinal >= Level.ERROR.ordinal) {
                 it.printStackTrace()

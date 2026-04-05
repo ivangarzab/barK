@@ -134,6 +134,13 @@ Bark.tag("MyApp")
 Bark.d("Initializing")  // Tag: [MyApp]
 
 Bark.untag()            // Return to auto-detection (or no tag if disabled)
+
+// Temporary tag for a single scope
+Bark.heel("Network") {
+    Bark.d("Request sent")    // Tag: [Network]
+    Bark.i("Response received") // Tag: [Network]
+}
+Bark.d("Back to normal")    // Tag: [MyApp] (or auto-detect)
 ```
 
 ---

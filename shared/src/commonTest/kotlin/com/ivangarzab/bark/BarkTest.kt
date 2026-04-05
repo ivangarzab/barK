@@ -128,6 +128,16 @@ class BarkTest {
     }
 
     @Test
+    fun `wtf logging should call trainer with CRITICAL level`() {
+        Bark.wtf("Test wtf message")
+
+        val call = testTrainer.getLastCall()
+        assertNotNull(call)
+        assertEquals(Level.CRITICAL, call.level)
+        assertEquals("Test wtf message", call.message)
+    }
+
+    @Test
     fun `logging with throwable should pass throwable to trainer`() {
         val exception = RuntimeException("Test exception")
         Bark.e("Error occurred", exception)

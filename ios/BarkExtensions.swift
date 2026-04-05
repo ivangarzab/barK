@@ -70,6 +70,16 @@ extension Bark {
         Bark.shared.e(message: message, throwable: kotlinError)
     }
 
+    /// Log a message at CRITICAL level.
+    ///
+    /// - Parameters:
+    ///   - message: The log message
+    ///   - throwable: Optional Swift Error to log (automatically converted to KotlinThrowable)
+    public static func wtf(_ message: String, throwable: Error? = nil) {
+        let kotlinError = throwable.map { KotlinThrowable(message: $0.localizedDescription) }
+        Bark.shared.wtf(message: message, throwable: kotlinError)
+    }
+
     /// Train Bark with a new Trainer.
     ///
     /// - Parameter trainer: The Trainer to add

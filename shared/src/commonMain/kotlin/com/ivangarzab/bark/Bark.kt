@@ -73,6 +73,24 @@ object Bark {
     }
 
     /**
+     * Log within a temporary tag scope.
+     *
+     * The given [tag] applies only for the duration of [block], after which the
+     * previous tag (global or auto-detect) is restored. Scopes can be nested.
+     *
+     * @since 1.0.0
+     */
+    fun heel(tag: String, block: () -> Unit) {
+        val previousTag = globalTag
+        globalTag = tag
+        try {
+            block()
+        } finally {
+            globalTag = previousTag
+        }
+    }
+
+/**
      * Train Bark with a new [Trainer], which determine where and how logs are output..
      *
      * Does not accept duplicate trainer by [Pack].

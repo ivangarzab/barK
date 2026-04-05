@@ -64,6 +64,15 @@ object Bark {
     }
 
     /**
+     * Log a message at CRITICAL level.
+     *
+     * @since 1.0.0
+     */
+    fun wtf(message: String, throwable: Throwable? = null) {
+        log(Level.CRITICAL, message, throwable)
+    }
+
+    /**
      * Train Bark with a new [Trainer], which determine where and how logs are output..
      *
      * Does not accept duplicate trainer by [Pack].

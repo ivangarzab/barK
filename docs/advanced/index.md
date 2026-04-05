@@ -1,6 +1,6 @@
 # Advanced Usage
 
-This section covers **barK**'s deeper configuration options: minLevel control, tagging strategies, runtime control, and the trainer system internals.
+This section covers **barK**'s deeper configuration options: log Level control, tagging strategies, runtime control, and the trainer system internals.
 
 ---
 

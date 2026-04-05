@@ -121,7 +121,7 @@ Bark.releaseAllTrainers()
 ## 🎯 Best Practices
 
 1. **Use ColoredUnitTestTrainer for tests** - It automatically adapts to the environment
-2. **Configure minLevel** - Use `Level.verbose` for debug, `Level.info` for production
+2. **Configure min log Level** - Use `Level.verbose` for debug, `Level.info` for production
 3. **Add the Swift extensions** - Much cleaner API for iOS developers
 4. **Use different trainers per configuration** - DEBUG uses test trainers, RELEASE uses NSLog
 

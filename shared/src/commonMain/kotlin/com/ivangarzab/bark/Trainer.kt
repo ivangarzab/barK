@@ -16,11 +16,11 @@ package com.ivangarzab.bark
 interface Trainer {
 
     /**
-     * The volume [Level] of the logs that will be outputted by this [Trainer].
+     * The minimum [Level] of the logs that will be outputted by this [Trainer].
      *
      * @since 0.0.1
      */
-    val volume: Level
+    val minLevel: Level
 
     /**
      * The [Pack] that this [Trainer] belongs to, which will be used to find

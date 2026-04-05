@@ -18,7 +18,7 @@ open class App : Application() {
 
     open fun startLogger() {
         Bark.train(AndroidLogTrainer(
-            volume = if (BuildConfig.DEBUG) Level.DEBUG else Level.WARNING
+            minLevel = if (BuildConfig.DEBUG) Level.DEBUG else Level.WARNING
         ))
         Bark.v("barK logger has started")
     }

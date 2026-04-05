@@ -14,13 +14,13 @@ import com.ivangarzab.bark.Level
  * - All the same smart features (test detection, timestamps, etc.)
  *
  * @since 0.0.1
- * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
+ * @param minLevel Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */
 open class ColoredUnitTestTrainer(
-    volume: Level = Level.VERBOSE,
+    minLevel: Level = Level.VERBOSE,
     showTimestamp: Boolean = true
-) : UnitTestTrainer(volume, showTimestamp) {
+) : UnitTestTrainer(minLevel, showTimestamp) {
 
     /**
      * Override to add color formatting to the level label.

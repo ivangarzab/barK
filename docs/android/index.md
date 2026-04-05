@@ -56,7 +56,7 @@ class MyApplication : Application() {
         if (BuildConfig.DEBUG) {
             Bark.train(AndroidLogTrainer())                         // (1)!
         } else {
-            Bark.train(AndroidLogTrainer(volume = Level.WARNING))   // (2)!
+            Bark.train(AndroidLogTrainer(minLevel = Level.WARNING)) // (2)!
         }
     }
 }

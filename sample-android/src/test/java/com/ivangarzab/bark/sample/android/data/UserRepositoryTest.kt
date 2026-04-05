@@ -23,7 +23,7 @@ class UserRepositoryTest {
     @Before
     fun setup() {
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE, showTimestamp = true))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.VERBOSE, showTimestamp = true))
 
         Bark.i("=== Setting up UserRepositoryTest ===")
 

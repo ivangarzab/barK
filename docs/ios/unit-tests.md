@@ -86,14 +86,14 @@ Plain text with timestamps. Always readable regardless of environment — safe c
 
 ---
 
-## Volume Filtering in Tests
+## Log Level Filtering in Tests
 
 ```swift
 override func setUp() {
     super.setUp()
     Bark.releaseAllTrainers()
     // Only show warnings and above during this test class
-    Bark.train(trainer: ColoredUnitTestTrainer(volume: .warning))
+    Bark.train(trainer: ColoredUnitTestTrainer(minLevel: .warning))
 }
 ```
 

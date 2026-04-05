@@ -8,13 +8,13 @@ import com.ivangarzab.bark.Pack
  * instrumented test runs via Android Logcat.
  *
  * Unlike [AndroidLogTrainer] (Pack.SYSTEM, skips tests), this trainer is categorized
- * as Pack.TEST and is designed specifically for use during instrumented test runs.
+ * as [Pack.TEST] and is designed specifically for use during instrumented test runs.
  *
  * @since 0.0.1
- * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
+ * @param minLevel Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
  */
 class AndroidTestLogTrainer(
-    override val volume: Level = Level.VERBOSE
+    override val minLevel: Level = Level.VERBOSE
 ) : AndroidLogTrainer() {
 
     override val pack = Pack.TEST

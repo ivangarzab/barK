@@ -26,13 +26,13 @@ struct barK_sampleApp: App {
 
     private func startLogger() {
         #if DEBUG
-        let volume = Level.verbose
+        let minLevel = Level.verbose
         #else
-        let volume = Level.debug
+        let minLevel = Level.debug
         #endif
 
         Bark.autoTagDisabled = false
-        Bark.train(trainer: NSLogTrainer(volume: volume))
+        Bark.train(trainer: NSLogTrainer(minLevel: minLevel))
         Bark.v("barK logger has started")
     }
 }

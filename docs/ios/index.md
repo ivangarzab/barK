@@ -65,7 +65,7 @@ struct MyApp: App {
         Bark.train(trainer: NSLogTrainer())              // (2)!
         Bark.train(trainer: ColoredUnitTestTrainer())    // (3)!
         #else
-        Bark.train(trainer: NSLogTrainer(volume: .warning)) // (4)!
+        Bark.train(trainer: NSLogTrainer(minLevel: .warning)) // (4)!
         #endif
     }
 

@@ -16,7 +16,7 @@ class BarkTest {
 
     // Test trainer that captures log calls for verification
     open class BaseTestTrainer(
-        override val volume: Level,
+        override val minLevel: Level,
         override val pack: Pack
     ) : Trainer {
         val logCalls = mutableListOf<LogCall>()
@@ -31,19 +31,19 @@ class BarkTest {
     }
 
     private class ConsoleTestTrainer(
-        volume: Level = Level.VERBOSE,
+        minLevel: Level = Level.VERBOSE,
         pack: Pack = Pack.TEST
-    ) : BaseTestTrainer(volume, pack)
+    ) : BaseTestTrainer(minLevel, pack)
 
     private class SystemTestTrainer(
-        volume: Level = Level.VERBOSE,
+        minLevel: Level = Level.VERBOSE,
         pack: Pack = Pack.SYSTEM
-    ) : BaseTestTrainer(volume, pack)
+    ) : BaseTestTrainer(minLevel, pack)
 
     private class FileTestTrainer(
-    volume: Level = Level.VERBOSE,
-    pack: Pack = Pack.FILE
-    ) : BaseTestTrainer(volume, pack)
+        minLevel: Level = Level.VERBOSE,
+        pack: Pack = Pack.FILE
+    ) : BaseTestTrainer(minLevel, pack)
 
     // Data class to capture log call details
     data class LogCall(

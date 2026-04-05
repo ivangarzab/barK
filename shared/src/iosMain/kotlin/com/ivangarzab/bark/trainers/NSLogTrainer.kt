@@ -14,10 +14,10 @@ import platform.Foundation.*
  * adds timestamp, app name, process ID, and thread information.
  *
  * @since 0.2.0
- * @param volume Minimum log level to output
+ * @param minLevel Minimum log level to output
  */
 class NSLogTrainer(
-    override val volume: Level = Level.VERBOSE
+    override val minLevel: Level = Level.VERBOSE
 ) : Trainer {
 
     override val pack = Pack.SYSTEM
@@ -34,8 +34,8 @@ class NSLogTrainer(
         // Only log to console when NOT running tests
         if (isRunningTests()) return
 
-        // Filter based on volume setting
-        if (level.ordinal < volume.ordinal) return
+        // Filter based on minLevel
+        if (level.ordinal < minLevel.ordinal) return
 
         val formattedMessage = buildString {
             append("${level.label} ${if (tag.isNotEmpty()) "$tag: " else ""}$message")

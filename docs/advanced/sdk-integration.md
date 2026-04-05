@@ -26,9 +26,9 @@ Use a global tag so all logs from your SDK are clearly identifiable:
 ```kotlin title="MySDK.kt"
 fun initialize(context: Context) {
     if (BuildConfig.DEBUG) {
-        Bark.train(AndroidLogTrainer(volume = Level.DEBUG))
+        Bark.train(AndroidLogTrainer(minLevel = Level.DEBUG))
     } else {
-        Bark.train(CrashReportingTrainer(volume = Level.ERROR)) // (1)!
+        Bark.train(CrashReportingTrainer(minLevel = Level.ERROR)) // (1)!
     }
     Bark.tag("MySDK") // (2)!
     Bark.i("SDK initialized v${BuildConfig.VERSION_NAME}")
@@ -78,7 +78,7 @@ An integrator can stack their own trainer alongside yours:
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        Bark.train(SentryTrainer(volume = Level.WARNING)) // (1)!
+        Bark.train(SentryTrainer(minLevel = Level.WARNING)) // (1)!
     }
 }
 ```
@@ -93,7 +93,7 @@ An integrator can replace your `SYSTEM` trainer with their own:
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        Bark.train(AndroidLogTrainer(volume = Level.INFO)) // (1)!
+        Bark.train(AndroidLogTrainer(minLevel = Level.INFO)) // (1)!
     }
 }
 ```

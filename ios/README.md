@@ -83,9 +83,9 @@ import shared
 struct MyApp: App {
     init() {
         #if DEBUG
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose))
         #else
-        Bark.train(trainer: NSLogTrainer(volume: Level.info))
+        Bark.train(trainer: NSLogTrainer(minLevel: Level.info))
         #endif
 
         Bark.i("App initialized")
@@ -102,11 +102,11 @@ struct MyApp: App {
 ## 🔧 Configuration
 
 ```swift
-// Set volume level to filter logs
-Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.warning))  // Only warnings and above
+// Set minimum log level to filter logs
+Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.warning))  // Only warnings and above
 
 // Enable/disable timestamps
-Bark.train(trainer: UnitTestTrainer(volume: Level.verbose, showTimestamp: true))
+Bark.train(trainer: UnitTestTrainer(minLevel: Level.verbose, showTimestamp: true))
 
 // Muzzle all logging
 Bark.muzzle()
@@ -121,7 +121,7 @@ Bark.releaseAllTrainers()
 ## 🎯 Best Practices
 
 1. **Use ColoredUnitTestTrainer for tests** - It automatically adapts to the environment
-2. **Configure volume levels** - Use `Level.verbose` for debug, `Level.info` for production
+2. **Configure minLevel** - Use `Level.verbose` for debug, `Level.info` for production
 3. **Add the Swift extensions** - Much cleaner API for iOS developers
 4. **Use different trainers per configuration** - DEBUG uses test trainers, RELEASE uses NSLog
 

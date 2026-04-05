@@ -9,7 +9,7 @@ The `Trainer` interface is **barK**'s extension point. Implement it to send logs
 ```kotlin title="Trainer.kt"
 interface Trainer {
     val pack: Pack      // Categorizes the trainer; controls replacement behavior
-    val volume: Level   // Minimum level this trainer will handle
+    val minLevel: Level   // Minimum level this trainer will handle
 
     fun handle(level: Level, tag: String, message: String, throwable: Throwable?)
 }
@@ -58,19 +58,19 @@ Bark.train(FileTrainer(logFile = File("v2.log")))  // Replaces the first one
 
 ---
 
-## Volume Filtering
+## MinLevel Filtering
 
-**barK** calls `handle()` for every log — your trainer is responsible for its own threshold check, or you can rely on **barK**'s built-in filtering by setting `volume` correctly:
+**barK** calls `handle()` for every log — your trainer is responsible for its own threshold check, or you can rely on **barK**'s built-in filtering by setting `minLevel` correctly:
 
 ```kotlin
 class MyTrainer(
-    override val volume: Level = Level.INFO,
+    override val minLevel: Level = Level.INFO,
 ) : Trainer {
     override val pack = Pack.CUSTOM
 
     override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
-        // handle volume filter for custom functionality
-        if (level.ordinal < volume.ordinal) return
+        // handle minLevel filter for custom functionality
+        if (level.ordinal < minLevel.ordinal) return
         // ... send log
     }
 }
@@ -84,7 +84,7 @@ class MyTrainer(
 
 ```kotlin title="CrashReportingTrainer.kt"
 class CrashReportingTrainer(
-    override val volume: Level = Level.ERROR,
+    override val minLevel: Level = Level.ERROR,
 ) : Trainer {
     override val pack: Pack = Pack.CUSTOM
 
@@ -98,7 +98,7 @@ class CrashReportingTrainer(
 
 ```kotlin title="SlackTrainer.kt"
 class SlackTrainer(
-    override val volume: Level = Level.WARNING,
+    override val minLevel: Level = Level.WARNING,
     private val webhookUrl: String,
 ) : Trainer {
     override val pack: Pack = Pack.CUSTOM
@@ -113,7 +113,7 @@ class SlackTrainer(
 
 ```kotlin title="FileTrainer.kt"
 class FileTrainer(
-    override val volume: Level = Level.WARNING,
+    override val minLevel: Level = Level.WARNING,
     private val logFile: File,
 ) : Trainer {
     override val pack: Pack = Pack.FILE
@@ -143,11 +143,11 @@ Bark.train(FileTrainer(logFile = File("app.log")))
 class MyTrainerTest {
 
     @Test
-    fun `trainer handles messages above volume threshold`() {
+    fun `trainer handles messages above minLevel threshold`() {
         val received = mutableListOf<String>()
         val trainer = object : Trainer {
             override val pack = Pack.CUSTOM
-            override val volume = Level.WARNING
+            override val minLevel = Level.WARNING
             override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
                 received.add(message)
             }

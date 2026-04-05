@@ -23,7 +23,7 @@ class NotificationServiceTest {
     fun setup() {
         Bark.releaseAllTrainers()
         // Start with plain trainer for contrast
-        Bark.train(UnitTestTrainer(volume = Level.VERBOSE, showTimestamp = false))
+        Bark.train(UnitTestTrainer(minLevel = Level.VERBOSE, showTimestamp = false))
 
         Bark.i("=== Setting up NotificationServiceTest ===")
 
@@ -50,7 +50,7 @@ class NotificationServiceTest {
 
         // Switch to colored trainer
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE, showTimestamp = false))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.VERBOSE, showTimestamp = false))
 
         Bark.i("Testing all notification types (Colored Output)")
 
@@ -65,7 +65,7 @@ class NotificationServiceTest {
     @Test
     fun `test notification service in realistic scenarios`() {
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer(volume = Level.DEBUG))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.DEBUG))
 
         Bark.i("=== Realistic Notification Scenarios ===")
 
@@ -89,30 +89,30 @@ class NotificationServiceTest {
     }
 
     @Test
-    fun `demonstrate notification timing and volume control`() {
-        Bark.i("=== Testing Volume Control and Timing ===")
+    fun `demonstrate notification timing and minLevel control`() {
+        Bark.i("=== Testing minLevel Control and Timing ===")
 
-        // Test with high volume level (only errors)
+        // Test with high minLevel (only errors)
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer(volume = Level.ERROR, showTimestamp = true))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.ERROR, showTimestamp = true))
 
-        Bark.d("This debug message should NOT appear (volume = ERROR)")
+        Bark.d("This debug message should NOT appear (minLevel = ERROR)")
         notificationService.showInfo("This info should NOT appear")
         notificationService.showWarning("This warning should NOT appear")
         notificationService.showError("This error SHOULD appear")
 
-        Bark.i("--- Lowering volume to INFO ---")
+        Bark.i("--- Lowering minLevel to INFO ---")
 
-        // Test with medium volume (INFO and above)
+        // Test with medium minLevel (INFO and above)
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer(volume = Level.INFO, showTimestamp = true))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.INFO, showTimestamp = true))
 
-        Bark.d("This debug message should NOT appear (volume = INFO)")
+        Bark.d("This debug message should NOT appear (minLevel = INFO)")
         notificationService.showInfo("This info SHOULD appear")
         notificationService.showWarning("This warning SHOULD appear")
         notificationService.showError("This error SHOULD appear")
 
-        Bark.i("✅ Volume control demonstration completed")
+        Bark.i("✅ minLevel control demonstration completed")
     }
 
     @Test
@@ -129,7 +129,7 @@ class NotificationServiceTest {
 
         // Plain trainer first
         Bark.releaseAllTrainers()
-        Bark.train(UnitTestTrainer(volume = Level.VERBOSE, showTimestamp = true))
+        Bark.train(UnitTestTrainer(minLevel = Level.VERBOSE, showTimestamp = true))
 
         Bark.i("--- Plain TestTrainer Output ---")
         messages.forEach { message ->
@@ -138,7 +138,7 @@ class NotificationServiceTest {
 
         // Colored trainer second
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE, showTimestamp = true))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.VERBOSE, showTimestamp = true))
 
         Bark.i("--- ColoredTestTrainer Output ---")
         messages.forEach { message ->
@@ -151,7 +151,7 @@ class NotificationServiceTest {
     @Test
     fun `test notification patterns and frequency`() {
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.VERBOSE))
 
         Bark.i("=== Testing Notification Patterns ===")
 

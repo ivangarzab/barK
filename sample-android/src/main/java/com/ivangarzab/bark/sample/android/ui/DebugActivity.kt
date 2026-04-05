@@ -222,7 +222,7 @@ private fun TrainerSection(onStatusUpdate: () -> Unit) {
                 Button(
                     onClick = {
                         Bark.releaseAllTrainers()
-                        Bark.train(AndroidLogTrainer(volume = Level.DEBUG))
+                        Bark.train(AndroidLogTrainer(minLevel = Level.DEBUG))
                         Bark.i("Switched to AndroidLogTrainer - check Logcat!")
                         onStatusUpdate()
                     },
@@ -234,7 +234,7 @@ private fun TrainerSection(onStatusUpdate: () -> Unit) {
                 Button(
                     onClick = {
                         Bark.releaseAllTrainers()
-                        Bark.train(UnitTestTrainer(volume = Level.DEBUG))
+                        Bark.train(UnitTestTrainer(minLevel = Level.DEBUG))
                         Bark.i("Switched to TestTrainer - check IDE console!")
                         onStatusUpdate()
                     },
@@ -246,7 +246,7 @@ private fun TrainerSection(onStatusUpdate: () -> Unit) {
                 Button(
                     onClick = {
                         Bark.releaseAllTrainers()
-                        Bark.train(ColoredUnitTestTrainer(volume = Level.DEBUG))
+                        Bark.train(ColoredUnitTestTrainer(minLevel = Level.DEBUG))
                         Bark.i("Switched to ColoredTestTrainer - check IDE console!")
                         onStatusUpdate()
                     },

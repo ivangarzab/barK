@@ -23,7 +23,7 @@ final class UserRepositoryTests: XCTestCase {
         super.setUp()
 
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: true))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: true))
 
         Bark.i("=== Setting up UserRepositoryTests ===")
 
@@ -225,31 +225,31 @@ final class UserRepositoryTests: XCTestCase {
         Bark.i("✅ State management test completed")
     }
 
-    func testDemonstrateLoggingAtDifferentVolumes() async throws {
-        Bark.i("=== Testing Different Volume Levels ===")
+    func testDemonstrateLoggingAtDifferentMinLevels() async throws {
+        Bark.i("=== Testing Different MinLevel Settings ===")
 
         // Test with VERBOSE (show everything)
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: false))
 
-        Bark.i("--- Volume: VERBOSE ---")
+        Bark.i("--- MinLevel: VERBOSE ---")
         await userRepository.clearUsers()
         _ = try await userRepository.createUser(name: "Verbose Test")
 
         // Test with INFO (hide debug/verbose)
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.info, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.info, showTimestamp: false))
 
-        Bark.i("--- Volume: INFO (debug/verbose filtered) ---")
+        Bark.i("--- MinLevel: INFO (debug/verbose filtered) ---")
         _ = try await userRepository.createUser(name: "Info Test")
 
         // Test with WARNING (only warnings and errors)
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.warning, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.warning, showTimestamp: false))
 
-        Bark.i("--- Volume: WARNING (only warnings/errors shown) ---")
+        Bark.i("--- MinLevel: WARNING (only warnings/errors shown) ---")
         await userRepository.clearUsers()
 
-        Bark.i("✅ Volume demonstration completed")
+        Bark.i("✅ MinLevel demonstration completed")
     }
 }

@@ -27,7 +27,7 @@ class UserServiceTest {
         Bark.releaseAllTrainers()
 
         // Configure barK for testing - this will show in console output!
-        Bark.train(ColoredUnitTestTrainer(volume = Level.DEBUG))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.DEBUG))
 
         Bark.i("=== Setting up UserServiceTest ===")
 
@@ -86,7 +86,7 @@ class UserServiceTest {
 
         // Use colored trainer
         Bark.releaseAllTrainers()
-        Bark.train(ColoredUnitTestTrainer(volume = Level.VERBOSE))
+        Bark.train(ColoredUnitTestTrainer(minLevel = Level.VERBOSE))
 
         Bark.v("Verbose message (should be gray)")
         Bark.d("Debug message (should be blue)")
@@ -100,7 +100,7 @@ class UserServiceTest {
 
         // Switch to plain trainer
         Bark.releaseAllTrainers()
-        Bark.train(UnitTestTrainer(volume = Level.VERBOSE))
+        Bark.train(UnitTestTrainer(minLevel = Level.VERBOSE))
 
         Bark.v("Verbose message (plain text)")
         Bark.d("Debug message (plain text)")

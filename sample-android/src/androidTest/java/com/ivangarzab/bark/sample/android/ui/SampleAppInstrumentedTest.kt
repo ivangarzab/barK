@@ -27,7 +27,7 @@ class SampleAppInstrumentedTest {
         // Setup barK for this test
         Bark.releaseAllTrainers()
         Bark.apply {
-            train(AndroidTestLogTrainer(volume = Level.VERBOSE))
+            train(AndroidTestLogTrainer(minLevel = Level.VERBOSE))
             tag("Instrumented Test")
         }
 

@@ -24,7 +24,7 @@ final class NotificationServiceTests: XCTestCase {
 
         Bark.releaseAllTrainers()
         // Start with plain trainer for contrast
-        Bark.train(trainer: UnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.train(trainer: UnitTestTrainer(minLevel: Level.verbose, showTimestamp: false))
 
         Bark.i("=== Setting up NotificationServiceTests ===")
 
@@ -49,7 +49,7 @@ final class NotificationServiceTests: XCTestCase {
 
         // Switch to colored trainer
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: false))
 
         Bark.i("Testing all notification types (Colored Output)")
 
@@ -63,7 +63,7 @@ final class NotificationServiceTests: XCTestCase {
 
     func testNotificationServiceInRealisticScenarios() {
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.debug, showTimestamp: true))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.debug, showTimestamp: true))
 
         Bark.i("=== Realistic Notification Scenarios ===")
 
@@ -86,30 +86,30 @@ final class NotificationServiceTests: XCTestCase {
         Bark.i("✅ Realistic scenarios completed")
     }
 
-    func testDemonstrateNotificationTimingAndVolumeControl() {
-        Bark.i("=== Testing Volume Control and Timing ===")
+    func testDemonstrateNotificationTimingAndMinLevelControl() {
+        Bark.i("=== Testing MinLevel Control and Timing ===")
 
-        // Test with high volume level (only errors)
+        // Test with high minLevel (only errors)
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.error, showTimestamp: true))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.error, showTimestamp: true))
 
-        Bark.d("This debug message should NOT appear (volume = ERROR)")
+        Bark.d("This debug message should NOT appear (minLevel = ERROR)")
         notificationService.showInfo("This info should NOT appear")
         notificationService.showWarning("This warning should NOT appear")
         notificationService.showError("This error SHOULD appear")
 
-        Bark.i("--- Lowering volume to INFO ---")
+        Bark.i("--- Lowering minLevel to INFO ---")
 
-        // Test with medium volume (INFO and above)
+        // Test with medium minLevel (INFO and above)
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.info, showTimestamp: true))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.info, showTimestamp: true))
 
-        Bark.d("This debug message should NOT appear (volume = INFO)")
+        Bark.d("This debug message should NOT appear (minLevel = INFO)")
         notificationService.showInfo("This info SHOULD appear")
         notificationService.showWarning("This warning SHOULD appear")
         notificationService.showError("This error SHOULD appear")
 
-        Bark.i("✅ Volume control demonstration completed")
+        Bark.i("✅ MinLevel control demonstration completed")
     }
 
     func testCompareTrainersSideBySide() {
@@ -125,7 +125,7 @@ final class NotificationServiceTests: XCTestCase {
 
         // Plain trainer first
         Bark.releaseAllTrainers()
-        Bark.train(trainer: UnitTestTrainer(volume: Level.verbose, showTimestamp: true))
+        Bark.train(trainer: UnitTestTrainer(minLevel: Level.verbose, showTimestamp: true))
 
         Bark.i("--- Plain UnitTestTrainer Output ---")
         messages.forEach { message in
@@ -134,7 +134,7 @@ final class NotificationServiceTests: XCTestCase {
 
         // Colored trainer second
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: true))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: true))
 
         Bark.i("--- ColoredUnitTestTrainer Output ---")
         messages.forEach { message in
@@ -146,7 +146,7 @@ final class NotificationServiceTests: XCTestCase {
 
     func testNotificationPatternsAndFrequency() {
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: false))
 
         Bark.i("=== Testing Notification Patterns ===")
 

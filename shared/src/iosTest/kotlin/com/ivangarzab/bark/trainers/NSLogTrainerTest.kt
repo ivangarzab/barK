@@ -9,7 +9,7 @@ import kotlin.test.*
  *
  * Tests the core functionality and behavior of the iOS system log trainer.
  * Note: We can't easily mock NSLog, so we focus on testing the trainer's
- * logic, properties, and volume filtering behavior.
+ * logic, properties, and minLevel filtering behavior.
  */
 class NSLogTrainerTest {
 
@@ -20,38 +20,38 @@ class NSLogTrainerTest {
     }
 
     @Test
-    fun `trainer should have default volume VERBOSE`() {
+    fun `trainer should have default minLevel VERBOSE`() {
         val trainer = NSLogTrainer()
-        assertEquals(Level.VERBOSE, trainer.volume, "Default volume should be VERBOSE")
+        assertEquals(Level.VERBOSE, trainer.minLevel, "Default minLevel should be VERBOSE")
     }
 
     @Test
-    fun `trainer should accept custom volume in constructor`() {
-        val customTrainer = NSLogTrainer(volume = Level.ERROR)
-        assertEquals(Level.ERROR, customTrainer.volume, "Custom volume should be respected")
+    fun `trainer should accept custom minLevel in constructor`() {
+        val customTrainer = NSLogTrainer(minLevel = Level.ERROR)
+        assertEquals(Level.ERROR, customTrainer.minLevel, "Custom minLevel should be respected")
     }
 
     @Test
-    fun `volume filtering should work correctly with different thresholds`() {
+    fun `minLevel filtering should work correctly with different thresholds`() {
         // We can't easily test the actual NSLog output, but we can test
-        // that the trainer has the right volume settings for filtering logic
+        // that the trainer has the right minLevel settings for filtering logic
 
-        val volumes = listOf(
+        val levels = listOf(
             Level.VERBOSE, Level.DEBUG, Level.INFO,
             Level.WARNING, Level.ERROR, Level.CRITICAL
         )
 
-        volumes.forEach { volumeLevel ->
-            val trainer = NSLogTrainer(volume = volumeLevel)
-            assertEquals(volumeLevel, trainer.volume, "Volume should be set correctly for $volumeLevel")
+        levels.forEach { threshold ->
+            val trainer = NSLogTrainer(minLevel = threshold)
+            assertEquals(threshold, trainer.minLevel, "MinLevel should be set correctly for $threshold")
 
-            // Test that levels below the volume would be filtered
+            // Test that levels below the threshold would be filtered
             Level.entries.forEach { testLevel ->
-                val shouldBeFiltered = testLevel.ordinal < volumeLevel.ordinal
+                val shouldBeFiltered = testLevel.ordinal < threshold.ordinal
                 assertEquals(
                     shouldBeFiltered,
-                    testLevel.ordinal < volumeLevel.ordinal,
-                    "Level $testLevel with volume $volumeLevel filtering expectation"
+                    testLevel.ordinal < threshold.ordinal,
+                    "Level $testLevel with minLevel $threshold filtering expectation"
                 )
             }
         }
@@ -59,7 +59,7 @@ class NSLogTrainerTest {
 
     @Test
     fun `trainer should handle all log levels`() {
-        val trainer = NSLogTrainer(volume = Level.VERBOSE)
+        val trainer = NSLogTrainer(minLevel = Level.VERBOSE)
 
         // Test that all levels are supported (we can't test output, but ensure no exceptions)
         assertDoesNotThrow("VERBOSE should not throw") {
@@ -136,35 +136,35 @@ class NSLogTrainerTest {
 
     @Test
     fun `trainer properties should be immutable after creation`() {
-        val trainer = NSLogTrainer(volume = Level.WARNING)
+        val trainer = NSLogTrainer(minLevel = Level.WARNING)
 
         // Verify properties don't change
-        assertEquals(Level.WARNING, trainer.volume)
+        assertEquals(Level.WARNING, trainer.minLevel)
         assertEquals(Pack.SYSTEM, trainer.pack)
 
         // These should remain constant
         repeat(3) {
-            assertEquals(Level.WARNING, trainer.volume, "Volume should remain constant")
+            assertEquals(Level.WARNING, trainer.minLevel, "MinLevel should remain constant")
             assertEquals(Pack.SYSTEM, trainer.pack, "Pack should remain constant")
         }
     }
 
     @Test
     fun `multiple trainers should be independent`() {
-        val trainer1 = NSLogTrainer(volume = Level.DEBUG)
-        val trainer2 = NSLogTrainer(volume = Level.ERROR)
+        val trainer1 = NSLogTrainer(minLevel = Level.DEBUG)
+        val trainer2 = NSLogTrainer(minLevel = Level.ERROR)
 
-        assertEquals(Level.DEBUG, trainer1.volume, "First trainer should have DEBUG volume")
-        assertEquals(Level.ERROR, trainer2.volume, "Second trainer should have ERROR volume")
+        assertEquals(Level.DEBUG, trainer1.minLevel, "First trainer should have DEBUG minLevel")
+        assertEquals(Level.ERROR, trainer2.minLevel, "Second trainer should have ERROR minLevel")
 
         // They should not affect each other
-        assertNotEquals(trainer1.volume, trainer2.volume, "Trainers should be independent")
+        assertNotEquals(trainer1.minLevel, trainer2.minLevel, "Trainers should be independent")
     }
 
     @Test
     fun `trainer should work with realistic barK integration`() {
         // Test that demonstrates how it would be used with barK
-        val trainer = NSLogTrainer(volume = Level.INFO)
+        val trainer = NSLogTrainer(minLevel = Level.INFO)
 
         // Simulate barK.d() call (should be filtered - DEBUG < INFO)
         assertDoesNotThrow("Should handle filtered debug call") {

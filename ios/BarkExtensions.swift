@@ -80,6 +80,18 @@ extension Bark {
         Bark.shared.wtf(message: message, throwable: kotlinError)
     }
 
+    /// Log within a temporary tag scope.
+    ///
+    /// The given tag applies only for the duration of the block, after which the
+    /// previous tag (global or auto-detect) is restored. Scopes can be nested.
+    ///
+    /// - Parameters:
+    ///   - tag: The temporary tag to use within the block
+    ///   - block: The logging block to execute under the given tag
+    public static func heel(_ tag: String, block: () -> Void) {
+        Bark.shared.heel(tag: tag, block: block)
+    }
+
     /// Train Bark with a new Trainer.
     ///
     /// - Parameter trainer: The Trainer to add

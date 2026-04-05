@@ -68,5 +68,5 @@
 
 ---
 
-!!! tip "Looking for built-in trainers?"
+!!! tip "Looking for built-in Trainers?"
     See the [Android Guide](../android/index.md) or [iOS Guide](../ios/index.md) for the full list of platform trainers, or [Custom Trainers](../advanced/custom-trainers.md) to build your own.

@@ -38,4 +38,5 @@ Full API documentation is generated from source via [Dokka](https://github.com/K
 | `Bark.unmuzzle()` | Resume output |
 | `Bark.tag(tag)` | Set a global tag |
 | `Bark.untag()` | Remove the global tag |
+| `Bark.heel(tag, block)` | Log within a temporary tag scope |
 | `Bark.getStatus()` | Returns a status string with current configuration |

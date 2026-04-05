@@ -2,7 +2,7 @@
 
 Full API documentation is generated from source via [Dokka](https://github.com/Kotlin/dokka) and published here on each release.
 
-[:octicons-arrow-right-24: Browse the full API Reference](dokka/index.html){ .md-button .md-button--primary }
+[:octicons-arrow-right-24: Browse the full API Reference](reference/index.md){ .md-button .md-button--primary }
 
 !!! info
     The API reference is generated from source via Dokka and published alongside this site. If the link above doesn't work yet, refer to the source on [GitHub](https://github.com/ivangarzab/barK/tree/main/shared/src/commonMain).

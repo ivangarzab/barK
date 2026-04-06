@@ -13,7 +13,7 @@ barK is a Kotlin Multiplatform library distributed via Maven Central. Add it to 
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.ivangarzab:bark:<version>")
+            implementation("com.ivangarzab.bark:bark:<version>")
         }
     }
 }

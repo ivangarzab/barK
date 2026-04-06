@@ -7,7 +7,7 @@
 
 ## Project Overview
 
-**barK** is a lightweight, extensible logging library for Kotlin Multiplatform with automatic tag detection and smart test environment handling. Published on Maven Central as `com.ivangarzab:bark`.
+**barK** is a lightweight, extensible logging library for Kotlin Multiplatform with automatic tag detection and smart test environment handling. Published on Maven Central as `com.ivangarzab.bark:bark`.
 
 **Key Features:**
 - Cross-platform support (Android + iOS with platform parity)

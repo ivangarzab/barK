@@ -48,7 +48,7 @@ Add barK to your project via Maven Central:
     kotlin {
         sourceSets {
             commonMain.dependencies {
-                implementation("com.ivangarzab:bark:<version>")
+                implementation("com.ivangarzab.bark:bark:<version>")
             }
         }
     }
@@ -65,7 +65,7 @@ Add barK to your project via Maven Central:
         sourceSets {
             commonMain {
                 dependencies {
-                    implementation 'com.ivangarzab:bark:<version>'
+                    implementation 'com.ivangarzab.bark:bark:<version>'
                 }
             }
         }

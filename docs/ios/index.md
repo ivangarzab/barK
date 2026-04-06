@@ -12,7 +12,7 @@
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.ivangarzab:bark:<version>")
+            implementation("com.ivangarzab.bark:bark:<version>")
         }
     }
 }

@@ -34,6 +34,20 @@ a:not(.library-name--link):hover {
     color: inherit;
 }
 
+/* Platform tags — colors */
+.jvm-like {
+    --platform-tag-color: #3ddc84 !important;
+}
+
+.native-like {
+    --platform-tag-color: #007aff !important;
+}
+
+/* Platform tags — all lowercase */
+.platform-tag {
+    text-transform: lowercase !important;
+}
+
 /* Platform source set tabs */
 .tabs-section-body .tabs-header .tab:hover,
 .tabs-section-body .tabs-header .tab.active {

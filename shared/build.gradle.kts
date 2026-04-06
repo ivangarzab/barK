@@ -88,7 +88,7 @@ publishing {
         publications.withType<MavenPublication> {
             artifactId = artifactId.replace("shared", "bark")
             groupId = "com.ivangarzab.bark"
-            version = "0.2.3"
+            version = "1.0.0"
 
             pom {
                 name = "barK"

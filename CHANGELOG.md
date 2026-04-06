@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2026-04-06
+
+### Added
+- Feat: Implement Bark.wtf() function all around
+- Update BarkTest.kt
+- Update BarkExtensions.swift
+- Implement Bark.heel() function to log a block of code with a one-off tag
+- Namespace migration + V1 prep (#35)
+
+### Changed
+- Rename Pack.CONSOLE into Pack.TEST to refactor the intent and usage
+- Enforce Pack.SYSTEM trainers only logging when not running tests
+- Refactor iOS' UnitTestTrainer.kt to use NSLog instead of prints
+- Make android's AndroidLogTrainer.kt be part of Pack.TEST instead of SYSTEM
+- Refactor: Rename Trainer.volume to .minLevel
+- Update all tests and docs
+
+### Documentation
+- Update .gitignore
+- Update docs with the .heel() impl
+- Polish Dokka documentation with barK theme (#34)
+
+### Maintenance
+- Chore: Update wordmark.png with new font (Nunito Sans)
+- Small changes to the README file
+- Remove the ColoredUnitTestTrainer.kt for iOS
 ## [0.2.3] - 2026-04-04
 
 ### Documentation
@@ -127,6 +153,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix the :shared module's build.gradle.kts so that it publishes ALL artifacts correctly for KMP
 ## [0.0.1] - 2025-08-13
+[1.0.0]: https://github.com/ivangarzab/barK/compare/0.2.3...1.0.0
 [0.2.3]: https://github.com/ivangarzab/barK/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/ivangarzab/barK/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/ivangarzab/barK/compare/0.2.0...0.2.1

@@ -1,0 +1,56 @@
+/* barK brand overrides for Dokka HTML output */
+
+:root {
+    --color-key-blue: #7f51ff;
+    --color-key-blue-hover: #9e77ff;
+    --color-key-blue-50: rgba(127, 81, 255, 0.5);
+    --hover-link-color: #7f51ff;
+    --active-section-color: #7f51ff;
+    --active-tab-border-color: #7f51ff;
+    --sidemenu-section-active-color: #7f51ff;
+}
+
+/* Content links */
+a:not(.library-name--link),
+a:not(.library-name--link):visited {
+    color: #7f51ff;
+}
+
+a:not(.library-name--link):hover {
+    color: #9e77ff;
+}
+
+/* Sidebar nav links — inherit white/black from theme */
+.sidebar a,
+.sidebar a:visited,
+.sidebar a:hover {
+    color: inherit;
+}
+
+/* Top nav title — inherit theme color (white in dark, black in light) */
+.library-name--link,
+.library-name--link:visited,
+.library-name--link:hover {
+    color: inherit;
+}
+
+/* Platform tags — colors */
+.jvm-like {
+    --platform-tag-color: #3ddc84 !important;
+}
+
+.native-like {
+    --platform-tag-color: #007aff !important;
+}
+
+/* Platform tags — all lowercase */
+.platform-tag {
+    text-transform: lowercase !important;
+}
+
+/* Platform source set tabs */
+.tabs-section-body .tabs-header .tab:hover,
+.tabs-section-body .tabs-header .tab.active {
+    color: #7f51ff;
+    border-bottom-color: #7f51ff;
+}

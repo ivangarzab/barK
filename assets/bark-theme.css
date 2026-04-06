@@ -1,0 +1,39 @@
+/* barK brand overrides for Dokka HTML output */
+
+:root {
+    --hover-link-color: #7f51ff;
+    --active-section-color: #7f51ff;
+    --active-tab-border-color: #7f51ff;
+    --sidemenu-section-active-color: #7f51ff;
+}
+
+/* Content links only — nav links stay white/black */
+a:not(.library-name--link),
+a:not(.library-name--link):visited {
+    color: #7f51ff;
+}
+
+a:not(.library-name--link):hover {
+    color: #9e77ff;
+}
+
+/* Reset nav sidebar links to inherit theme color */
+.navigation a,
+.navigation a:visited,
+.navigation a:hover {
+    color: inherit;
+}
+
+/* Nav header title — inherit theme color (white in dark, black in light) */
+.library-name--link,
+.library-name--link:visited,
+.library-name--link:hover {
+    color: inherit;
+}
+
+/* Platform source set tabs */
+.tabs-section-body .tabs-header .tab:hover,
+.tabs-section-body .tabs-header .tab.active {
+    color: #7f51ff;
+    border-bottom-color: #7f51ff;
+}

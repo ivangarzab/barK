@@ -155,3 +155,19 @@ kover {
         }
     }
 }
+
+dokka {
+    moduleName.set("barK API")
+    pluginsConfiguration.html {
+        customStyleSheets.from(file("../assets/bark-theme.css"))
+        customAssets.from(file("../assets/logo-icon.svg"))
+        footerMessage.set("Copyright &copy; Iván Garza Bermea")
+    }
+    dokkaSourceSets.configureEach {
+        sourceLink {
+            localDirectory.set(projectDir.resolve("src"))
+            remoteUrl("https://github.com/ivangarzab/barK/blob/main/shared/src")
+            remoteLineSuffix.set("#L")
+        }
+    }
+}

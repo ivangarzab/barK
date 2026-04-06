@@ -11,7 +11,7 @@ import org.junit.Assert.*
  *
  * Tests the key differences from AndroidLogTrainer:
  * - Does NOT skip tests (primary difference)
- * - Maintains proper pack type and volume behavior
+ * - Maintains proper pack type and minLevel behavior
  * - Inherits all AndroidLogTrainer functionality correctly
  *
  * Note: We don't test the actual Android Log calls since those are simple
@@ -22,19 +22,19 @@ class AndroidTestLogTrainerTest {
     @Test
     fun `trainer should have correct pack type`() {
         val trainer = AndroidTestLogTrainer()
-        assertEquals("AndroidTestLogTrainer should use SYSTEM pack", Pack.SYSTEM, trainer.pack)
+        assertEquals("AndroidTestLogTrainer should use TEST pack", Pack.TEST, trainer.pack)
     }
 
     @Test
-    fun `trainer should have default volume VERBOSE`() {
+    fun `trainer should have default minLevel VERBOSE`() {
         val trainer = AndroidTestLogTrainer()
-        assertEquals("Default volume should be VERBOSE", Level.VERBOSE, trainer.volume)
+        assertEquals("Default minLevel should be VERBOSE", Level.VERBOSE, trainer.minLevel)
     }
 
     @Test
-    fun `trainer should accept custom volume in constructor`() {
-        val customTrainer = AndroidTestLogTrainer(volume = Level.ERROR)
-        assertEquals("Custom volume should be respected", Level.ERROR, customTrainer.volume)
+    fun `trainer should accept custom minLevel in constructor`() {
+        val customTrainer = AndroidTestLogTrainer(minLevel = Level.ERROR)
+        assertEquals("Custom minLevel should be respected", Level.ERROR, customTrainer.minLevel)
     }
 
     @Test
@@ -57,14 +57,14 @@ class AndroidTestLogTrainerTest {
     }
 
     @Test
-    fun `should inherit proper volume filtering behavior`() {
-        // Test that volume filtering works as expected (inherited from parent)
-        val warningTrainer = AndroidTestLogTrainer(volume = Level.WARNING)
+    fun `should inherit proper minLevel filtering behavior`() {
+        // Test that minLevel filtering works as expected (inherited from parent)
+        val warningTrainer = AndroidTestLogTrainer(minLevel = Level.WARNING)
 
-        // Verify volume property is set correctly
-        assertEquals(Level.WARNING, warningTrainer.volume)
+        // Verify minLevel property is set correctly
+        assertEquals(Level.WARNING, warningTrainer.minLevel)
 
-        // Test volume filtering logic (levels below WARNING should be filtered)
+        // Test minLevel filtering logic (levels below WARNING should be filtered)
         assertTrue("VERBOSE should be below WARNING threshold",
             Level.VERBOSE.ordinal < Level.WARNING.ordinal)
         assertTrue("DEBUG should be below WARNING threshold",
@@ -73,51 +73,52 @@ class AndroidTestLogTrainerTest {
             Level.INFO.ordinal < Level.WARNING.ordinal)
 
         // These should pass through
-        assertFalse("WARNING should pass volume filter",
+        assertFalse("WARNING should pass minLevel filter",
             Level.WARNING.ordinal < Level.WARNING.ordinal)
-        assertFalse("ERROR should pass volume filter",
+        assertFalse("ERROR should pass minLevel filter",
             Level.ERROR.ordinal < Level.WARNING.ordinal)
-        assertFalse("CRITICAL should pass volume filter",
+        assertFalse("CRITICAL should pass minLevel filter",
             Level.CRITICAL.ordinal < Level.WARNING.ordinal)
     }
 
     @Test
-    fun `should maintain same pack type as parent`() {
+    fun `should have different pack type from parent`() {
         val testTrainer = AndroidTestLogTrainer()
         val regularTrainer = AndroidLogTrainer()
 
-        assertEquals("Both trainers should use same pack type",
+        assertNotEquals("Trainers should use different pack types",
             regularTrainer.pack, testTrainer.pack)
-        assertEquals("Should be SYSTEM pack", Pack.SYSTEM, testTrainer.pack)
+        assertEquals("AndroidLogTrainer should be SYSTEM pack", Pack.SYSTEM, regularTrainer.pack)
+        assertEquals("AndroidTestLogTrainer should be TEST pack", Pack.TEST, testTrainer.pack)
     }
 
     @Test
     fun `should have correct level mapping behavior`() {
-        val trainer = AndroidTestLogTrainer(volume = Level.VERBOSE)
+        val trainer = AndroidTestLogTrainer(minLevel = Level.VERBOSE)
 
         // We can't call handle() because it tries to use Android Log in unit tests
         // Instead, we test the logic that determines if a message would be processed
 
-        // All levels should be processed when volume is VERBOSE
+        // All levels should be processed when minLevel is VERBOSE
         Level.values().forEach { level ->
             val wouldBeFiltered = level.ordinal < Level.VERBOSE.ordinal
-            assertFalse("Level $level should not be filtered with VERBOSE volume", wouldBeFiltered)
+            assertFalse("Level $level should not be filtered with VERBOSE minLevel", wouldBeFiltered)
         }
 
-        // Test with higher volume - only some levels should pass
-        val warningTrainer = AndroidTestLogTrainer(volume = Level.WARNING)
+        // Test with higher minLevel - only some levels should pass
+        val warningTrainer = AndroidTestLogTrainer(minLevel = Level.WARNING)
 
-        assertTrue("VERBOSE should be filtered with WARNING volume",
+        assertTrue("VERBOSE should be filtered with WARNING minLevel",
             Level.VERBOSE.ordinal < Level.WARNING.ordinal)
-        assertTrue("DEBUG should be filtered with WARNING volume",
+        assertTrue("DEBUG should be filtered with WARNING minLevel",
             Level.DEBUG.ordinal < Level.WARNING.ordinal)
-        assertTrue("INFO should be filtered with WARNING volume",
+        assertTrue("INFO should be filtered with WARNING minLevel",
             Level.INFO.ordinal < Level.WARNING.ordinal)
-        assertFalse("WARNING should not be filtered with WARNING volume",
+        assertFalse("WARNING should not be filtered with WARNING minLevel",
             Level.WARNING.ordinal < Level.WARNING.ordinal)
-        assertFalse("ERROR should not be filtered with WARNING volume",
+        assertFalse("ERROR should not be filtered with WARNING minLevel",
             Level.ERROR.ordinal < Level.WARNING.ordinal)
-        assertFalse("CRITICAL should not be filtered with WARNING volume",
+        assertFalse("CRITICAL should not be filtered with WARNING minLevel",
             Level.CRITICAL.ordinal < Level.WARNING.ordinal)
     }
 
@@ -136,28 +137,28 @@ class AndroidTestLogTrainerTest {
 
         // Verify the inheritance doesn't break basic properties
         assertNotNull("Pack should not be null", trainer.pack)
-        assertNotNull("Volume should not be null", trainer.volume)
+        assertNotNull("MinLevel should not be null", trainer.minLevel)
     }
 
     @Test
-    fun `volume filtering should work correctly with different thresholds`() {
-        // Test different volume levels
-        val volumes = listOf(
+    fun `minLevel filtering should work correctly with different thresholds`() {
+        // Test different minLevel values
+        val levels = listOf(
             Level.VERBOSE, Level.DEBUG, Level.INFO,
             Level.WARNING, Level.ERROR, Level.CRITICAL
         )
 
-        volumes.forEach { volumeLevel ->
-            val trainer = AndroidTestLogTrainer(volume = volumeLevel)
-            assertEquals("Volume should be set correctly", volumeLevel, trainer.volume)
+        levels.forEach { threshold ->
+            val trainer = AndroidTestLogTrainer(minLevel = threshold)
+            assertEquals("MinLevel should be set correctly", threshold, trainer.minLevel)
 
-            // Test that levels below the volume would be filtered
+            // Test that levels below the threshold would be filtered
             Level.values().forEach { testLevel ->
-                val shouldBeFiltered = testLevel.ordinal < volumeLevel.ordinal
+                val shouldBeFiltered = testLevel.ordinal < threshold.ordinal
                 assertEquals(
-                    "Level $testLevel with volume $volumeLevel filtering expectation",
+                    "Level $testLevel with minLevel $threshold filtering expectation",
                     shouldBeFiltered,
-                    testLevel.ordinal < volumeLevel.ordinal
+                    testLevel.ordinal < threshold.ordinal
                 )
             }
         }
@@ -174,8 +175,8 @@ class AndroidTestLogTrainerTest {
 
         // Test that the trainer has the expected configuration for test usage
         assertEquals("Should default to VERBOSE for comprehensive test logging",
-            Level.VERBOSE, trainer.volume)
-        assertEquals("Should use SYSTEM pack like parent", Pack.SYSTEM, trainer.pack)
+            Level.VERBOSE, trainer.minLevel)
+        assertEquals("Should use TEST pack for test-environment logging", Pack.TEST, trainer.pack)
 
         // The key difference: it doesn't skip during tests
         val regularTrainer = AndroidLogTrainer()
@@ -183,6 +184,9 @@ class AndroidTestLogTrainerTest {
             regularTrainer.skipTests())
         assertFalse("AndroidTestLogTrainer should NOT skip during tests",
             trainer.skipTests())
+
+        // And uses TEST pack instead of SYSTEM
+        assertEquals("Should use TEST pack for test-environment logging", Pack.TEST, trainer.pack)
     }
 
     // Note: We removed the assertDoesNotThrow helper since we're not calling handle() anymore

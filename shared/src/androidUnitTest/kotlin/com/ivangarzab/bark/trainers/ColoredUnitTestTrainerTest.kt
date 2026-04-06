@@ -12,7 +12,7 @@ import java.io.PrintStream
  * The purpose of this test class is to test the [ColoredUnitTestTrainerTest] class.
  *
  * Focuses on testing the color functionality that extends UnitTestTrainer.
- * Base functionality (volume filtering, timestamps, etc.) is tested in UnitTestTrainerTest.
+ * Base functionality (minLevel filtering, timestamps, etc.) is tested in UnitTestTrainerTest.
  */
 class ColoredUnitTestTrainerTest {
 
@@ -182,8 +182,8 @@ class ColoredUnitTestTrainerTest {
     }
 
     @Test
-    fun `should preserve volume filtering functionality`() {
-        val warningTrainer = ColoredUnitTestTrainer(volume = Level.WARNING)
+    fun `should preserve minLevel filtering functionality`() {
+        val warningTrainer = ColoredUnitTestTrainer(minLevel = Level.WARNING)
 
         warningTrainer.handle(Level.DEBUG, "TestTag", "Debug message", null)
         warningTrainer.handle(Level.WARNING, "TestTag", "Warning message", null)

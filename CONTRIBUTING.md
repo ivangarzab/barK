@@ -112,10 +112,10 @@ We use **Git Flow** for development:
 ```kotlin
 // Good: Clear, descriptive naming
 class AndroidLogTrainer(
-    override val volume: Level = Level.VERBOSE
+    override val minLevel: Level = Level.VERBOSE
 ) : Trainer {
     override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
-        if (level.ordinal < volume.ordinal) return
+        if (level.ordinal < minLevel.ordinal) return
         // Implementation
     }
 }
@@ -134,9 +134,9 @@ class AndroidLogTrainer(
  * This trainer outputs logs using Android's built-in Log class, making
  * them visible in Android Studio's Logcat window and device logs.
  *
- * @param volume Minimum log level to output (defaults to VERBOSE)
+ * @param minLevel Minimum log level to output (defaults to VERBOSE)
  */
-class AndroidLogTrainer(override val volume: Level = Level.VERBOSE) : Trainer
+class AndroidLogTrainer(override val minLevel: Level = Level.VERBOSE) : Trainer
 ```
 
 ## 🧪 Testing
@@ -159,8 +159,8 @@ class AndroidLogTrainer(override val volume: Level = Level.VERBOSE) : Trainer
 
 ```kotlin
 @Test
-fun `trainer should respect volume filtering`() {
-    val trainer = AndroidLogTrainer(volume = Level.WARNING)
+fun `trainer should respect minLevel filtering`() {
+    val trainer = AndroidLogTrainer(minLevel = Level.WARNING)
     
     // Test that DEBUG messages are filtered
     trainer.handle(Level.DEBUG, "TestTag", "Debug message", null)

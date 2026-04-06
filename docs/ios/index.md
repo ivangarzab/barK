@@ -12,7 +12,7 @@
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.ivangarzab:bark:<version>")
+            implementation("com.ivangarzab.bark:bark:<version>")
         }
     }
 }
@@ -65,7 +65,7 @@ struct MyApp: App {
         Bark.train(trainer: NSLogTrainer())              // (2)!
         Bark.train(trainer: ColoredUnitTestTrainer())    // (3)!
         #else
-        Bark.train(trainer: NSLogTrainer(volume: .warning)) // (4)!
+        Bark.train(trainer: NSLogTrainer(minLevel: .warning)) // (4)!
         #endif
     }
 
@@ -134,6 +134,13 @@ Bark.tag("MyApp")
 Bark.d("Initializing")  // Tag: [MyApp]
 
 Bark.untag()            // Return to auto-detection (or no tag if disabled)
+
+// Temporary tag for a single scope
+Bark.heel("Network") {
+    Bark.d("Request sent")    // Tag: [Network]
+    Bark.i("Response received") // Tag: [Network]
+}
+Bark.d("Back to normal")    // Tag: [MyApp] (or auto-detect)
 ```
 
 ---

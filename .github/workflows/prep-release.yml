@@ -111,11 +111,6 @@ jobs:
         run: chmod +x tools/publish-finalizer.sh
 
       - name: Finalize All Staged Repositories via Script
-        run: ./tools/publish-finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab
-
-        # This secondary, duplicative call is required due to the conflicting namespaces
-        # TODO: Delete this step once we migrate the library to the new namespace!
-      - name: Finalize All Staged Repositories via Script v2
         run: ./tools/publish-finalizer.sh ${{ env.MAVEN_USERNAME }} ${{ env.MAVEN_PASSWORD }} com.ivangarzab.bark
 
   release-summary:
@@ -132,13 +127,13 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📦 **Package Information**" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** \`${{ env.VERSION }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **Maven Central:** [com.ivangarzab:bark:${{ env.VERSION }}](https://central.sonatype.com/artifact/com.ivangarzab/bark)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Maven Central:** [com.ivangarzab.bark:bark:${{ env.VERSION }}](https://central.sonatype.com/artifact/com.ivangarzab/bark)" >> $GITHUB_STEP_SUMMARY
           echo "- **GitHub Release:** [v${{ env.VERSION }}](https://github.com/ivangarzab/barK/releases/tag/${{ env.VERSION }})" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🚀 **Ready to Use**" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`kotlin" >> $GITHUB_STEP_SUMMARY
           echo "dependencies {" >> $GITHUB_STEP_SUMMARY
-          echo "    implementation(\"com.ivangarzab:bark:${{ env.VERSION }}\")" >> $GITHUB_STEP_SUMMARY
+          echo "    implementation(\"com.ivangarzab.bark:bark:${{ env.VERSION }}\")" >> $GITHUB_STEP_SUMMARY
           echo "}" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

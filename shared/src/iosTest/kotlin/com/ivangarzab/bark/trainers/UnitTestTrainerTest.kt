@@ -9,7 +9,7 @@ import kotlin.test.*
  *
  * Tests the console output trainer functionality including:
  * - Basic logging output
- * - Volume filtering
+ * - MinLevel filtering
  * - Timestamp formatting
  * - Exception handling
  * - Test environment detection
@@ -34,19 +34,19 @@ class UnitTestTrainerTest {
 
     @Test
     fun `trainer should have correct pack type`() {
-        assertEquals(Pack.CONSOLE, trainer.pack, "UnitTestTrainer should use CONSOLE pack")
+        assertEquals(Pack.TEST, trainer.pack, "UnitTestTrainer should use CONSOLE pack")
     }
 
     @Test
-    fun `trainer should have default volume VERBOSE`() {
+    fun `trainer should have default minLevel VERBOSE`() {
         val defaultTrainer = UnitTestTrainer()
-        assertEquals(Level.VERBOSE, defaultTrainer.volume, "Default volume should be VERBOSE")
+        assertEquals(Level.VERBOSE, defaultTrainer.minLevel, "Default minLevel should be VERBOSE")
     }
 
     @Test
-    fun `trainer should accept custom volume in constructor`() {
-        val customTrainer = UnitTestTrainer(volume = Level.WARNING)
-        assertEquals(Level.WARNING, customTrainer.volume, "Custom volume should be respected")
+    fun `trainer should accept custom minLevel in constructor`() {
+        val customTrainer = UnitTestTrainer(minLevel = Level.WARNING)
+        assertEquals(Level.WARNING, customTrainer.minLevel, "Custom minLevel should be respected")
     }
 
     @Test
@@ -114,8 +114,8 @@ class UnitTestTrainerTest {
     }
 
     @Test
-    fun `handle should respect volume filtering`() {
-        val infoTrainer = UnitTestTrainer(volume = Level.INFO)
+    fun `handle should respect minLevel filtering`() {
+        val infoTrainer = UnitTestTrainer(minLevel = Level.INFO)
 
         // These should be filtered out (below INFO level)
         infoTrainer.handle(Level.VERBOSE, "TestTag", "Verbose message", null)
@@ -125,7 +125,7 @@ class UnitTestTrainerTest {
         infoTrainer.handle(Level.INFO, "TestTag", "Info message", null)
         infoTrainer.handle(Level.WARNING, "TestTag", "Warning message", null)
 
-        // Verify volume filtering logic works correctly
+        // Verify minLevel filtering logic works correctly
         assertTrue(Level.VERBOSE.ordinal < Level.INFO.ordinal, "VERBOSE should be below INFO")
         assertTrue(Level.DEBUG.ordinal < Level.INFO.ordinal, "DEBUG should be below INFO")
         assertTrue(Level.INFO.ordinal >= Level.INFO.ordinal, "INFO should pass INFO filter")
@@ -187,8 +187,8 @@ class UnitTestTrainerTest {
     }
 
     @Test
-    fun `trainer volume levels should be correctly ordered`() {
-        // Verify the volume filtering logic ordering
+    fun `trainer minLevel ordering should be correct`() {
+        // Verify the minLevel filtering logic ordering
         assertTrue(Level.VERBOSE.ordinal < Level.DEBUG.ordinal)
         assertTrue(Level.DEBUG.ordinal < Level.INFO.ordinal)
         assertTrue(Level.INFO.ordinal < Level.WARNING.ordinal)
@@ -225,11 +225,11 @@ class UnitTestTrainerTest {
     @Test
     fun `constructor parameters should be properly initialized`() {
         val customTrainer = UnitTestTrainer(
-            volume = Level.ERROR,
+            minLevel = Level.ERROR,
             showTimestamp = false
         )
 
-        assertEquals(Level.ERROR, customTrainer.volume)
-        assertEquals(Pack.CONSOLE, customTrainer.pack)
+        assertEquals(Level.ERROR, customTrainer.minLevel)
+        assertEquals(Pack.TEST, customTrainer.pack)
     }
 }

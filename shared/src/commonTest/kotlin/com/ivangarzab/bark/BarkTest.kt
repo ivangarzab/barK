@@ -16,7 +16,7 @@ class BarkTest {
 
     // Test trainer that captures log calls for verification
     open class BaseTestTrainer(
-        override val volume: Level,
+        override val minLevel: Level,
         override val pack: Pack
     ) : Trainer {
         val logCalls = mutableListOf<LogCall>()
@@ -31,19 +31,19 @@ class BarkTest {
     }
 
     private class ConsoleTestTrainer(
-        volume: Level = Level.VERBOSE,
-        pack: Pack = Pack.CONSOLE
-    ) : BaseTestTrainer(volume, pack)
+        minLevel: Level = Level.VERBOSE,
+        pack: Pack = Pack.TEST
+    ) : BaseTestTrainer(minLevel, pack)
 
     private class SystemTestTrainer(
-        volume: Level = Level.VERBOSE,
+        minLevel: Level = Level.VERBOSE,
         pack: Pack = Pack.SYSTEM
-    ) : BaseTestTrainer(volume, pack)
+    ) : BaseTestTrainer(minLevel, pack)
 
     private class FileTestTrainer(
-    volume: Level = Level.VERBOSE,
-    pack: Pack = Pack.FILE
-    ) : BaseTestTrainer(volume, pack)
+        minLevel: Level = Level.VERBOSE,
+        pack: Pack = Pack.FILE
+    ) : BaseTestTrainer(minLevel, pack)
 
     // Data class to capture log call details
     data class LogCall(
@@ -125,6 +125,69 @@ class BarkTest {
         assertNotNull(call)
         assertEquals(Level.ERROR, call.level)
         assertEquals("Test error message", call.message)
+    }
+
+    @Test
+    fun `heel should use given tag within block`() {
+        Bark.heel("TempTag") {
+            Bark.d("Inside heel")
+        }
+
+        assertEquals("TempTag", testTrainer.getLastCall()?.tag)
+    }
+
+    @Test
+    fun `heel should restore global tag after block`() {
+        Bark.tag("GlobalTag")
+        Bark.heel("TempTag") {
+            Bark.d("Inside heel")
+        }
+        Bark.d("After heel")
+
+        assertEquals("GlobalTag", testTrainer.getLastCall()?.tag)
+    }
+
+    @Test
+    fun `heel should restore null tag after block`() {
+        Bark.untag()
+        Bark.heel("TempTag") {
+            Bark.d("Inside heel")
+        }
+        assertEquals("TempTag", testTrainer.logCalls[testTrainer.logCalls.size - 1].tag)
+
+        // After block, globalTag is null — auto-detect kicks in, not "TempTag"
+        Bark.d("After heel")
+        assertNotEquals("TempTag", testTrainer.getLastCall()?.tag)
+    }
+
+    @Test
+    fun `heel should support nested scopes`() {
+        Bark.tag("GlobalTag")
+
+        Bark.heel("Outer") {
+            Bark.d("Outer log")
+            Bark.heel("Inner") {
+                Bark.d("Inner log")
+            }
+            Bark.d("Back to outer")
+        }
+        Bark.d("Back to global")
+
+        val calls = testTrainer.logCalls
+        assertEquals("Outer", calls[calls.size - 4].tag)
+        assertEquals("Inner", calls[calls.size - 3].tag)
+        assertEquals("Outer", calls[calls.size - 2].tag)
+        assertEquals("GlobalTag", calls[calls.size - 1].tag)
+    }
+
+    @Test
+    fun `wtf logging should call trainer with CRITICAL level`() {
+        Bark.wtf("Test wtf message")
+
+        val call = testTrainer.getLastCall()
+        assertNotNull(call)
+        assertEquals(Level.CRITICAL, call.level)
+        assertEquals("Test wtf message", call.message)
     }
 
     @Test

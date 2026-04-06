@@ -2,7 +2,7 @@
 # ===== LIBRARY VERSIONS =====
 kotlin = "2.1.21"
 kover = "0.9.3"
-dokka = "2.0.0"
+dokka = "2.2.0"
 
 # ===== SAMPLE APP VERSIONS =====
 agp = "8.10.1"

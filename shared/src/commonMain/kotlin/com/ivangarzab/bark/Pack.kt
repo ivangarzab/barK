@@ -10,14 +10,14 @@ package com.ivangarzab.bark
 enum class Pack {
 
     /**
-     * Denotes that logs will print to the native console (println() / print()).
-     */
-    CONSOLE,
-
-    /**
-     * Denotes that logs will print to the native logger (Log.d() / os_log()).
+     * Denotes that logs will print to the native logger (e.g., android.util.log or NSLog).
      */
     SYSTEM,
+
+    /**
+     * Denotes that logs will be used on test runs only.
+     */
+    TEST,
 
     /**
      * Denotes that logs will print to a file.
@@ -27,7 +27,8 @@ enum class Pack {
     /**
      * Denotes that logs will print to a custom destination.
      *
-     * This is the only [Pack] type that allows more than one [Trainer] to be used by the [Bark] system.
+     * NOTE: This is the only [Pack] type that allows more than one [Trainer]
+     * to be used by the [Bark] system.
      */
     CUSTOM
 }

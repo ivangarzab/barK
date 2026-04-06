@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.ivangarzab/bark.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.ivangarzab/bark)
+[![Maven Central](https://img.shields.io/maven-central/v/com.ivangarzab.bark/bark.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.ivangarzab.bark/bark)
 ![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-orange?logo=kotlin)
 ![Android](https://img.shields.io/badge/Android-✔️-green?logo=android)
 ![iOS](https://img.shields.io/badge/iOS-✔️-lightgrey?logo=apple)
@@ -6,9 +6,16 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Check](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/ivangarzab/barK/actions/workflows/unit-tests.yml)
 
+<div align="center">
+
 ![wordmark](/assets/wordmark.png)
 
-***barK**: A simple, extensible logging library for Kotlin Multiplatform*
+</div>
+
+***barK**: A simple, light-weight and extensible logging library for Kotlin Multiplatform*
+
+> [!IMPORTANT]
+> **Upgrading from 0.2.x?** Maven coordinates changed in v1.0.0 — see the [migration guide](https://ivangarzab.github.io/bark/changelog/migrating-to-1.0.0/).
 
 ---
 
@@ -26,7 +33,7 @@
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.ivangarzab:bark:<version>")
+            implementation("com.ivangarzab.bark:bark:<version>")
         }
     }
 }
@@ -57,8 +64,6 @@ Open `sample-ios/barK-sample/barK-sample.xcodeproj` in Xcode and run.
 ## Documentation
 
 Full documentation, guides, and API reference at **[ivangarzab.github.io/bark](https://ivangarzab.github.io/bark/)**.
-
----
 
 ## Contributing
 

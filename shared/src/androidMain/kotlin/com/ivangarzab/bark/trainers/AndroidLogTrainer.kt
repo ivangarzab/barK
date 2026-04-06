@@ -16,13 +16,13 @@ import com.ivangarzab.bark.detectors.isRunningTests
  * during tests to avoid interfering with test console output.
  *
  * @since 0.0.1
- * @param volume Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
+ * @param minLevel Minimum log level to output (defaults to [Level.VERBOSE] - shows all)
  */
 open class AndroidLogTrainer(
-    override val volume: Level = Level.VERBOSE
+    override val minLevel: Level = Level.VERBOSE
 ) : Trainer {
 
-    final override val pack = Pack.SYSTEM
+    override val pack = Pack.SYSTEM
 
     /**
      * Handle a log message by outputting it to Android Logcat.
@@ -35,8 +35,8 @@ open class AndroidLogTrainer(
     override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
         // Don't log to Android Logcat when running tests
         if (skipTests()) return
-        // Filter based on volume setting
-        if (level.ordinal < volume.ordinal) return
+        // Filter based on minLevel
+        if (level.ordinal < minLevel.ordinal) return
 
         when (level) {
             Level.VERBOSE -> Log.v(tag, message, throwable)

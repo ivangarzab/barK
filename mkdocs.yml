@@ -87,5 +87,7 @@ nav:
     - SDK Integration: advanced/sdk-integration.md
   - Comparison: comparison.md
   - In the Wild: in-the-wild.md
-  - Changelog: changelog.md
+  - Changelog:
+    - changelog/index.md
+    - Migrating to 1.0.0: changelog/migrating-to-1.0.0.md
   - API Reference: api/index.md

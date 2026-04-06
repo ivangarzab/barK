@@ -16,15 +16,15 @@ import java.util.Locale
  * or when you prefer simple clean output.
  *
  * @since 0.0.1
- * @param volume Minimum log level to output (defaults to VERBOSE - shows all)
+ * @param minLevel Minimum log level to output (defaults to VERBOSE - shows all)
  * @param showTimestamp Whether to include timestamps in output (defaults to true)
  */
 open class UnitTestTrainer(
-    override val volume: Level = Level.VERBOSE,
+    override val minLevel: Level = Level.VERBOSE,
     private val showTimestamp: Boolean = true
 ) : Trainer {
 
-    final override val pack = Pack.CONSOLE
+    final override val pack = Pack.TEST
 
     /**
      * Handle a log message by outputting it to plain console during tests.
@@ -38,8 +38,8 @@ open class UnitTestTrainer(
         // Only log to console when running tests
         if (!isRunningTests()) return
 
-        // Filter based on volume setting
-        if (level.ordinal < volume.ordinal) return
+        // Filter based on minLevel
+        if (level.ordinal < minLevel.ordinal) return
 
         // Build the formatted log message
         val formattedMessage = buildString {

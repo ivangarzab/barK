@@ -3,6 +3,7 @@ package com.ivangarzab.bark.trainers
 import com.ivangarzab.bark.Level
 import com.ivangarzab.bark.Pack
 import com.ivangarzab.bark.Trainer
+import com.ivangarzab.bark.detectors.isRunningTests
 import platform.Foundation.*
 
 /**
@@ -13,10 +14,10 @@ import platform.Foundation.*
  * adds timestamp, app name, process ID, and thread information.
  *
  * @since 0.2.0
- * @param volume Minimum log level to output
+ * @param minLevel Minimum log level to output
  */
 class NSLogTrainer(
-    override val volume: Level = Level.VERBOSE
+    override val minLevel: Level = Level.VERBOSE
 ) : Trainer {
 
     override val pack = Pack.SYSTEM
@@ -30,8 +31,11 @@ class NSLogTrainer(
      * @param throwable Optional throwable/exception associated with the log
      */
     override fun handle(level: Level, tag: String, message: String, throwable: Throwable?) {
-        // Filter based on volume setting
-        if (level.ordinal < volume.ordinal) return
+        // Only log to console when NOT running tests
+        if (isRunningTests()) return
+
+        // Filter based on minLevel
+        if (level.ordinal < minLevel.ordinal) return
 
         val formattedMessage = buildString {
             append("${level.label} ${if (tag.isNotEmpty()) "$tag: " else ""}$message")

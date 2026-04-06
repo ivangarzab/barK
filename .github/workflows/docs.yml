@@ -55,12 +55,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Generate API Documentation
-        run: ./gradlew :shared:dokkaHtml
+        run: ./gradlew :shared:dokkaGeneratePublicationHtml
 
       - name: Copy API Docs into MkDocs
         run: |
-          mkdir -p docs/api/dokka
-          cp -r shared/build/dokka/html/. docs/api/dokka/
+          mkdir -p docs/api/reference
+          cp -r shared/build/dokka/html/. docs/api/reference/
 
       - name: Install Dependencies
         run: pip install mkdocs-material

@@ -7,7 +7,7 @@
 
 ## Project Overview
 
-**barK** is a lightweight, extensible logging library for Kotlin Multiplatform with automatic tag detection and smart test environment handling. Published on Maven Central as `com.ivangarzab:bark`.
+**barK** is a lightweight, extensible logging library for Kotlin Multiplatform with automatic tag detection and smart test environment handling. Published on Maven Central as `com.ivangarzab.bark:bark`.
 
 **Key Features:**
 - Cross-platform support (Android + iOS with platform parity)
@@ -62,7 +62,7 @@ Singleton API entry point at `shared/src/commonMain/.../Bark.kt`:
 
 ### Trainer System (Strategy Pattern)
 
-**Trainer interface** defines custom log handlers with `pack` (categorization) and `volume` (filtering).
+**Trainer interface** defines custom log handlers with `pack` (categorization) and `minLevel` (filtering).
 
 **Platform-Specific Trainers:**
 
@@ -104,7 +104,7 @@ Singleton API entry point at `shared/src/commonMain/.../Bark.kt`:
 ## Common Tasks
 
 ### Creating a Custom Trainer
-1. Implement `Trainer` interface with `pack` and `volume`
+1. Implement `Trainer` interface with `pack` and `minLevel`
 2. Add tests in appropriate platform test folder
 3. Document in README.md
 
@@ -264,7 +264,7 @@ CI/CD: `.github/workflows/prep-release.yml` publishes to Maven Central
 
 ### Performance
 - iOS auto-tag uses C interop - expensive, disabled by default
-- `muzzle()` and volume checks return early
+- `muzzle()` and minLevel checks return early
 - Use direct log methods for optimal performance
 
 ---

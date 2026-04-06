@@ -87,8 +87,8 @@ publishing {
     publications {
         publications.withType<MavenPublication> {
             artifactId = artifactId.replace("shared", "bark")
-            groupId = "com.ivangarzab"
-            version = "0.2.3"
+            groupId = "com.ivangarzab.bark"
+            version = "1.0.0"
 
             pom {
                 name = "barK"
@@ -152,6 +152,22 @@ kover {
             rule {
                 minBound(90)
             }
+        }
+    }
+}
+
+dokka {
+    moduleName.set("barK API")
+    pluginsConfiguration.html {
+        customStyleSheets.from(file("../assets/bark-theme.css"))
+        customAssets.from(file("../assets/logo-icon.svg"))
+        footerMessage.set("Copyright &copy; Iván Garza Bermea")
+    }
+    dokkaSourceSets.configureEach {
+        sourceLink {
+            localDirectory.set(projectDir.resolve("src"))
+            remoteUrl("https://github.com/ivangarzab/barK/blob/main/shared/src")
+            remoteLineSuffix.set("#L")
         }
     }
 }

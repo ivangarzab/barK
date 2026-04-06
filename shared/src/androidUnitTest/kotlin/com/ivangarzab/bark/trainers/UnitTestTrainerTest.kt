@@ -14,7 +14,7 @@ import java.io.PrintStream
  *
  * Tests the console output trainer functionality including:
  * - Basic logging output
- * - Volume filtering
+ * - MinLevel filtering
  * - Timestamp formatting
  * - Exception handling
  * - Test environment detection
@@ -50,19 +50,19 @@ class UnitTestTrainerTest {
 
     @Test
     fun `trainer should have correct pack type`() {
-        assertEquals("UnitTestTrainer should use CONSOLE pack", Pack.CONSOLE, trainer.pack)
+        assertEquals("UnitTestTrainer should use CONSOLE pack", Pack.TEST, trainer.pack)
     }
 
     @Test
-    fun `trainer should have default volume VERBOSE`() {
+    fun `trainer should have default minLevel VERBOSE`() {
         val defaultTrainer = UnitTestTrainer()
-        assertEquals("Default volume should be VERBOSE", Level.VERBOSE, defaultTrainer.volume)
+        assertEquals("Default minLevel should be VERBOSE", Level.VERBOSE, defaultTrainer.minLevel)
     }
 
     @Test
-    fun `trainer should accept custom volume in constructor`() {
-        val customTrainer = UnitTestTrainer(volume = Level.WARNING)
-        assertEquals("Custom volume should be respected", Level.WARNING, customTrainer.volume)
+    fun `trainer should accept custom minLevel in constructor`() {
+        val customTrainer = UnitTestTrainer(minLevel = Level.WARNING)
+        assertEquals("Custom minLevel should be respected", Level.WARNING, customTrainer.minLevel)
     }
 
     @Test
@@ -152,8 +152,8 @@ class UnitTestTrainerTest {
     }
 
     @Test
-    fun `handle should respect volume filtering`() {
-        val infoTrainer = UnitTestTrainer(volume = Level.INFO)
+    fun `handle should respect minLevel filtering`() {
+        val infoTrainer = UnitTestTrainer(minLevel = Level.INFO)
 
         // These should be filtered out (below INFO level)
         infoTrainer.handle(Level.VERBOSE, "TestTag", "Verbose message", null)

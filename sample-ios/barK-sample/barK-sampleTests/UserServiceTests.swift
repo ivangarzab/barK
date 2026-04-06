@@ -27,7 +27,7 @@ final class UserServiceTests: XCTestCase {
         Bark.releaseAllTrainers()
 
         // Configure barK for testing - this will show in console output!
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.debug, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.debug, showTimestamp: false))
 
         Bark.i("=== Setting up UserServiceTests ===")
 
@@ -82,7 +82,7 @@ final class UserServiceTests: XCTestCase {
 
         // Use colored trainer
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: false))
 
         Bark.v("Verbose message (should be gray)")
         Bark.d("Debug message (should be blue)")
@@ -96,7 +96,7 @@ final class UserServiceTests: XCTestCase {
 
         // Switch to plain trainer
         Bark.releaseAllTrainers()
-        Bark.train(trainer: UnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.train(trainer: UnitTestTrainer(minLevel: Level.verbose, showTimestamp: false))
 
         Bark.v("Verbose message (plain text)")
         Bark.d("Debug message (plain text)")
@@ -114,7 +114,7 @@ final class UserServiceTests: XCTestCase {
 
         // Test with timestamps enabled
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: true))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: true))
 
         Bark.i("--- With Timestamps ---")
         userService.performAction()
@@ -122,7 +122,7 @@ final class UserServiceTests: XCTestCase {
 
         // Test with timestamps disabled
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: false))
 
         Bark.i("--- Without Timestamps ---")
         userService.performAction()
@@ -131,14 +131,14 @@ final class UserServiceTests: XCTestCase {
         Bark.i("✅ Timestamp options demonstration completed")
     }
 
-    func testVolumeFilteringInAction() {
-        Bark.i("=== Testing Volume Filtering ===")
+    func testMinLevelFilteringInAction() {
+        Bark.i("=== Testing MinLevel Filtering ===")
 
         // Test VERBOSE level (shows everything)
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.verbose, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.verbose, showTimestamp: false))
 
-        Bark.i("--- Volume: VERBOSE (shows all) ---")
+        Bark.i("--- MinLevel: VERBOSE (shows all) ---")
         Bark.v("Verbose message")
         Bark.d("Debug message")
         Bark.i("Info message")
@@ -146,15 +146,15 @@ final class UserServiceTests: XCTestCase {
 
         // Test WARNING level (shows warnings and above)
         Bark.releaseAllTrainers()
-        Bark.train(trainer: ColoredUnitTestTrainer(volume: Level.warning, showTimestamp: false))
+        Bark.train(trainer: ColoredUnitTestTrainer(minLevel: Level.warning, showTimestamp: false))
 
-        Bark.i("--- Volume: WARNING (filters verbose, debug, info) ---")
+        Bark.i("--- MinLevel: WARNING (filters verbose, debug, info) ---")
         Bark.v("Verbose message (filtered)")
         Bark.d("Debug message (filtered)")
         Bark.i("Info message (filtered)")
         Bark.w("Warning message (visible)")
         Bark.e("Error message (visible)")
 
-        Bark.i("✅ Volume filtering demonstration completed")
+        Bark.i("✅ MinLevel filtering demonstration completed")
     }
 }

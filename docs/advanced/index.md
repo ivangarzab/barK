@@ -1,6 +1,6 @@
 # Advanced Usage
 
-This section covers **barK**'s deeper configuration options: volume control, tagging strategies, runtime control, and the trainer system internals.
+This section covers **barK**'s deeper configuration options: log Level control, tagging strategies, runtime control, and the trainer system internals.
 
 ---
 
@@ -43,14 +43,14 @@ Bark.untag()  // Return to auto-detection
 
 ---
 
-## Volume Control
+## MinLevel Control
 
-Each trainer has an independent volume threshold. Logs below the threshold are silently ignored by that trainer, but may still be handled by others:
+Each trainer has an independent minLevel threshold. Logs below the threshold are silently ignored by that trainer, but may still be handled by others:
 
 ```kotlin
-Bark.train(AndroidLogTrainer(volume = Level.VERBOSE))           // (1)!
-Bark.train(FileTrainer(volume = Level.WARNING, logFile = File("app.log"))) // (2)!
-Bark.train(CrashReportingTrainer(volume = Level.ERROR))         // (3)!
+Bark.train(AndroidLogTrainer(minLevel = Level.VERBOSE))           // (1)!
+Bark.train(FileTrainer(minLevel = Level.WARNING, logFile = File("app.log"))) // (2)!
+Bark.train(CrashReportingTrainer(minLevel = Level.ERROR))         // (3)!
 
 Bark.v("Logcat only")       // (4)!
 Bark.w("Logcat + file")

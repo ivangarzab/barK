@@ -58,7 +58,7 @@ Extends the `UnitTestTrainer` with ANSI-colored output. Best a full aesthetic ex
 
 ---
 
-## Volume Filtering in Tests
+## Log Level Filtering in Tests
 
 Control how much noise appears in test output:
 
@@ -66,7 +66,7 @@ Control how much noise appears in test output:
 @Before
 fun setup() {
     Bark.releaseAllTrainers()
-    Bark.train(ColoredUnitTestTrainer(volume = Level.WARNING))
+    Bark.train(ColoredUnitTestTrainer(minLevel = Level.WARNING))
 }
 ```
 
@@ -80,7 +80,7 @@ fun setup() {
     Bark.releaseAllTrainers()
     Bark.train(ColoredUnitTestTrainer())    // Console output
     Bark.train(FileTrainer(                 // Also write to file
-        volume = Level.ERROR,
+        minLevel = Level.ERROR,
         logFile = File("test-errors.log")
     ))
 }

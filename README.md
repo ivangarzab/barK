@@ -15,7 +15,7 @@
 ***barK**: A simple, light-weight and extensible logging library for Kotlin Multiplatform*
 
 > [!IMPORTANT]
-> **Upgrading from 0.2.x?** Maven coordinates changed in v1.0.0 — see the [migration guide](https://ivangarzab.github.io/bark/changelog/migrating-to-1.0.0/).
+> **Upgrading from 0.2.x?** Maven coordinates changed in v1.0.0 — see the [migration guide](https://ivangarzab.github.io/barK/changelog/migrating-to-1.0.0/).
 
 ---
 
@@ -63,7 +63,7 @@ Open `sample-ios/barK-sample/barK-sample.xcodeproj` in Xcode and run.
 
 ## Documentation
 
-Full documentation, guides, and API reference at **[ivangarzab.github.io/bark](https://ivangarzab.github.io/bark/)**.
+Full documentation, guides, and API reference at **[ivangarzab.github.io/barK](https://ivangarzab.github.io/barK/)**.
 
 ## Contributing
 

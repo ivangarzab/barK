@@ -213,9 +213,14 @@ CI/CD: `.github/workflows/prep-release.yml` publishes to Maven Central
 
 ### Publishing
 - Maven Central via Sonatype OSSRH
-- Group: `com.ivangarzab`
+- Group: `com.ivangarzab.bark`
 - Artifacts: `bark` (common), `bark-android`
 - GPG signing via CI
+
+### URLs
+- Docs site: `https://ivangarzab.github.io/barK/` — always use capital K in `barK`
+- Maven Central: `https://central.sonatype.com/artifact/com.ivangarzab.bark/bark`
+- The lowercase `https://ivangarzab.github.io/bark/` is incorrect — GitHub Pages is case-sensitive
 
 ---
 

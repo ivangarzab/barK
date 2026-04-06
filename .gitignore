@@ -11,4 +11,4 @@ local.properties
 xcuserdata
 .claude/plans
 .claude/memory
-docs/api/dokka/
+docs/api/reference/

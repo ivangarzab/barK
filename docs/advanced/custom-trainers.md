@@ -58,7 +58,7 @@ Bark.train(FileTrainer(logFile = File("v2.log")))  // Replaces the first one
 
 ---
 
-## MinLevel Filtering
+## Log Level Filtering
 
 **barK** calls `handle()` for every log — your trainer is responsible for its own threshold check, or you can rely on **barK**'s built-in filtering by setting `minLevel` correctly:
 
